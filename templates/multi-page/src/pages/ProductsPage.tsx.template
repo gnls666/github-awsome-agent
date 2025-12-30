@@ -1,0 +1,94 @@
+import React from "react";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+}
+
+const sampleProducts: Product[] = [
+  { id: 1, name: "Laptop", price: 999.99, category: "Electronics" },
+  { id: 2, name: "Book", price: 19.99, category: "Education" },
+  { id: 3, name: "Chair", price: 149.99, category: "Furniture" },
+];
+
+export function ProductsPage(): React.ReactElement {
+  return (
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 4,
+        }}
+      >
+        <div>
+          <Typography variant="h4" gutterBottom>
+            Products
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Manage your product catalog
+          </Typography>
+        </div>
+        <Button variant="contained" startIcon={<AddIcon />}>
+          Add Product
+        </Button>
+      </Box>
+
+      <Paper>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {sampleProducts.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>{product.id}</TableCell>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>${product.price.toFixed(2)}</TableCell>
+                  <TableCell>{product.category}</TableCell>
+                  <TableCell align="right">
+                    <Button size="small" startIcon={<EditIcon />}>
+                      Edit
+                    </Button>
+                    <Button
+                      size="small"
+                      color="error"
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+    </Box>
+  );
+}

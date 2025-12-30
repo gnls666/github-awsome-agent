@@ -1,0 +1,158 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Box,
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+} from '@mui/material';
+import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import { {{ENTITY_NAME}}, {{ENTITY_NAME}}ListResponse } from './types';
+import { fetch{{ENTITY_NAME}}List } from './api';
+
+interface {{ENTITY_NAME}}ListPageProps {
+  title?: string;
+}
+
+export function {{ENTITY_NAME}}ListPage({
+  title = '{{TITLE}}',
+}: {{ENTITY_NAME}}ListPageProps): React.ReactElement {
+  const [data, setData] = useState<{{ENTITY_NAME}}[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [totalCount, setTotalCount] = useState(0);
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 10,
+  });
+
+  const columns: GridColDef<{{ENTITY_NAME}}>[] = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'name', headerName: 'Name', flex: 1, minWidth: 150 },
+    { field: 'email', headerName: 'Email', flex: 1, minWidth: 200 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
+        <Box
+          sx={{
+            px: 1,
+            py: 0.5,
+            borderRadius: 1,
+            bgcolor: params.value === 'active' ? 'success.light' : 'grey.300',
+            color: params.value === 'active' ? 'success.contrastText' : 'text.primary',
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created',
+      width: 180,
+      valueFormatter: (value: string) => new Date(value).toLocaleDateString(),
+    },
+  ];
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response: {{ENTITY_NAME}}ListResponse = await fetch{{ENTITY_NAME}}List({
+        page: paginationModel.page,
+        pageSize: paginationModel.pageSize,
+        search: searchTerm,
+      });
+      setData(response.items);
+      setTotalCount(response.total);
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  }, [paginationModel.page, paginationModel.pageSize, searchTerm]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const handleSearch = useCallback(() => {
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+  }, []);
+
+  const handleKeyPress = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        handleSearch();
+      }
+    },
+    [handleSearch]
+  );
+
+  return (
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        {title}
+      </Typography>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
+      <Paper sx={{ p: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <TextField
+            label="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            size="small"
+            sx={{ minWidth: 300 }}
+          />
+          <Button variant="contained" onClick={handleSearch} disabled={loading}>
+            Search
+          </Button>
+          <Button variant="outlined" onClick={loadData} disabled={loading}>
+            Refresh
+          </Button>
+        </Box>
+      </Paper>
+
+      <Paper sx={{ height: 600, width: '100%' }}>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          loading={loading}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          pageSizeOptions={[10, 25, 50]}
+          rowCount={totalCount}
+          paginationMode="server"
+          disableRowSelectionOnClick
+          slots={{
+            loadingOverlay: () => (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            ),
+          }}
+        />
+      </Paper>
+    </Box>
+  );
+}

@@ -1,0 +1,47 @@
+import { {{ENTITY_NAME}} } from './types';
+
+// Mock data for development
+const mock{{ENTITY_NAME}}s: {{ENTITY_NAME}}[] = Array.from({ length: 10 }, (_, i) => ({
+  id: i + 1,
+  name: `{{ENTITY_NAME}} ${i + 1}`,
+  description: `This is the description for {{ENTITY_NAME}} ${i + 1}. It contains detailed information about this item.`,
+  status: (['active', 'inactive', 'pending'] as const)[i % 3],
+  createdAt: new Date(Date.now() - i * 86400000).toISOString(),
+  updatedAt: new Date().toISOString(),
+}));
+
+export async function fetch{{ENTITY_NAME}}ById(id: number): Promise<{{ENTITY_NAME}} | null> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return mock{{ENTITY_NAME}}s.find((item) => item.id === id) || null;
+}
+
+export async function update{{ENTITY_NAME}}(
+  id: number,
+  data: Partial<Omit<{{ENTITY_NAME}}, 'id' | 'createdAt' | 'updatedAt'>>
+): Promise<{{ENTITY_NAME}}> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const index = mock{{ENTITY_NAME}}s.findIndex((item) => item.id === id);
+  if (index === -1) {
+    throw new Error('{{ENTITY_NAME}} not found');
+  }
+  mock{{ENTITY_NAME}}s[index] = {
+    ...mock{{ENTITY_NAME}}s[index],
+    ...data,
+    updatedAt: new Date().toISOString(),
+  };
+  return mock{{ENTITY_NAME}}s[index];
+}
+
+export async function create{{ENTITY_NAME}}(
+  data: Omit<{{ENTITY_NAME}}, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<{{ENTITY_NAME}}> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const new{{ENTITY_NAME}}: {{ENTITY_NAME}} = {
+    ...data,
+    id: mock{{ENTITY_NAME}}s.length + 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  mock{{ENTITY_NAME}}s.push(new{{ENTITY_NAME}});
+  return new{{ENTITY_NAME}};
+}

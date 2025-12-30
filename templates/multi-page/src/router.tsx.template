@@ -1,0 +1,39 @@
+import React from 'react';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { Layout } from './Layout';
+// Import page components - generated based on pages parameter
+// Example for pages=Dashboard,Users,Products:
+import { DashboardPage } from './pages/DashboardPage';
+import { UsersPage } from './pages/UsersPage';
+import { ProductsPage } from './pages/ProductsPage';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      // Routes generated based on pages parameter
+      // Example for pages=Dashboard,Users,Products:
+      {
+        index: true,
+        element: <DashboardPage />,
+      },
+      {
+        path: '/users',
+        element: <UsersPage />,
+      },
+      {
+        path: '/products',
+        element: <ProductsPage />,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/" replace />,
+      },
+    ],
+  },
+]);
+
+export function Router(): React.ReactElement {
+  return <RouterProvider router={router} />;
+}

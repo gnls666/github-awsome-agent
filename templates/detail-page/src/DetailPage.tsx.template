@@ -1,0 +1,201 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  CircularProgress,
+  Alert,
+  Divider,
+  Grid,
+  Chip,
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { {{ENTITY_NAME}} } from './types';
+import { fetch{{ENTITY_NAME}}ById, update{{ENTITY_NAME}} } from './api';
+import { {{ENTITY_NAME}}Form } from './{{ENTITY_NAME}}Form';
+
+interface {{ENTITY_NAME}}DetailPageProps {
+  id: number;
+  title?: string;
+  onBack?: () => void;
+}
+
+export function {{ENTITY_NAME}}DetailPage({
+  id,
+  title = '{{TITLE}}',
+  onBack,
+}: {{ENTITY_NAME}}DetailPageProps): React.ReactElement {
+  const [data, setData] = useState<{{ENTITY_NAME}} | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetch{{ENTITY_NAME}}ById(id);
+      if (!result) {
+        setError('{{ENTITY_NAME}} not found');
+      } else {
+        setData(result);
+      }
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const handleSave = useCallback(
+    async (formData: Partial<{{ENTITY_NAME}}>) => {
+      setSaving(true);
+      setError(null);
+      try {
+        const updated = await update{{ENTITY_NAME}}(id, formData);
+        setData(updated);
+        setIsEditing(false);
+      } catch (err) {
+        console.error('Failed to save:', err);
+        setError(err instanceof Error ? err.message : 'Failed to save');
+      } finally {
+        setSaving(false);
+      }
+    },
+    [id]
+  );
+
+  const handleCancel = useCallback(() => {
+    setIsEditing(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error && !data) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">{error}</Alert>
+        {onBack && (
+          <Button startIcon={<ArrowBackIcon />} onClick={onBack} sx={{ mt: 2 }}>
+            Go Back
+          </Button>
+        )}
+      </Box>
+    );
+  }
+
+  if (!data) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="warning">No data found</Alert>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ p: 3 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
+        {onBack && (
+          <Button startIcon={<ArrowBackIcon />} onClick={onBack}>
+            Back
+          </Button>
+        )}
+        <Typography variant="h4" sx={{ flexGrow: 1 }}>
+          {title}
+        </Typography>
+        {!isEditing && (
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </Button>
+        )}
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+
+      <Paper sx={{ p: 3 }}>
+        {isEditing ? (
+          <{{ENTITY_NAME}}Form
+            data={data}
+            onSave={handleSave}
+            onCancel={handleCancel}
+            saving={saving}
+          />
+        ) : (
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                ID
+              </Typography>
+              <Typography variant="body1">{data.id}</Typography>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Name
+              </Typography>
+              <Typography variant="body1">{data.name}</Typography>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Description
+              </Typography>
+              <Typography variant="body1">
+                {data.description || 'No description'}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Status
+              </Typography>
+              <Chip
+                label={data.status}
+                color={data.status === 'active' ? 'success' : 'default'}
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <Divider sx={{ my: 2 }} />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Created At
+              </Typography>
+              <Typography variant="body1">
+                {new Date(data.createdAt).toLocaleString()}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Typography variant="subtitle2" color="text.secondary">
+                Updated At
+              </Typography>
+              <Typography variant="body1">
+                {new Date(data.updatedAt).toLocaleString()}
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
+      </Paper>
+    </Box>
+  );
+}

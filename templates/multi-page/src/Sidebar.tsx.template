@@ -1,0 +1,106 @@
+import React from 'react';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+import PeopleIcon from '@mui/icons-material/People';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import DescriptionIcon from '@mui/icons-material/Description';
+
+const DRAWER_WIDTH = 200;
+
+interface NavItem {
+  path: string;
+  title: string;
+  icon: React.ReactNode;
+}
+
+// Dynamic navigation items - generated based on pages parameter
+// When generating, replace this array with items from the pages parameter
+// Example for pages=Dashboard,Users,Products:
+const navItems: NavItem[] = [
+  { path: '/', title: 'Dashboard', icon: <DashboardIcon /> },
+  { path: '/users', title: 'Users', icon: <PeopleIcon /> },
+  { path: '/products', title: 'Products', icon: <InventoryIcon /> },
+];
+
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ open, onClose }: SidebarProps): React.ReactElement {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    if (isMobile) {
+      onClose();
+    }
+  };
+
+  const drawerContent = (
+    <>
+      <Toolbar />
+      <List sx={{ pt: 1 }}>
+        {navItems.map((item) => (
+          <ListItem key={item.path} disablePadding>
+            <ListItemButton
+              selected={location.pathname === item.path}
+              onClick={() => handleNavigation(item.path)}
+              sx={{
+                mx: 1,
+                borderRadius: 1,
+                '&.Mui-selected': {
+                  bgcolor: 'primary.main',
+                  color: 'primary.contrastText',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                  },
+                  '& .MuiListItemIcon-root': {
+                    color: 'primary.contrastText',
+                  },
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.title} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </>
+  );
+
+  return (
+    <Drawer
+      variant={isMobile ? 'temporary' : 'persistent'}
+      open={open}
+      onClose={onClose}
+      sx={{
+        width: DRAWER_WIDTH,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: DRAWER_WIDTH,
+          boxSizing: 'border-box',
+          position: 'absolute',
+        },
+      }}
+    >
+      {drawerContent}
+    </Drawer>
+  );
+}
