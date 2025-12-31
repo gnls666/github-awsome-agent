@@ -52,6 +52,7 @@ Follow these MUI component best practices:
 - [Dialog Guide](../../components/dialog.md)
 - [Navigation Guide](../../components/navigation.md)
 - [Layout Guide](../../components/layout.md)
+- [API Design Guide](../../components/api-design.md)
 
 ## User Parameters
 

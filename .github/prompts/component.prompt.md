@@ -18,6 +18,7 @@ Provide MUI component usage guidelines based on the component guides in this rep
 - [Dialog Guide](../../components/dialog.md) - Modal dialogs and confirmations
 - [Navigation Guide](../../components/navigation.md) - Sidebar, menus, and navigation patterns
 - [Layout Guide](../../components/layout.md) - Page layouts and responsive design
+- [API Design Guide](../../components/api-design.md) - API patterns and best practices
 
 ## How to Use
 
