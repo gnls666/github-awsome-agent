@@ -2,6 +2,14 @@
 
 This repository contains templates and guidelines for generating frontend pages using React 18, Vite 5.4, and MUI 7.
 
+## Before Generating Code
+
+**MUST read these files first:**
+1. `templates/_shared/dependencies.md` - Dependency versions
+2. `templates/_shared/variables.md` - Variable naming rules
+
+Then read the specific template directory for your task.
+
 ## Technology Stack
 
 - **React 18** - Modern React with Hooks and Concurrent Features
