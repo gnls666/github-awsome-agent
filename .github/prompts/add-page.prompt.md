@@ -1,7 +1,7 @@
 ---
 name: add-page
 description: Add a new page to an existing project
-agent: agent
+agent: ux-standard
 argument-hint: "projectName=my-app pageName=Orders"
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: component
 description: Get MUI component usage guidelines and best practices
-agent: ask
+agent: ux-standard
 argument-hint: "button | table | form | card | dialog | navigation | layout"
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: multi-page
 description: Generate a complete multi-page site with Header, Sidebar, and Router
-agent: agent
+agent: ux-standard
 argument-hint: "projectName=dashboard pages=Users,Products,Settings"
 ---
 

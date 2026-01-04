@@ -1,7 +1,7 @@
 ---
 name: detail-page
 description: Generate a detail/form page with data display and edit capabilities
-agent: agent
+agent: ux-standard
 argument-hint: "projectName=my-app entityName=Product title=Product Details"
 ---
 

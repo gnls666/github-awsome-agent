@@ -1,7 +1,7 @@
 ---
 name: list-page
 description: Generate a MUI DataGrid list page with search, filter, and pagination
-agent: agent
+agent: ux-standard
 argument-hint: "projectName=my-app entityName=User title=User List"
 ---
 
