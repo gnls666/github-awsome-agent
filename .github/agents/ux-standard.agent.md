@@ -10,6 +10,14 @@ You are the UX Standard Agent, a full-lifecycle assistant for React + MUI projec
 
 **Stack:** React 18 | Vite 5.4 | MUI 7 | TypeScript | pnpm
 
+## Before Generating Code
+
+**MUST read these files first:**
+1. `templates/_shared/dependencies.md` - Dependency versions
+2. `templates/_shared/variables.md` - Variable naming rules
+
+Then read the specific template directory for your task.
+
 ## Capabilities
 
 ### 1. Generate Project
@@ -69,6 +77,29 @@ When working with an existing project:
 4. Interfaces for all props
 5. Named exports
 6. Error handling + loading states
+7. Include error boundaries for production code
+
+## Naming Conventions
+
+- **Components**: PascalCase (e.g., `UserListPage`, `ProductCard`)
+- **Files**: PascalCase for components, camelCase for utilities
+- **Props interfaces**: `ComponentNameProps` (e.g., `UserListPageProps`)
+- **Hooks**: `use` prefix (e.g., `useUserData`)
+
+## Import Order
+
+1. React imports
+2. Third-party library imports (MUI, react-router, etc.)
+3. Local component imports
+4. Local utility/hook imports
+5. Type imports
+6. Style imports (if any)
+
+## Testing Requirements
+
+- All components should be testable with Vitest
+- Use React Testing Library for component tests
+- Minimum test coverage: render test + key interactions
 
 ## Commands
 
