@@ -86,11 +86,64 @@ Then run the generation command:
 node scripts/generate.js <template> <project-name> --entity <Entity> --title "<title>"
 ```
 
-### Step 5: Provide Next Steps
+### Step 5: Customize for User Requirements
 
-After generation completes, tell the user:
+After generation, **proactively customize** the code based on the entity type and user's request.
 
-> Project generated! Next steps:
+#### 5a. Entity Field Mapping
+
+Use this mapping for common entities. For unknown entities, infer reasonable fields based on the entity name.
+
+| Entity | Recommended Fields | Mock Data Examples |
+|--------|-------------------|-------------------|
+| User | id, name, email, role, status, createdAt | "John Smith", "john.smith@company.com", "Portfolio Manager" |
+| Product | id, productName, productType, ticker, nav, riskLevel, status | "Global Bond Fund", "Mutual Fund", "GBF", 52.30, "Low", "Active" |
+| Fund | id, fundName, ticker, nav, aum, category, inceptionDate | "Growth Equity Fund", "GEF", 125.50, "2.5B", "Equity" |
+| ETF | id, ticker, name, price, volume, expenseRatio, category | "SPY", "SPDR S&P 500", 450.25, "85M", 0.09, "Large Cap" |
+| MutualFund | id, fundName, ticker, nav, minInvestment, expenseRatio, rating | "Vanguard 500 Index", "VFIAX", 420.15, 3000, 0.04, "5-star" |
+| Portfolio | id, portfolioName, owner, totalValue, allocation, riskLevel | "Retirement 2050", "Alice Chen", 1250000, "60/40", "Moderate" |
+| Trade | id, tradeId, ticker, side, quantity, price, status, tradeDate | "TRD-20240115", "AAPL", "Buy", 100, 185.50, "Executed" |
+| Client | id, name, email, accountType, aum, riskProfile, advisor | "Jane Doe", "jane@email.com", "Individual", "500K", "Aggressive" |
+| Order | id, orderId, ticker, orderType, quantity, limitPrice, status | "ORD-001", "MSFT", "Limit", 50, 380.00, "Pending" |
+
+**For unknown entities:** Infer fields from the entity name. For example:
+- `Position` → id, ticker, quantity, avgCost, marketValue, unrealizedPnL
+- `Holding` → id, securityName, shares, costBasis, currentValue, weight
+- `Transaction` → id, transactionId, type, amount, date, status, description
+
+#### 5b. What You CAN Modify
+
+| Can Modify | Cannot Modify |
+|------------|---------------|
+| Column names / field names | Project structure |
+| TypeScript interfaces (field names & types) | Dependency versions |
+| Mock data values | Config files (tsconfig, npmrc, vite.config...) |
+| Display labels & formatting | Core component logic |
+
+#### 5c. Execute Customizations
+
+Apply **minimal changes** to achieve the user's goal:
+
+1. **Read the generated files** - Understand current template structure
+2. **Map entity to fields** - Use the mapping table above, or infer for unknown entities
+3. **Update in this order:**
+   - `types.ts` - Rename interface fields
+   - `*ListPage.tsx` or `*DetailPage.tsx` - Update column definitions / form fields
+   - `api.ts` or mock data - Update with realistic values
+4. **Keep everything else unchanged**
+
+**Principle:** Be proactive. If the user said "user management page", they expect user-appropriate columns and realistic data — don't wait for them to ask.
+
+#### 5d. Report Completion
+
+After customizations:
+
+> ✅ Project generated and customized!
+>
+> **What I did:**
+> - Mapped `User` entity to fields: name, email, role, status, createdAt
+> - Updated TypeScript interfaces
+> - Generated realistic mock data
 >
 > ```bash
 > cd generated/<project-name>
@@ -98,11 +151,14 @@ After generation completes, tell the user:
 > pnpm dev
 > ```
 >
-> I can also help you:
-> - Modify table columns / form fields
-> - Add new pages
-> - Connect to real APIs
-> - Adjust styling and layout
+> Want me to adjust anything? (columns, styling, add features...)
+
+### Step 6: Iterate on Feedback
+
+If user requests more changes:
+1. Read the specific file
+2. Make targeted edits
+3. If request is beyond template capability, offer 2-3 alternative approaches
 
 ---
 
