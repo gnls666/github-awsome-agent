@@ -11,6 +11,10 @@
 | `{{ENTITY_NAME_LOWER}}` | lowercase | Lowercase entity name | `user`, `product` |
 | `{{TITLE}}` | Free text | Page title (can be Chinese/English) | `用户管理`, `User Management` |
 | `{{PAGES}}` | PascalCase, comma-separated | Page names for multi-page | `Dashboard,Users,Products` |
+| `{{ROUTER_IMPORTS}}` | derived string block | Router page imports for multi-page | `import { UsersPage } ...` |
+| `{{ROUTES}}` | derived string block | Router children route entries | `{ path: '/users', ... }` |
+| `{{SIDEBAR_ICON_IMPORTS}}` | derived string block | Sidebar icon imports | `import HomeIcon ...` |
+| `{{NAV_ITEMS}}` | derived string block | Sidebar nav item entries | `{ path: '/users', ... }` |
 
 ## Variable Derivation Rules
 
@@ -19,8 +23,9 @@ When user provides `entityName=User`:
 - `{{ENTITY_NAME_LOWER}}` = `user`
 
 When user provides `pages=Dashboard,Users,Products`:
-- Generate route: `/dashboard`, `/users`, `/products`
-- Generate component: `DashboardPage.tsx`, `UsersPage.tsx`, `ProductsPage.tsx`
+- Generate page files: `DashboardPage.tsx`, `UsersPage.tsx`, `ProductsPage.tsx`
+- Generate routes: index route uses first page (`/` -> `DashboardPage`), remaining pages use kebab-case paths (`/users`, `/products`)
+- Generate sidebar nav items aligned with router paths
 
 ## Usage in Templates
 

@@ -77,9 +77,9 @@ Edit the version numbers in this file first.
 
 ### Step 2: Update template files
 Update versions in these files:
-- `templates/list-page/package.json.template`
-- `templates/detail-page/package.json.template`
-- `templates/multi-page/package.json.template`
+- `.github/skills/_shared/templates/list-page/package.json.template`
+- `.github/skills/_shared/templates/detail-page/package.json.template`
+- `.github/skills/_shared/templates/multi-page/package.json.template`
 
 ### Step 3: Test generated project
 ```bash

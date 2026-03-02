@@ -1,24 +1,24 @@
 ---
 name: component
-description: Get MUI component usage guidelines and best practices
+description: Get MUI component usage guidance using repository component standards skill
 agent: ux-standard
 argument-hint: "button | table | form | card | dialog | navigation | layout"
 ---
 
 # Component Guidelines Query
 
-Provide MUI component usage guidelines based on the component guides in this repository.
+Use the `component-standards` skill and provide MUI component guidance based on this repository.
 
 ## Available Component Guides
 
-- [Button Guide](../../components/button.md) - Button variants, states, and best practices
-- [Table/DataGrid Guide](../../components/table.md) - Data display with MUI DataGrid
-- [Form Guide](../../components/form.md) - Form layouts, validation, and inputs
-- [Card Guide](../../components/card.md) - Card layouts and content patterns
-- [Dialog Guide](../../components/dialog.md) - Modal dialogs and confirmations
-- [Navigation Guide](../../components/navigation.md) - Sidebar, menus, and navigation patterns
-- [Layout Guide](../../components/layout.md) - Page layouts and responsive design
-- [API Design Guide](../../components/api-design.md) - API patterns and best practices
+- [Button Guide](../skills/_shared/components/button.md) - Button variants, states, and best practices
+- [Table/DataGrid Guide](../skills/_shared/components/table.md) - Data display with MUI DataGrid
+- [Form Guide](../skills/_shared/components/form.md) - Form layouts, validation, and inputs
+- [Card Guide](../skills/_shared/components/card.md) - Card layouts and content patterns
+- [Dialog Guide](../skills/_shared/components/dialog.md) - Modal dialogs and confirmations
+- [Navigation Guide](../skills/_shared/components/navigation.md) - Sidebar, menus, and navigation patterns
+- [Layout Guide](../skills/_shared/components/layout.md) - Page layouts and responsive design
+- [API Design Guide](../skills/_shared/components/api-design.md) - API patterns and best practices
 
 ## How to Use
 

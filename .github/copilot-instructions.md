@@ -1,46 +1,40 @@
-# UX Standard Agent - Global Instructions
+# UX Standard - Global Copilot Instructions
 
-A conversational React + MUI project generator. Users create frontend projects through natural dialogue with the `@ux-standard` Agent.
+This repository is configured for VS Code Copilot Agent Mode with a single orchestrator agent plus reusable skills.
 
-## User Experience
+## Platform
 
-Users simply say:
-- "Help me create a user management page"
-- "I need an admin dashboard"
-- "Generate a product list"
-
-The Agent asks for required information in plain language, then generates the project.
+- Target: VS Code Copilot (version 1.109 or later)
+- Primary agent: `@ux-standard`
+- Skill location: `.github/skills/`
 
 ## Language
 
-**Default language is English.** If the user writes in another language, respond in that language.
+- Default output language: English.
+- If the user writes in another language, respond in that language.
+
+## Working Model
+
+1. Understand requirements and fill missing inputs.
+2. Select template (`list-page`, `detail-page`, `multi-page`).
+3. Generate project with `.github/skills/_shared/scripts/generate.js`.
+4. Apply requested customization.
+5. Verify with quality checks when applicable.
+
+Use skills by intent, and prefer automatic skill triggering over explicit slash commands.
 
 ## Tech Stack
 
-- **React 18** - Modern React with Hooks
-- **Vite 5.4** - Fast build tool
-- **MUI 7** - Material UI components
-- **TypeScript** - Strict type checking
-- **pnpm** - Package manager
+- React 18
+- Vite 5.4
+- MUI 7
+- TypeScript (strict)
+- pnpm
 
-## Project Structure
+## Repository Anchors
 
-```
-.github/
-├── agents/ux-standard.agent.md   # Agent definition (core)
-├── prompts/                       # Shortcut commands
-└── copilot-instructions.md        # Global instructions
-
-templates/                         # Page templates
-components/                        # Component guidelines
-scripts/generate.js                # Generator script
-generated/                         # Output directory
-```
-
-## Code Standards
-
-1. TypeScript strict mode
-2. Function components with Hooks
-3. MUI `sx` prop for styling
-4. Interfaces for all props
-5. Named exports
+- Skillpack assets (portable): `.github/skills/_shared/`
+- Templates: `.github/skills/_shared/templates/`
+- Component standards: `.github/skills/_shared/components/`
+- Generator: `.github/skills/_shared/scripts/generate.js`
+- Generated output: `generated/`

@@ -4,12 +4,12 @@
  * Template Generator Script
  *
  * Usage:
- *   node scripts/generate.js <template> <project-name> [options]
+ *   node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
  *
  * Examples:
- *   node scripts/generate.js list-page my-users --entity User --title "User Management"
- *   node scripts/generate.js detail-page my-product --entity Product --title "Product Details"
- *   node scripts/generate.js multi-page my-admin --title "Admin Panel" --pages "Dashboard,Users,Products"
+ *   node .github/skills/_shared/scripts/generate.js list-page my-users --entity User --title "User Management"
+ *   node .github/skills/_shared/scripts/generate.js detail-page my-product --entity Product --title "Product Details"
+ *   node .github/skills/_shared/scripts/generate.js multi-page my-admin --title "Admin Panel" --pages "Dashboard,Users,Products"
  *
  * Options:
  *   --entity <name>   Entity name in PascalCase (e.g., User, Product)
@@ -24,7 +24,8 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT_DIR = path.resolve(__dirname, '..');
+const SKILLPACK_ROOT = path.resolve(__dirname, '..');
+const WORKSPACE_ROOT = process.cwd();
 const DEFAULT_MULTI_PAGES = ['Dashboard', 'Users', 'Products'];
 
 function toPascalCase(value) {
@@ -274,7 +275,7 @@ function generateMultiPageFiles(outputDir, pages, variables, dryRun) {
 
   for (const pageName of pages) {
     const destPath = path.join(pagesDir, `${pageName}Page.tsx`);
-    const templatePath = path.join(ROOT_DIR, 'templates', 'multi-page', 'src', 'pages', `${pageName}Page.tsx.template`);
+    const templatePath = path.join(SKILLPACK_ROOT, 'templates', 'multi-page', 'src', 'pages', `${pageName}Page.tsx.template`);
 
     let content;
     if (fs.existsSync(templatePath)) {
@@ -300,7 +301,7 @@ function main() {
 
   if (args.length < 2) {
     console.log(`
-Usage: node scripts/generate.js <template> <project-name> [options]
+Usage: node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
 
 Templates:
   list-page    - Data list page with search and pagination
@@ -314,8 +315,8 @@ Options:
   --dry-run         Preview without creating files
 
 Examples:
-  node scripts/generate.js list-page user-admin --entity User --title "用户管理"
-  node scripts/generate.js multi-page my-dashboard --pages "Dashboard,Users,Settings"
+  node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
+  node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --pages "Dashboard,Users,Settings"
 `);
     process.exit(1);
   }
@@ -324,17 +325,17 @@ Examples:
   const pages = config.template === 'multi-page' ? parsePages(config.pages) : [];
 
   // Validate template exists
-  const templateDir = path.join(ROOT_DIR, 'templates', config.template);
+  const templateDir = path.join(SKILLPACK_ROOT, 'templates', config.template);
   if (!fs.existsSync(templateDir)) {
-    const available = fs.readdirSync(path.join(ROOT_DIR, 'templates'))
-      .filter(d => !d.startsWith('_') && fs.statSync(path.join(ROOT_DIR, 'templates', d)).isDirectory());
+    const available = fs.readdirSync(path.join(SKILLPACK_ROOT, 'templates'))
+      .filter(d => !d.startsWith('_') && fs.statSync(path.join(SKILLPACK_ROOT, 'templates', d)).isDirectory());
     console.error(`❌ Template "${config.template}" not found.`);
     console.error(`   Available templates: ${available.join(', ')}`);
     process.exit(1);
   }
 
   // Set up output directory
-  const outputDir = path.join(ROOT_DIR, 'generated', config.projectName);
+  const outputDir = path.join(WORKSPACE_ROOT, 'generated', config.projectName);
 
   // Check if output already exists
   if (!config.dryRun && fs.existsSync(outputDir)) {

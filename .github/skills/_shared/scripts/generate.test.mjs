@@ -8,13 +8,13 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT_DIR = path.resolve(__dirname, '..');
-const GENERATOR_PATH = path.join(ROOT_DIR, 'scripts', 'generate.js');
-const GENERATED_DIR = path.join(ROOT_DIR, 'generated');
+const WORKSPACE_ROOT = process.cwd();
+const GENERATOR_PATH = path.join(__dirname, 'generate.js');
+const GENERATED_DIR = path.join(WORKSPACE_ROOT, 'generated');
 
 function runGenerator(args) {
   const result = spawnSync(process.execPath, [GENERATOR_PATH, ...args], {
-    cwd: ROOT_DIR,
+    cwd: WORKSPACE_ROOT,
     encoding: 'utf-8',
   });
 
@@ -30,7 +30,7 @@ function removeGeneratedProject(projectName) {
 }
 
 test('multi-page uses --pages to generate router, sidebar and page files', (t) => {
-  const projectName = `test-multi-${randomUUID().slice(0, 8)}`;
+  const projectName = `skillpack-multi-${randomUUID().slice(0, 8)}`;
   t.after(() => removeGeneratedProject(projectName));
 
   runGenerator([
@@ -70,7 +70,7 @@ test('multi-page uses --pages to generate router, sidebar and page files', (t) =
 });
 
 test('detail-page keeps Form import and icons dependency', (t) => {
-  const projectName = `test-detail-${randomUUID().slice(0, 8)}`;
+  const projectName = `skillpack-detail-${randomUUID().slice(0, 8)}`;
   t.after(() => removeGeneratedProject(projectName));
 
   runGenerator([

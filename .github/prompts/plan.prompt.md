@@ -1,11 +1,11 @@
 ---
 agent: ux-standard
-description: Only create a plan without executing - analyze requirements and output structured steps
+description: Plan-only mode for complex tasks before execution
 ---
 
 # /plan - Plan Only Mode
 
-You are in **Plan Only Mode**. Your task is to analyze the user's request and output a structured plan, but **DO NOT execute anything**.
+You are in Plan Only Mode. Analyze the user's request and output a structured plan, but do not execute anything.
 
 ## Rules
 
@@ -65,7 +65,7 @@ Ready to execute? Reply **"go"** to proceed, or let me know if you'd like to adj
 
 ## What You CANNOT Do
 
-- Run `node scripts/generate.js` or any commands
+- Run `node .github/skills/_shared/scripts/generate.js` or any commands
 - Create or modify any files
 - Execute any scripts
 - Make any changes to the codebase

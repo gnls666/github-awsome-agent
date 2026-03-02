@@ -39,7 +39,7 @@ A complete multi-page site template with Header, Sidebar, and React Router.
 ## Files
 
 ```
-templates/multi-page/
+.github/skills/_shared/templates/multi-page/
 ├── index.html.template           # HTML entry point
 ├── package.json.template         # Dependencies and scripts
 ├── tsconfig.json.template        # TypeScript config
