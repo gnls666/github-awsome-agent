@@ -46,6 +46,7 @@
 ```json
 {
   "dependencies": {
+    "@mui/icons-material": "^7.0.0",
     "@mui/x-date-pickers": "^7.0.0"
   }
 }

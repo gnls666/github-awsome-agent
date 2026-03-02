@@ -1,0 +1,95 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT_DIR = path.resolve(__dirname, '..');
+const GENERATOR_PATH = path.join(ROOT_DIR, 'scripts', 'generate.js');
+const GENERATED_DIR = path.join(ROOT_DIR, 'generated');
+
+function runGenerator(args) {
+  const result = spawnSync(process.execPath, [GENERATOR_PATH, ...args], {
+    cwd: ROOT_DIR,
+    encoding: 'utf-8',
+  });
+
+  assert.equal(
+    result.status,
+    0,
+    `generator failed with args ${args.join(' ')}\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`
+  );
+}
+
+function removeGeneratedProject(projectName) {
+  fs.rmSync(path.join(GENERATED_DIR, projectName), { recursive: true, force: true });
+}
+
+test('multi-page uses --pages to generate router, sidebar and page files', (t) => {
+  const projectName = `test-multi-${randomUUID().slice(0, 8)}`;
+  t.after(() => removeGeneratedProject(projectName));
+
+  runGenerator([
+    'multi-page',
+    projectName,
+    '--title',
+    'Admin',
+    '--pages',
+    'Home,Orders,Reports',
+  ]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const pagesDir = path.join(outputDir, 'src', 'pages');
+  const routerPath = path.join(outputDir, 'src', 'router.tsx');
+  const sidebarPath = path.join(outputDir, 'src', 'Sidebar.tsx');
+
+  assert.deepEqual(
+    fs.readdirSync(pagesDir).sort(),
+    ['HomePage.tsx', 'OrdersPage.tsx', 'ReportsPage.tsx']
+  );
+
+  const routerContent = fs.readFileSync(routerPath, 'utf-8');
+  assert.match(routerContent, /import \{ HomePage \} from '\.\/pages\/HomePage';/);
+  assert.match(routerContent, /import \{ OrdersPage \} from '\.\/pages\/OrdersPage';/);
+  assert.match(routerContent, /import \{ ReportsPage \} from '\.\/pages\/ReportsPage';/);
+  assert.match(routerContent, /index: true,\s*element: <HomePage \/>/);
+  assert.match(routerContent, /path: '\/orders',\s*element: <OrdersPage \/>/);
+  assert.match(routerContent, /path: '\/reports',\s*element: <ReportsPage \/>/);
+  assert.doesNotMatch(routerContent, /DashboardPage/);
+
+  const sidebarContent = fs.readFileSync(sidebarPath, 'utf-8');
+  assert.match(sidebarContent, /title: 'Home'/);
+  assert.match(sidebarContent, /title: 'Orders'/);
+  assert.match(sidebarContent, /title: 'Reports'/);
+  assert.match(sidebarContent, /path: '\/orders'/);
+  assert.match(sidebarContent, /path: '\/reports'/);
+});
+
+test('detail-page keeps Form import and icons dependency', (t) => {
+  const projectName = `test-detail-${randomUUID().slice(0, 8)}`;
+  t.after(() => removeGeneratedProject(projectName));
+
+  runGenerator([
+    'detail-page',
+    projectName,
+    '--entity',
+    'Product',
+    '--title',
+    'Product Detail',
+  ]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const detailPagePath = path.join(outputDir, 'src', 'DetailPage.tsx');
+  const packageJsonPath = path.join(outputDir, 'package.json');
+
+  const detailPageContent = fs.readFileSync(detailPagePath, 'utf-8');
+  assert.match(detailPageContent, /import \{ ProductForm \} from '\.\/Form';/);
+  assert.doesNotMatch(detailPageContent, /from '\.\/ProductForm';/);
+
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+  assert.equal(packageJson.dependencies['@mui/icons-material'], '^7.0.0');
+});

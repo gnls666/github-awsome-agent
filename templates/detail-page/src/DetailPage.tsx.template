@@ -14,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { {{ENTITY_NAME}} } from './types';
 import { fetch{{ENTITY_NAME}}ById, update{{ENTITY_NAME}} } from './api';
-import { {{ENTITY_NAME}}Form } from './{{ENTITY_NAME}}Form';
+import { {{ENTITY_NAME}}Form } from './Form';
 
 interface {{ENTITY_NAME}}DetailPageProps {
   id: number;
