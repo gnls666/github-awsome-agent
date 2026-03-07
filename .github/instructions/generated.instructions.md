@@ -8,57 +8,13 @@ These are generated React + MUI projects created by `.github/skills/_shared/scri
 
 ## Rules
 
-- Follow existing code patterns in the project
-- Use MUI `sx` prop for styling (not styled-components)
-- Maintain TypeScript strict mode
-- Run `pnpm typecheck` after modifications to verify changes
-- Use named exports for components
+- Follow existing project patterns before introducing new abstractions.
+- Keep TypeScript strict and prefer named exports.
+- Use MUI `sx` for styling.
+- Add loading and error handling for new async UI.
+- Run `pnpm typecheck` after meaningful edits. Run `pnpm test` or `pnpm build` when the change affects those paths.
 
-## Do NOT Modify
+## Avoid
 
-- `node_modules/` - Package dependencies
-- `pnpm-lock.yaml` - Lock file (auto-generated)
-
-## Commands
-
-```bash
-pnpm install      # Install dependencies
-pnpm dev          # Start dev server
-pnpm build        # Build for production
-pnpm typecheck    # TypeScript check
-pnpm test         # Run tests
-```
-
-## Code Style
-
-- Function components with React Hooks
-- Interfaces for all component props
-- Error handling with try/catch
-- Loading states for async operations
-
-## Code Examples
-
-When explaining code patterns, prefer real code snippets over text descriptions.
-
-### Good - Show actual code:
-
-```tsx
-// Search filter example
-const [searchTerm, setSearchTerm] = useState('');
-const filteredData = data.filter(item =>
-  item.name.toLowerCase().includes(searchTerm.toLowerCase())
-);
-```
-
-```tsx
-// Loading state example
-if (loading) {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-      <CircularProgress />
-    </Box>
-  );
-}
-```
-
-### Avoid - Long text explanations without code examples
+- Editing `node_modules/`
+- Editing `pnpm-lock.yaml` unless dependency changes are explicitly required

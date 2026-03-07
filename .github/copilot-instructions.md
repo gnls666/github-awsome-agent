@@ -1,40 +1,24 @@
 # UX Standard - Global Copilot Instructions
 
-This repository is configured for VS Code Copilot Agent Mode with a single orchestrator agent plus reusable skills.
+Use this repository to generate and customize React + MUI projects with minimal always-on context.
 
-## Platform
+`@ux-standard` is the agent this repository provides to users. It should deliver this repository's workflow, shared assets, and spec-driven execution rather than generic freeform help.
 
-- Target: VS Code Copilot (version 1.109 or later)
-- Primary agent: `@ux-standard`
-- Skill location: `.github/skills/`
+## Core Rules
 
-## Language
+- Use `@ux-standard` for generation and customization tasks.
+- Keep global instructions short; detailed workflow belongs in skills.
+- For in-scope work, prefer this repository's skills and workflow over plain agent behavior.
+- Use plain agent behavior only for out-of-scope conversation, tiny clarifications, or final summaries.
+- Read only the resources referenced by the active skill.
+- Keep `plans/<project-name>/plan.md` as the durable human-readable plan and `plans/<project-name>/spec.json` as the execution contract.
+- Use `plans/<project-name>/spec.json` as the reusable contract for autonomous generation work.
+- Prefer prompt files when the user wants a deterministic fast path: `/generate`, `/plan`, `/component`.
+- Respond in the same language as the user.
 
-- Default output language: English.
-- If the user writes in another language, respond in that language.
+## Key Paths
 
-## Working Model
-
-1. Understand requirements and fill missing inputs.
-2. Select template (`list-page`, `detail-page`, `multi-page`).
-3. Generate project with `.github/skills/_shared/scripts/generate.js`.
-4. Apply requested customization.
-5. Verify with quality checks when applicable.
-
-Use skills by intent, and prefer automatic skill triggering over explicit slash commands.
-
-## Tech Stack
-
-- React 18
-- Vite 5.4
-- MUI 7
-- TypeScript (strict)
-- pnpm
-
-## Repository Anchors
-
-- Skillpack assets (portable): `.github/skills/_shared/`
-- Templates: `.github/skills/_shared/templates/`
-- Component standards: `.github/skills/_shared/components/`
-- Generator: `.github/skills/_shared/scripts/generate.js`
+- Agent: `.github/agents/ux-standard.agent.md`
+- Skills: `.github/skills/`
+- Shared templates and generator: `.github/skills/_shared/`
 - Generated output: `generated/`

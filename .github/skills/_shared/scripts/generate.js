@@ -5,16 +5,19 @@
  *
  * Usage:
  *   node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
+ *   node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json [options]
  *
  * Examples:
  *   node .github/skills/_shared/scripts/generate.js list-page my-users --entity User --title "User Management"
  *   node .github/skills/_shared/scripts/generate.js detail-page my-product --entity Product --title "Product Details"
  *   node .github/skills/_shared/scripts/generate.js multi-page my-admin --title "Admin Panel" --pages "Dashboard,Users,Products"
+ *   node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json --dry-run
  *
  * Options:
  *   --entity <name>   Entity name in PascalCase (e.g., User, Product)
  *   --title <text>    Page title (can be Chinese/English)
  *   --pages <list>    Comma-separated page names for multi-page template
+ *   --spec-file <path>  Read generation inputs from a JSON spec file
  *   --dry-run         Show what would be generated without creating files
  */
 
@@ -39,6 +42,14 @@ function toPascalCase(value) {
 }
 
 function parsePages(pagesArg) {
+  if (Array.isArray(pagesArg)) {
+    const pages = pagesArg
+      .map((page) => toPascalCase(String(page)))
+      .filter(Boolean);
+
+    return pages.length > 0 ? Array.from(new Set(pages)) : DEFAULT_MULTI_PAGES;
+  }
+
   if (!pagesArg) {
     return DEFAULT_MULTI_PAGES;
   }
@@ -53,6 +64,16 @@ function parsePages(pagesArg) {
   }
 
   return Array.from(new Set(pages));
+}
+
+function normalizeStringArray(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => String(item).trim())
+    .filter(Boolean);
 }
 
 function toKebabCase(value) {
@@ -154,15 +175,18 @@ export function ${pageName}Page(): React.ReactElement {
 // Parse command line arguments
 function parseArgs(args) {
   const result = {
-    template: args[0],
-    projectName: args[1],
+    template: '',
+    projectName: '',
     entity: '',
     title: '',
     pages: '',
     dryRun: false,
+    specFile: '',
   };
 
-  for (let i = 2; i < args.length; i++) {
+  const positionals = [];
+
+  for (let i = 0; i < args.length; i++) {
     switch (args[i]) {
       case '--entity':
         result.entity = args[++i];
@@ -173,13 +197,78 @@ function parseArgs(args) {
       case '--pages':
         result.pages = args[++i];
         break;
+      case '--spec-file':
+        result.specFile = args[++i];
+        break;
       case '--dry-run':
         result.dryRun = true;
+        break;
+      default:
+        if (args[i].startsWith('--')) {
+          console.error(`❌ Unknown option: ${args[i]}`);
+          process.exit(1);
+        }
+        positionals.push(args[i]);
         break;
     }
   }
 
+  result.template = positionals[0] || '';
+  result.projectName = positionals[1] || '';
+
   return result;
+}
+
+function loadSpecFile(specFilePath) {
+  const resolvedPath = path.resolve(WORKSPACE_ROOT, specFilePath);
+
+  if (!fs.existsSync(resolvedPath)) {
+    console.error(`❌ Spec file not found: ${resolvedPath}`);
+    process.exit(1);
+  }
+
+  let parsedSpec;
+  try {
+    parsedSpec = JSON.parse(fs.readFileSync(resolvedPath, 'utf-8'));
+  } catch (error) {
+    console.error(`❌ Spec file must be valid JSON: ${resolvedPath}`);
+    console.error(`   ${error instanceof Error ? error.message : String(error)}`);
+    process.exit(1);
+  }
+
+  if (!parsedSpec || typeof parsedSpec !== 'object' || Array.isArray(parsedSpec)) {
+    console.error(`❌ Spec file must contain a JSON object: ${resolvedPath}`);
+    process.exit(1);
+  }
+
+  return {
+    resolvedPath,
+    spec: parsedSpec,
+  };
+}
+
+function mergeConfigWithSpec(config) {
+  if (!config.specFile) {
+    return {
+      ...config,
+      rawSpec: null,
+      specSourcePath: '',
+    };
+  }
+
+  const { resolvedPath, spec } = loadSpecFile(config.specFile);
+
+  return {
+    ...config,
+    template: config.template || spec.template || '',
+    projectName: config.projectName || spec.projectName || '',
+    entity: config.entity || spec.entityName || spec.entity || '',
+    title: config.title || spec.title || '',
+    pages: config.pages || spec.pages || '',
+    dryRun: config.dryRun || spec.dryRun === true,
+    rawSpec: spec,
+    specSourcePath: resolvedPath,
+  };
 }
 
 // Derive variables from user input
@@ -196,6 +285,133 @@ function deriveVariables(config, pages = []) {
   }
 
   return vars;
+}
+
+function buildProjectSpec(config, pages = []) {
+  const baseSpec =
+    config.rawSpec && typeof config.rawSpec === 'object' && !Array.isArray(config.rawSpec)
+      ? { ...config.rawSpec }
+      : {};
+  const basePostGeneration =
+    baseSpec.postGeneration && typeof baseSpec.postGeneration === 'object' && !Array.isArray(baseSpec.postGeneration)
+      ? { ...baseSpec.postGeneration }
+      : {};
+  const baseVerification =
+    baseSpec.verification && typeof baseSpec.verification === 'object' && !Array.isArray(baseSpec.verification)
+      ? { ...baseSpec.verification }
+      : {};
+
+  const projectSpec = {
+    ...baseSpec,
+    projectName: config.projectName,
+    template: config.template,
+    title: config.title || baseSpec.title || 'Page Title',
+    constraints: normalizeStringArray(baseSpec.constraints),
+    customizations: normalizeStringArray(baseSpec.customizations),
+    postGeneration: {
+      ...basePostGeneration,
+      tasks: normalizeStringArray(basePostGeneration.tasks),
+    },
+    verification: {
+      ...baseVerification,
+    },
+  };
+
+  if (config.entity) {
+    projectSpec.entityName = config.entity;
+  } else {
+    delete projectSpec.entityName;
+  }
+
+  delete projectSpec.entity;
+
+  if (config.template === 'multi-page') {
+    projectSpec.pages = pages;
+  } else {
+    delete projectSpec.pages;
+  }
+
+  return projectSpec;
+}
+
+function formatBulletList(items) {
+  if (!items.length) {
+    return '- None';
+  }
+
+  return items.map((item) => `- ${item}`).join('\n');
+}
+
+function formatVerificationSummary(verification) {
+  const entries = Object.entries(verification)
+    .filter(([, value]) => value !== undefined && value !== null)
+    .map(([key, value]) => `- ${key}: ${value}`);
+
+  return entries.length > 0 ? entries.join('\n') : '- None specified';
+}
+
+function formatSpecMarkdown(projectSpec, specSourcePath = '') {
+  const lines = [
+    '# Project Spec',
+    '',
+    '## Summary',
+    `- Project: ${projectSpec.projectName}`,
+    `- Template: ${projectSpec.template}`,
+    `- Title: ${projectSpec.title}`,
+  ];
+
+  if (projectSpec.entityName) {
+    lines.push(`- Entity: ${projectSpec.entityName}`);
+  }
+
+  if (Array.isArray(projectSpec.pages) && projectSpec.pages.length > 0) {
+    lines.push(`- Pages: ${projectSpec.pages.join(', ')}`);
+  }
+
+  if (specSourcePath) {
+    lines.push(`- Source spec: ${path.relative(WORKSPACE_ROOT, specSourcePath)}`);
+  }
+
+  lines.push(
+    '',
+    '## Constraints',
+    formatBulletList(normalizeStringArray(projectSpec.constraints)),
+    '',
+    '## Customizations',
+    formatBulletList(normalizeStringArray(projectSpec.customizations)),
+    '',
+    '## Post-Generation Tasks',
+    formatBulletList(normalizeStringArray(projectSpec.postGeneration?.tasks)),
+    '',
+    '## Verification',
+    formatVerificationSummary(projectSpec.verification || {}),
+    ''
+  );
+
+  return `${lines.join('\n')}\n`;
+}
+
+function writeProjectSpecArtifacts(outputDir, projectSpec, dryRun, specSourcePath = '') {
+  const specJsonPath = path.join(outputDir, 'spec.json');
+  const specMarkdownPath = path.join(outputDir, 'spec.md');
+  const specJsonContent = JSON.stringify(projectSpec, null, 2);
+  const specMarkdownContent = formatSpecMarkdown(projectSpec, specSourcePath);
+
+  if (dryRun) {
+    console.log(`📄 [FILE] ${specJsonPath}`);
+    console.log(`📄 [FILE] ${specMarkdownPath}`);
+    return;
+  }
+
+  fs.writeFileSync(specJsonPath, `${specJsonContent}\n`, 'utf-8');
+  console.log(`✅ ${specJsonPath}`);
+  fs.writeFileSync(specMarkdownPath, specMarkdownContent, 'utf-8');
+  console.log(`✅ ${specMarkdownPath}`);
+}
+
+function getAvailableTemplates() {
+  return fs.readdirSync(path.join(SKILLPACK_ROOT, 'templates'))
+    .filter((dir) => !dir.startsWith('_') && fs.statSync(path.join(SKILLPACK_ROOT, 'templates', dir)).isDirectory());
 }
 
 // Replace all variables in content
@@ -298,10 +514,13 @@ function generateMultiPageFiles(outputDir, pages, variables, dryRun) {
 // Main function
 function main() {
   const args = process.argv.slice(2);
+  const initialConfig = parseArgs(args);
+  const config = mergeConfigWithSpec(initialConfig);
 
-  if (args.length < 2) {
+  if (!config.template || !config.projectName) {
     console.log(`
 Usage: node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
+   or: node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json [options]
 
 Templates:
   list-page    - Data list page with search and pagination
@@ -312,23 +531,24 @@ Options:
   --entity <name>   Entity name in PascalCase (e.g., User, Product)
   --title <text>    Page title
   --pages <list>    Comma-separated page names (multi-page only)
+  --spec-file <path>  Read generation inputs from a JSON spec file
   --dry-run         Preview without creating files
 
 Examples:
   node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
   node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --pages "Dashboard,Users,Settings"
+  node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json
 `);
     process.exit(1);
   }
 
-  const config = parseArgs(args);
   const pages = config.template === 'multi-page' ? parsePages(config.pages) : [];
+  const projectSpec = buildProjectSpec(config, pages);
 
   // Validate template exists
   const templateDir = path.join(SKILLPACK_ROOT, 'templates', config.template);
   if (!fs.existsSync(templateDir)) {
-    const available = fs.readdirSync(path.join(SKILLPACK_ROOT, 'templates'))
-      .filter(d => !d.startsWith('_') && fs.statSync(path.join(SKILLPACK_ROOT, 'templates', d)).isDirectory());
+    const available = getAvailableTemplates();
     console.error(`❌ Template "${config.template}" not found.`);
     console.error(`   Available templates: ${available.join(', ')}`);
     process.exit(1);
@@ -356,6 +576,9 @@ Examples:
   console.log(`Template:    ${config.template}`);
   console.log(`Project:     ${config.projectName}`);
   console.log(`Output:      ${outputDir}`);
+  if (config.specSourcePath) {
+    console.log(`Spec:        ${path.relative(WORKSPACE_ROOT, config.specSourcePath)}`);
+  }
   console.log('');
   console.log('Variables:');
   const displayVariableKeys = ['{{PROJECT_NAME}}', '{{TITLE}}', '{{ENTITY_NAME}}', '{{ENTITY_NAME_LOWER}}', '{{PAGES}}'];
@@ -387,6 +610,8 @@ Examples:
   if (config.template === 'multi-page') {
     generateMultiPageFiles(outputDir, pages, variables, config.dryRun);
   }
+
+  writeProjectSpecArtifacts(outputDir, projectSpec, config.dryRun, config.specSourcePath);
 
   console.log('');
   if (config.dryRun) {

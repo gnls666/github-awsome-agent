@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: Use after generation or customization to verify project health with typecheck, tests, and build, then report actionable results.
+description: Validate a generated project after generation or customization is complete by running the smallest relevant verification set and reporting actionable failures.
 ---
 
 # Quality Gate

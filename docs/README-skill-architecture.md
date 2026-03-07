@@ -2,12 +2,12 @@
 
 ## Overview
 
-This repository is a VS Code Copilot skill-first system for generating and customizing React + MUI projects.
+This repository is a VS Code Copilot skillpack for autonomous, spec-driven React + MUI project generation.
 
 - Platform: VS Code Copilot Agent Mode (`1.109+`)
 - Agent model: single orchestrator agent
-- Capability model: automatic skill routing
-- Runtime language: default English, follow user language at runtime
+- Capability model: automatic skill routing with small always-on context
+- Runtime language: follow the user's language
 
 ## Repository Layout
 
@@ -19,17 +19,17 @@ This repository is a VS Code Copilot skill-first system for generating and custo
 ├── instructions/
 │   ├── generated.instructions.md
 │   ├── react-tsx.instructions.md
+│   ├── spec.instructions.md
 │   └── templates.instructions.md
 ├── prompts/
 │   ├── component.prompt.md
+│   ├── generate.prompt.md
 │   └── plan.prompt.md
 └── skills/
-    ├── requirement-intake/
-    ├── template-selection/
-    ├── project-generation/
-    ├── customize-list-page/
-    ├── customize-detail-page/
-    ├── customize-multi-page/
+    ├── plan-to-spec/
+    ├── build-from-spec/
+    ├── post-generation/
+    ├── cold-review/
     ├── component-standards/
     ├── quality-gate/
     ├── troubleshooting/
@@ -39,91 +39,45 @@ This repository is a VS Code Copilot skill-first system for generating and custo
         ├── scripts/
         │   ├── generate.js
         │   └── generate.test.mjs
-        ├── TROUBLESHOOTING.md
-        └── instructions/
-            └── generated.instructions.md
-
-generated/
-└── .gitkeep
+        └── TROUBLESHOOTING.md
 ```
 
-## Agent and Skill Roles
+## Autonomous Workflow
 
-## `ux-standard` Agent (orchestrator only)
+Default routing order:
 
-Responsibilities:
+1. `plan-to-spec`
+2. `build-from-spec`
+3. `post-generation` only when `spec.postGeneration.tasks` is non-empty
+4. `cold-review` only for complex or risky follow-up work
+5. `quality-gate` when validation is requested
+6. `troubleshooting` on failure
 
-1. Interpret user intent.
-2. Route to the right skills in order.
-3. Decide plan-first vs execute-now behavior.
-4. Keep outputs concise and actionable.
+The agent should keep `plans/<project-name>/plan.md` as the durable human-readable plan, `plans/<project-name>/spec.json` as the machine contract, and `plans/<project-name>/spec.md` as the readable spec summary.
+For in-scope work, the agent is expected to use this workflow rather than fall back to plain freeform behavior.
 
-## Skill Routing Priority
+## Canonical Assets
 
-Standard routing order:
+Core reusable assets live under `.github/skills/_shared/`:
 
-1. `requirement-intake`
-2. `template-selection`
-3. `project-generation`
-4. customization skills (`customize-*`, `component-standards`)
-5. `quality-gate`
-6. `troubleshooting` (when errors occur)
+1. Generator script: `.github/skills/_shared/scripts/generate.js`
+2. Templates: `.github/skills/_shared/templates/`
+3. Component guidance: `.github/skills/_shared/components/`
+4. Troubleshooting notes: `.github/skills/_shared/TROUBLESHOOTING.md`
 
-## Canonical Paths
-
-All core capabilities are expected to come from:
-
-1. Generator:
-   `.github/skills/_shared/scripts/generate.js`
-2. Templates:
-   `.github/skills/_shared/templates/`
-3. Component standards:
-   `.github/skills/_shared/components/`
-4. Troubleshooting knowledge:
-   `.github/skills/_shared/TROUBLESHOOTING.md`
-
-## Project Generation
-
-## Command
+## Generator
 
 ```bash
-node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
+node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json
 ```
 
-## Supported templates
-
-1. `list-page`
-2. `detail-page`
-3. `multi-page`
-
-## Common options
-
-1. `--entity <PascalCase>`
-2. `--title <text>`
-3. `--pages <CommaSeparatedPages>`
-4. `--dry-run`
-
-## Example
+Legacy positional CLI generation is still supported:
 
 ```bash
-node .github/skills/_shared/scripts/generate.js multi-page ops-admin --title "Ops Admin" --pages "Dashboard,Users,Reports" --dry-run
+node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
 ```
 
-Generated outputs are written to:
-
-```text
-generated/<project-name>/
-```
-
-## Validation and Regression
-
-## Syntax check
-
-```bash
-node --check .github/skills/_shared/scripts/generate.js
-```
-
-## Regression tests
+## Validation
 
 ```bash
 node --test .github/skills/_shared/scripts/generate.test.mjs
@@ -131,50 +85,6 @@ node --test .github/skills/_shared/scripts/generate.test.mjs
 
 Current regression scope:
 
-1. dynamic multi-page route/nav/page generation
+1. dynamic multi-page route, nav, and page generation
 2. detail-page form import and icons dependency integrity
-
-## Usage in VS Code Copilot
-
-## Recommended chat flow
-
-1. Open Copilot Chat in Agent Mode.
-2. Use `@ux-standard`.
-3. Describe intent in natural language.
-4. Let skills auto-trigger.
-5. Approve plan with `go` for complex requests.
-
-## Optional explicit prompts
-
-1. `/plan`: plan-only output
-2. `/component <name>`: component guidance lookup
-
-These prompts are optional and not required for core workflow.
-
-## Portability Notes
-
-This architecture is designed for cross-repository reuse:
-
-1. skills contain behavior contracts (`SKILL.md`)
-2. `_shared` contains reusable assets and scripts
-3. top-level project no longer depends on root `components/`, `templates/`, or `scripts/` directories
-
-## Migration Docs Index
-
-Use these documents together when migrating from legacy branch layout:
-
-1. Methodology + exact branch-to-branch flow:
-   `docs/01-skill-refactor-methodology.md`
-2. Execution checklist with hard validation gates:
-   `docs/MIGRATION-CHECKLIST.md`
-3. Generic playbook for another similar repository:
-   `docs/02-cross-project-migration-playbook.md`
-
-## Maintenance Checklist
-
-When changing generator or templates:
-
-1. update files under `.github/skills/_shared/`
-2. run `--dry-run` for affected templates
-3. run `generate.test.mjs`
-4. update related references if command/path contracts changed
+3. spec-file generation and spec artifact output

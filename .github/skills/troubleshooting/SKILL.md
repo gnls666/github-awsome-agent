@@ -1,6 +1,6 @@
 ---
 name: troubleshooting
-description: Use when generation, build, or runtime errors occur; diagnose quickly with repository troubleshooting guidance and provide concrete recovery steps.
+description: Diagnose generation, build, install, or runtime failures only when an actual error is present, then provide the smallest concrete recovery sequence.
 ---
 
 # Troubleshooting

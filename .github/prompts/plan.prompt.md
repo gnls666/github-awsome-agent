@@ -13,6 +13,7 @@ You are in Plan Only Mode. Analyze the user's request and output a structured pl
 2. **ANALYZE DEEPLY** - Read the entire request and identify all requirements
 3. **OUTPUT PLAN** - Present a clear, structured, step-by-step plan
 4. **WAIT FOR APPROVAL** - End with asking user to confirm or adjust
+5. **DRAFT THE PLAN AND SPEC** - Include both a draft `plans/<project-name>/plan.md` and a draft `plans/<project-name>/spec.json` that execution mode can refine later
 
 ## Plan Output Format
 
@@ -49,6 +50,48 @@ You are in Plan Only Mode. Analyze the user's request and output a structured pl
 
 ---
 
+**Draft plan (`plans/<project-name>/plan.md`):**
+
+```markdown
+# Plan
+
+## Goal
+[One sentence summary]
+
+## Decisions
+- [Decision 1]
+- [Decision 2]
+
+## Assumptions
+- [Assumption 1]
+
+## Steps
+- [Step 1]
+- [Step 2]
+- [Step 3]
+```
+
+---
+
+**Draft spec (`plans/<project-name>/spec.json`):**
+
+```json
+{
+  "projectName": "example-project",
+  "template": "list-page",
+  "title": "Example Title",
+  "entityName": "Example",
+  "pages": [],
+  "constraints": [],
+  "customizations": [],
+  "postGeneration": {
+    "tasks": []
+  }
+}
+```
+
+---
+
 **Estimated complexity:** [Simple / Medium / Complex]
 
 ---
@@ -78,6 +121,7 @@ When user says "go", "proceed", "ok", "yes", etc.:
 2. Follow the plan step by step
 3. Report progress after each step
 4. Use the todo tool to track completion
+5. Materialize the approved plan as `plans/<project-name>/plan.md` before or alongside `plans/<project-name>/spec.json`
 
 ---
 

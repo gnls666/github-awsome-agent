@@ -29,6 +29,10 @@ function removeGeneratedProject(projectName) {
   fs.rmSync(path.join(GENERATED_DIR, projectName), { recursive: true, force: true });
 }
 
+function removeFile(filePath) {
+  fs.rmSync(filePath, { force: true });
+}
+
 test('multi-page uses --pages to generate router, sidebar and page files', (t) => {
   const projectName = `skillpack-multi-${randomUUID().slice(0, 8)}`;
   t.after(() => removeGeneratedProject(projectName));
@@ -92,4 +96,52 @@ test('detail-page keeps Form import and icons dependency', (t) => {
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['@mui/icons-material'], '^7.0.0');
+});
+
+test('spec-file generation writes spec.json and spec.md into the project', (t) => {
+  const projectName = `skillpack-spec-${randomUUID().slice(0, 8)}`;
+  const specPath = path.join(WORKSPACE_ROOT, `.tmp-spec-${randomUUID().slice(0, 8)}.json`);
+
+  t.after(() => removeGeneratedProject(projectName));
+  t.after(() => removeFile(specPath));
+
+  fs.writeFileSync(
+    specPath,
+    JSON.stringify({
+      projectName,
+      template: 'multi-page',
+      title: 'Spec Driven Admin',
+      pages: ['Overview', 'Users', 'Audit Logs'],
+      customizations: ['Use audit-oriented copy'],
+      postGeneration: {
+        tasks: ['Add audit summary cards to the overview page'],
+      },
+      verification: {
+        typecheck: true,
+      },
+    }),
+    'utf-8'
+  );
+
+  runGenerator(['--spec-file', specPath]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const specJsonPath = path.join(outputDir, 'spec.json');
+  const specMarkdownPath = path.join(outputDir, 'spec.md');
+  const routerPath = path.join(outputDir, 'src', 'router.tsx');
+
+  const generatedSpec = JSON.parse(fs.readFileSync(specJsonPath, 'utf-8'));
+  assert.equal(generatedSpec.projectName, projectName);
+  assert.equal(generatedSpec.template, 'multi-page');
+  assert.deepEqual(generatedSpec.pages, ['Overview', 'Users', 'AuditLogs']);
+  assert.deepEqual(generatedSpec.postGeneration.tasks, ['Add audit summary cards to the overview page']);
+
+  const specMarkdown = fs.readFileSync(specMarkdownPath, 'utf-8');
+  assert.match(specMarkdown, /# Project Spec/);
+  assert.match(specMarkdown, /Spec Driven Admin/);
+  assert.match(specMarkdown, /Add audit summary cards to the overview page/);
+
+  const routerContent = fs.readFileSync(routerPath, 'utf-8');
+  assert.match(routerContent, /OverviewPage/);
+  assert.match(routerContent, /AuditLogsPage/);
 });

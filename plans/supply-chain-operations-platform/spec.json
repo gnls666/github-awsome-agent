@@ -1,0 +1,165 @@
+{
+  "projectName": "supply-chain-operations-platform",
+  "template": "multi-page",
+  "title": "集团供应链运营中台",
+  "pages": [
+    "Dashboard",
+    "PurchaseManagement",
+    "SupplierManagement",
+    "InventoryManagement",
+    "WarehouseManagement",
+    "OrderManagement",
+    "FulfillmentCenter",
+    "FinanceCenter",
+    "BusinessAnalysis",
+    "AuditCenter",
+    "OrganizationPermissions",
+    "SystemSettings"
+  ],
+  "entities": [
+    {
+      "name": "User",
+      "fields": [
+        { "name": "id", "type": "string", "label": "用户ID" },
+        { "name": "name", "type": "string", "label": "姓名" },
+        { "name": "email", "type": "string", "label": "邮箱" },
+        { "name": "role", "type": "string", "label": "角色" },
+        { "name": "department", "type": "string", "label": "部门" },
+        { "name": "status", "type": "enum", "values": ["active", "inactive"], "label": "状态" }
+      ]
+    },
+    {
+      "name": "Supplier",
+      "fields": [
+        { "name": "id", "type": "string", "label": "供应商ID" },
+        { "name": "name", "type": "string", "label": "供应商名称" },
+        { "name": "contact", "type": "string", "label": "联系人" },
+        { "name": "riskLevel", "type": "enum", "values": ["low", "medium", "high"], "label": "风险等级" },
+        { "name": "status", "type": "enum", "values": ["active", "suspended", "terminated"], "label": "合作状态" }
+      ]
+    },
+    {
+      "name": "PurchaseOrder",
+      "fields": [
+        { "name": "id", "type": "string", "label": "采购单ID" },
+        { "name": "supplierId", "type": "string", "label": "供应商ID" },
+        { "name": "items", "type": "array", "label": "采购物品" },
+        { "name": "totalAmount", "type": "number", "label": "总金额" },
+        { "name": "status", "type": "enum", "values": ["draft", "pending", "approved", "completed", "cancelled"], "label": "状态" },
+        { "name": "createdAt", "type": "date", "label": "创建时间" }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "fields": [
+        { "name": "id", "type": "string", "label": "库存ID" },
+        { "name": "productId", "type": "string", "label": "产品ID" },
+        { "name": "quantity", "type": "number", "label": "库存数量" },
+        { "name": "availableQuantity", "type": "number", "label": "可用库存" },
+        { "name": "safetyStock", "type": "number", "label": "安全库存" },
+        { "name": "warehouseId", "type": "string", "label": "仓库ID" },
+        { "name": "status", "type": "enum", "values": ["normal", "low", "out"], "label": "预警状态" }
+      ]
+    },
+    {
+      "name": "Warehouse",
+      "fields": [
+        { "name": "id", "type": "string", "label": "仓库ID" },
+        { "name": "name", "type": "string", "label": "仓库名称" },
+        { "name": "capacity", "type": "number", "label": "容量" },
+        { "name": "manager", "type": "string", "label": "负责人" },
+        { "name": "status", "type": "enum", "values": ["active", "maintenance", "closed"], "label": "状态" }
+      ]
+    },
+    {
+      "name": "Order",
+      "fields": [
+        { "name": "id", "type": "string", "label": "订单ID" },
+        { "name": "channel", "type": "string", "label": "渠道" },
+        { "name": "paymentStatus", "type": "enum", "values": ["pending", "paid", "failed"], "label": "支付状态" },
+        { "name": "fulfillmentStatus", "type": "enum", "values": ["pending", "processing", "shipped", "delivered", "cancelled"], "label": "履约状态" },
+        { "name": "totalAmount", "type": "number", "label": "总金额" },
+        { "name": "createdAt", "type": "date", "label": "创建时间" }
+      ]
+    },
+    {
+      "name": "Fulfillment",
+      "fields": [
+        { "name": "id", "type": "string", "label": "履约ID" },
+        { "name": "orderId", "type": "string", "label": "订单ID" },
+        { "name": "stage", "type": "enum", "values": ["picking", "packing", "shipping", "delivered", "exception"], "label": "阶段" },
+        { "name": "status", "type": "enum", "values": ["pending", "in_progress", "completed", "failed"], "label": "状态" },
+        { "name": "updatedAt", "type": "date", "label": "更新时间" }
+      ]
+    },
+    {
+      "name": "Finance",
+      "fields": [
+        { "name": "id", "type": "string", "label": "财务ID" },
+        { "name": "type", "type": "enum", "values": ["receivable", "payable"], "label": "类型" },
+        { "name": "amount", "type": "number", "label": "金额" },
+        { "name": "status", "type": "enum", "values": ["pending", "settled", "overdue"], "label": "状态" },
+        { "name": "dueDate", "type": "date", "label": "到期日期" }
+      ]
+    },
+    {
+      "name": "AuditLog",
+      "fields": [
+        { "name": "id", "type": "string", "label": "审计ID" },
+        { "name": "userId", "type": "string", "label": "用户ID" },
+        { "name": "action", "type": "string", "label": "操作" },
+        { "name": "resource", "type": "string", "label": "资源" },
+        { "name": "timestamp", "type": "date", "label": "时间" },
+        { "name": "result", "type": "string", "label": "结果" }
+      ]
+    },
+    {
+      "name": "Organization",
+      "fields": [
+        { "name": "id", "type": "string", "label": "组织ID" },
+        { "name": "name", "type": "string", "label": "名称" },
+        { "name": "type", "type": "enum", "values": ["department", "role", "user"], "label": "类型" },
+        { "name": "parentId", "type": "string", "label": "上级ID" }
+      ]
+    },
+    {
+      "name": "Setting",
+      "fields": [
+        { "name": "id", "type": "string", "label": "设置ID" },
+        { "name": "category", "type": "enum", "values": ["general", "security", "notification", "integration"], "label": "类别" },
+        { "name": "key", "type": "string", "label": "键" },
+        { "name": "value", "type": "string", "label": "值" }
+      ]
+    }
+  ],
+  "constraints": [
+    "企业级应用，复杂状态管理",
+    "统一命名和字段逻辑",
+    "重要状态明显区分",
+    "支持加载、空状态、错误状态"
+  ],
+  "customizations": [
+    "每个页面要有合理的信息结构、字段、状态和交互",
+    "添加搜索、筛选、排序、分页功能",
+    "实现图表组件用于分析页面",
+    "添加权限控制",
+    "模拟数据用于演示"
+  ],
+  "postGeneration": {
+    "tasks": [
+      "添加状态管理库（如Zustand）",
+      "实现权限控制逻辑",
+      "添加图表库（如Recharts）用于经营分析",
+      "实现全局搜索和筛选组件",
+      "添加模拟API数据",
+      "实现分页组件",
+      "添加加载、空状态、错误状态组件",
+      "优化UI一致性"
+    ]
+  },
+  "verification": {
+    "typecheck": true,
+    "test": true,
+    "build": true
+  }
+}

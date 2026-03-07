@@ -1,6 +1,6 @@
 ---
 name: component-standards
-description: Use when the user asks for component usage guidance, patterns, or best practices for MUI components in this repository.
+description: Provide MUI component guidance for this repository when the request is primarily instructional. Do not use for template selection, project generation, or unrelated file edits.
 ---
 
 # Component Standards
