@@ -96,26 +96,45 @@ export function {{ENTITY_NAME}}ListPage({
   );
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        {title}
-      </Typography>
+    <Box
+      sx={{
+        px: { xs: 2, md: 3 },
+        py: { xs: 2, md: 3 },
+        display: 'grid',
+        gap: 3,
+      }}
+    >
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          {title}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Review records, search quickly, and monitor status changes from a single surface.
+        </Typography>
+      </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+        <Alert severity="error" onClose={() => setError(null)}>
           {error}
         </Alert>
       )}
 
-      <Paper sx={{ p: 2, mb: 2 }}>
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+      <Paper sx={{ p: { xs: 2, md: 2.5 } }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
           <TextField
             label="Search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
             size="small"
-            sx={{ minWidth: 300 }}
+            sx={{ minWidth: { xs: '100%', sm: 320 }, flexGrow: 1 }}
           />
           <Button variant="contained" onClick={handleSearch} disabled={loading}>
             Search
@@ -126,7 +145,7 @@ export function {{ENTITY_NAME}}ListPage({
         </Box>
       </Paper>
 
-      <Paper sx={{ height: 600, width: '100%' }}>
+      <Paper sx={{ height: 600, width: '100%', overflow: 'hidden' }}>
         <DataGrid
           rows={data}
           columns={columns}
@@ -137,6 +156,12 @@ export function {{ENTITY_NAME}}ListPage({
           rowCount={totalCount}
           paginationMode="server"
           disableRowSelectionOnClick
+          sx={{
+            border: 0,
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: 'rgba(15, 23, 42, 0.04)',
+            },
+          }}
           slots={{
             loadingOverlay: () => (
               <Box

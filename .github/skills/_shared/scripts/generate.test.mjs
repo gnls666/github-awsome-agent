@@ -29,6 +29,10 @@ function removeGeneratedProject(projectName) {
   fs.rmSync(path.join(GENERATED_DIR, projectName), { recursive: true, force: true });
 }
 
+function removeDirectory(dirPath) {
+  fs.rmSync(dirPath, { recursive: true, force: true });
+}
+
 function removeFile(filePath) {
   fs.rmSync(filePath, { force: true });
 }
@@ -95,7 +99,8 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   assert.doesNotMatch(detailPageContent, /from '\.\/ProductForm';/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-  assert.equal(packageJson.dependencies['@mui/icons-material'], '^7.0.0');
+  assert.equal(packageJson.dependencies['@mui/icons-material'], '^6.0.0');
+  assert.equal(packageJson.pnpm.overrides['react-is'], '18.3.0');
 });
 
 test('spec-file generation writes spec.json and spec.md into the project', (t) => {
@@ -144,4 +149,26 @@ test('spec-file generation writes spec.json and spec.md into the project', (t) =
   const routerContent = fs.readFileSync(routerPath, 'utf-8');
   assert.match(routerContent, /OverviewPage/);
   assert.match(routerContent, /AuditLogsPage/);
+});
+
+test('custom output directory writes the project outside generated', (t) => {
+  const projectName = `portable-output-${randomUUID().slice(0, 8)}`;
+  const outputDir = path.join(WORKSPACE_ROOT, '.tmp-portable-output', projectName);
+
+  t.after(() => removeDirectory(path.join(WORKSPACE_ROOT, '.tmp-portable-output')));
+
+  runGenerator([
+    'list-page',
+    projectName,
+    '--entity',
+    'User',
+    '--title',
+    'Portable Output',
+    '--output',
+    path.relative(WORKSPACE_ROOT, outputDir),
+  ]);
+
+  assert.equal(fs.existsSync(path.join(outputDir, 'package.json')), true);
+  assert.equal(fs.existsSync(path.join(outputDir, 'src', 'ListPage.tsx')), true);
+  assert.equal(fs.existsSync(path.join(GENERATED_DIR, projectName)), false);
 });

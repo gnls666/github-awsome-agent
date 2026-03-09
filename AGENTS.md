@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository is a small-context skillpack for generating and customizing React + MUI projects in VS Code GitHub Copilot.
+This repository is a small-context skillpack for generating and customizing React + Material UI v6 projects in VS Code GitHub Copilot.
 
 ## Repository Purpose
 
@@ -22,7 +22,7 @@ This repository is a small-context skillpack for generating and customizing Reac
 - For in-scope work, use this repository's skills and workflow by default.
 - Use plain agent behavior only for out-of-scope conversation, tiny clarifications, or final summaries.
 - Read only the files referenced by the active `SKILL.md`.
-- Prompt files are a fast path, not a requirement: `/generate`, `/plan`, `/component`.
+- Prompt files are a fast path, not a requirement: `/generate`, `/plan`, `/component`, `/critique`, `/polish`.
 - Respond in the same language as the user.
 
 ## Autonomous Flow
@@ -31,7 +31,9 @@ This repository is a small-context skillpack for generating and customizing Reac
 - Keep `plan.md` as the durable human-readable memory of the work.
 - Keep `spec.json` as the machine source of truth and `spec.md` as the readable summary.
 - Run `post-generation` only when the spec explicitly declares follow-up tasks.
-- Run `code-review` only for complex, risky, or explicitly requested review work.
+- Use `design-critique` when visual quality, hierarchy, or anti-patterns are the main concern.
+- Use `design-polish` after UI work is functional but still needs refinement.
+- Run a code review only for complex, risky, or explicitly reviewed work.
 
 ## Core Generator
 

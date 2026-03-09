@@ -25,12 +25,14 @@ const columns: GridColDef<User>[] = [
 
 function UserTable({ rows }: { rows: User[] }) {
   return (
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      pageSizeOptions={[10, 25, 50]}
-      disableRowSelectionOnClick
-    />
+    <Box sx={{ minHeight: 520 }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSizeOptions={[10, 25, 50]}
+        disableRowSelectionOnClick
+      />
+    </Box>
   );
 }
 ```
@@ -170,6 +172,8 @@ function ServerPaginatedTable() {
 3. **Server-side pagination for large datasets** - Better performance
 4. **Disable row selection when not needed** - Cleaner UX
 5. **Custom loading overlay** - Consistent with app design
+6. **Dedicated surface** - Keep tables inside a paper/card surface with separate filter controls
+7. **Status clarity** - Use chips or soft badges for status columns instead of raw text
 
 ## Accessibility
 

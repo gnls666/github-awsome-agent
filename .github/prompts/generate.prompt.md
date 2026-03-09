@@ -1,6 +1,6 @@
 ---
 name: generate
-description: Fast path to generate a React + MUI project with the repository generator
+description: Fast path to generate a React + Material UI v6 project with the repository generator
 agent: ux-standard
 argument-hint: "<project-name> [template] [--entity User] [--title 标题] [--pages Dashboard,Users]"
 ---
@@ -13,8 +13,10 @@ Use the minimum relevant workflow for project generation:
 2. Ask at most two blocking clarification questions if the spec is missing required generator inputs.
 3. Once the spec is coherent, use `build-from-spec`.
 4. Invoke `post-generation` only if `spec.postGeneration.tasks` is non-empty.
-5. Use `code-review` only for complex or risky post-generation work, or when the user explicitly asks for a review.
-6. Prefer `--dry-run` first when the request is new, risky, or likely to overwrite an existing directory.
+5. Use `design-polish` when the generated UI is functionally complete but needs a stronger visual pass.
+6. Use `design-critique` when the user explicitly asks for a design review or the result still feels generic after customization.
+7. Use `code-review` only for complex or risky post-generation work, or when the user explicitly asks for review.
+8. Prefer `--dry-run` first when the request is new, risky, or likely to overwrite an existing directory.
 
 Always end with:
 

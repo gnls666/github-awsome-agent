@@ -18,6 +18,7 @@
  *   --title <text>    Page title (can be Chinese/English)
  *   --pages <list>    Comma-separated page names for multi-page template
  *   --spec-file <path>  Read generation inputs from a JSON spec file
+ *   --output <path>   Write files to a custom output directory
  *   --dry-run         Show what would be generated without creating files
  */
 
@@ -182,6 +183,7 @@ function parseArgs(args) {
     pages: '',
     dryRun: false,
     specFile: '',
+    output: '',
   };
 
   const positionals = [];
@@ -199,6 +201,9 @@ function parseArgs(args) {
         break;
       case '--spec-file':
         result.specFile = args[++i];
+        break;
+      case '--output':
+        result.output = args[++i];
         break;
       case '--dry-run':
         result.dryRun = true;
@@ -266,6 +271,7 @@ function mergeConfigWithSpec(config) {
     title: config.title || spec.title || '',
     pages: config.pages || spec.pages || '',
     dryRun: config.dryRun || spec.dryRun === true,
+    output: config.output || spec.outputDir || spec.output?.targetDir || '',
     rawSpec: spec,
     specSourcePath: resolvedPath,
   };
@@ -409,6 +415,14 @@ function writeProjectSpecArtifacts(outputDir, projectSpec, dryRun, specSourcePat
   console.log(`✅ ${specMarkdownPath}`);
 }
 
+function resolveOutputDir(config) {
+  if (!config.output) {
+    return path.join(WORKSPACE_ROOT, 'generated', config.projectName);
+  }
+
+  return path.resolve(WORKSPACE_ROOT, config.output);
+}
+
 function getAvailableTemplates() {
   return fs.readdirSync(path.join(SKILLPACK_ROOT, 'templates'))
     .filter((dir) => !dir.startsWith('_') && fs.statSync(path.join(SKILLPACK_ROOT, 'templates', dir)).isDirectory());
@@ -532,11 +546,13 @@ Options:
   --title <text>    Page title
   --pages <list>    Comma-separated page names (multi-page only)
   --spec-file <path>  Read generation inputs from a JSON spec file
+  --output <path>   Write files to a custom output directory
   --dry-run         Preview without creating files
 
 Examples:
   node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
   node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --pages "Dashboard,Users,Settings"
+  node .github/skills/_shared/scripts/generate.js list-page user-admin --output apps/user-admin
   node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json
 `);
     process.exit(1);
@@ -555,7 +571,8 @@ Examples:
   }
 
   // Set up output directory
-  const outputDir = path.join(WORKSPACE_ROOT, 'generated', config.projectName);
+  const outputDir = resolveOutputDir(config);
+  const outputDisplayPath = path.relative(WORKSPACE_ROOT, outputDir) || '.';
 
   // Check if output already exists
   if (!config.dryRun && fs.existsSync(outputDir)) {
@@ -575,7 +592,7 @@ Examples:
   console.log('━'.repeat(50));
   console.log(`Template:    ${config.template}`);
   console.log(`Project:     ${config.projectName}`);
-  console.log(`Output:      ${outputDir}`);
+  console.log(`Output:      ${outputDisplayPath}`);
   if (config.specSourcePath) {
     console.log(`Spec:        ${path.relative(WORKSPACE_ROOT, config.specSourcePath)}`);
   }
@@ -620,7 +637,7 @@ Examples:
     console.log('✅ Generation complete!');
     console.log('');
     console.log('Next steps:');
-    console.log(`  cd generated/${config.projectName}`);
+    console.log(`  cd ${outputDisplayPath}`);
     console.log('  pnpm install');
     console.log('  pnpm dev');
   }

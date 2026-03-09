@@ -9,7 +9,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
-    "@mui/material": "^7.0.0",
+    "@mui/material": "^6.0.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },
@@ -27,6 +27,11 @@
     "typescript-eslint": "^8.15.0",
     "vite": "^5.4.0",
     "vitest": "^2.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "react-is": "18.3.0"
+    }
   }
 }
 ```
@@ -46,7 +51,7 @@
 ```json
 {
   "dependencies": {
-    "@mui/icons-material": "^7.0.0",
+    "@mui/icons-material": "^6.0.0",
     "@mui/x-date-pickers": "^7.0.0"
   }
 }
@@ -56,7 +61,7 @@
 ```json
 {
   "dependencies": {
-    "@mui/icons-material": "^7.0.0",
+    "@mui/icons-material": "^6.0.0",
     "@mui/x-data-grid": "^7.0.0",
     "react-router-dom": "^7.0.0"
   },
@@ -92,5 +97,8 @@ pnpm build
 
 ### Step 4: Verify compatibility
 - Check MUI component APIs haven't changed
+- Keep Grid examples on `@mui/material/Grid2`
+- Use Button `loading` instead of legacy `LoadingButton`
+- Keep `react-is` pinned through `pnpm.overrides` for React 18
 - Check React Router APIs (v7 has breaking changes from v6)
 - Check Vite/Vitest configurations

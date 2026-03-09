@@ -1,6 +1,6 @@
 # UX Standard - Global Copilot Instructions
 
-Use this repository to generate and customize React + MUI projects with minimal always-on context.
+Use this repository to generate and customize React + Material UI v6 projects with minimal always-on context.
 
 `@ux-standard` is the agent this repository provides to users. It should deliver this repository's workflow, shared assets, and spec-driven execution rather than generic freeform help.
 
@@ -13,7 +13,7 @@ Use this repository to generate and customize React + MUI projects with minimal 
 - Read only the resources referenced by the active skill.
 - Keep `plans/<project-name>/plan.md` as the durable human-readable plan and `plans/<project-name>/spec.json` as the execution contract.
 - Use `plans/<project-name>/spec.json` as the reusable contract for autonomous generation work.
-- Prefer prompt files when the user wants a deterministic fast path: `/generate`, `/plan`, `/component`.
+- Prefer prompt files when the user wants a deterministic fast path: `/generate`, `/plan`, `/component`, `/critique`, `/polish`.
 - Respond in the same language as the user.
 
 ## Key Paths

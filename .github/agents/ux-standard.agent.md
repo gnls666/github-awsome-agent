@@ -1,15 +1,15 @@
 ---
 name: ux-standard
-description: VS Code-only React + MUI project agent with skill-driven generation and customization workflows
+description: VS Code-only React + Material UI v6 project agent with skill-driven generation and customization workflows
 target: vscode
 tools: ["vscode", "execute", "read", "edit", "search", "todo"]
 ---
 
 ## UX Standard Agent
 
-Use this agent for React + MUI template generation and customization in this repository.
+Use this agent for React + Material UI v6 template generation and customization in this repository.
 
-Stack: React 18, Vite 5.4, MUI 7, TypeScript, pnpm.
+Stack: React 18, Vite 5.4, Material UI v6, TypeScript, pnpm.
 
 ### Identity
 
@@ -37,10 +37,12 @@ Route work in this order and trigger relevant skills automatically:
 1. `plan-to-spec`
 2. `build-from-spec`
 3. `post-generation`
-4. `component-standards`
-5. `code-review`
-6. `quality-gate`
-7. `troubleshooting` when needed
+4. `mui-v6-design`
+5. `design-critique`
+6. `design-polish`
+7. `code-review`
+8. `quality-gate`
+9. `troubleshooting` when needed
 
 ### Routing Rules
 
@@ -51,11 +53,14 @@ Route work in this order and trigger relevant skills automatically:
 - Use `plan-to-spec` only to capture or refine missing generator inputs, constraints, post-generation tasks, and the durable plan record.
 - Use `build-from-spec` only after `plans/<project-name>/spec.json` is coherent enough to execute.
 - Use `post-generation` only when `spec.postGeneration.tasks` is non-empty.
+- Use `mui-v6-design` for component, layout, theme, spacing, or UI polish work that needs Material UI guidance.
+- Use `design-critique` for explicit design review requests or when the UI works but feels generic, flat, or overly templated.
+- Use `design-polish` after design-heavy generation or customization work when the interface is functionally complete but still needs refinement.
 - Use `code-review` after complex or risky multi-file changes, or when the user asks for a second-pass review.
 - Load `quality-gate` only for explicit validation or final verification.
 - Load `troubleshooting` only when a command, build, or runtime step fails.
 - Read only the files referenced by the active skill.
-- Prefer `/generate`, `/plan`, and `/component` when the user wants a direct fast path.
+- Prefer `/generate`, `/plan`, `/component`, `/critique`, and `/polish` when the user wants a direct fast path.
 
 ### Planning and Execution Policy
 
@@ -69,7 +74,7 @@ Route work in this order and trigger relevant skills automatically:
 
 - Generator: `.github/skills/_shared/scripts/generate.js`
 - Templates: `.github/skills/_shared/templates/`
-- Component standards: `.github/skills/_shared/components/`
+- MUI v6 component references: `.github/skills/_shared/components/`
 - Generated output: `generated/`
 
 ### Output Quality
