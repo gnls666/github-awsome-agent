@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import { {{ENTITY_NAME}}ListPage } from './ListPage';
+import { {{ENTITY_NAME}}DetailPage } from './DetailPage';
 
 const theme = createTheme({
   cssVariables: true,
@@ -44,7 +44,7 @@ function App(): React.ReactElement {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <{{ENTITY_NAME}}ListPage />
+      <{{ENTITY_NAME}}DetailPage id={1} />
     </ThemeProvider>
   );
 }

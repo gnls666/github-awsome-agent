@@ -1,16 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
+  Chip,
   Box,
   Typography,
   Paper,
   TextField,
   Button,
-  CircularProgress,
   Alert,
+  IconButton,
+  Stack,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import AddOutlined from '@mui/icons-material/AddOutlined';
+import EditOutlined from '@mui/icons-material/EditOutlined';
+import MoreHoriz from '@mui/icons-material/MoreHoriz';
+import RefreshOutlined from '@mui/icons-material/RefreshOutlined';
+import SearchOutlined from '@mui/icons-material/SearchOutlined';
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_PaginationState,
+} from 'material-react-table';
 import { {{ENTITY_NAME}}, {{ENTITY_NAME}}ListResponse } from './types';
 import { fetch{{ENTITY_NAME}}List } from './api';
+
+const STATUS_META: Record<
+  {{ENTITY_NAME}}['status'],
+  { label: string; color: 'success' | 'warning' | 'default' }
+> = {
+  active: { label: 'Active', color: 'success' },
+  inactive: { label: 'Inactive', color: 'default' },
+  pending: { label: 'Pending', color: 'warning' },
+};
+
+function formatDateTime(value: string): string {
+  return new Date(value).toLocaleString();
+}
 
 interface {{ENTITY_NAME}}ListPageProps {
   title?: string;
@@ -22,50 +47,61 @@ export function {{ENTITY_NAME}}ListPage({
   const [data, setData] = useState<{{ENTITY_NAME}}[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [totalCount, setTotalCount] = useState(0);
-  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
-    page: 0,
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
     pageSize: 10,
   });
 
-  const columns: GridColDef<{{ENTITY_NAME}}>[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'name', headerName: 'Name', flex: 1, minWidth: 150 },
-    { field: 'email', headerName: 'Email', flex: 1, minWidth: 200 },
-    {
-      field: 'status',
-      headerName: 'Status',
-      width: 120,
-      renderCell: (params) => (
-        <Box
-          sx={{
-            px: 1,
-            py: 0.5,
-            borderRadius: 1,
-            bgcolor: params.value === 'active' ? 'success.light' : 'grey.300',
-            color: params.value === 'active' ? 'success.contrastText' : 'text.primary',
-          }}
-        >
-          {params.value}
-        </Box>
-      ),
-    },
-    {
-      field: 'createdAt',
-      headerName: 'Created',
-      width: 180,
-      valueFormatter: (value: string) => new Date(value).toLocaleDateString(),
-    },
-  ];
+  const columns = useMemo<MRT_ColumnDef<{{ENTITY_NAME}}>[]>(
+    () => [
+      {
+        accessorKey: 'id',
+        header: 'ID',
+        size: 88,
+      },
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        size: 200,
+      },
+      {
+        accessorKey: 'email',
+        header: 'Email',
+        size: 260,
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        size: 140,
+        Cell: ({ cell }) => {
+          const meta = STATUS_META[cell.getValue<{{ENTITY_NAME}}['status']>()];
+          return <Chip label={meta.label} color={meta.color} size="small" />;
+        },
+      },
+      {
+        accessorKey: 'createdAt',
+        header: 'Created',
+        size: 200,
+        Cell: ({ cell }) => (
+          <Typography variant="body2" color="text.secondary">
+            {formatDateTime(cell.getValue<string>())}
+          </Typography>
+        ),
+      },
+    ],
+    []
+  );
 
   const loadData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
       const response: {{ENTITY_NAME}}ListResponse = await fetch{{ENTITY_NAME}}List({
-        page: paginationModel.page,
-        pageSize: paginationModel.pageSize,
+        page: pagination.pageIndex,
+        pageSize: pagination.pageSize,
         search: searchTerm,
       });
       setData(response.items);
@@ -76,15 +112,16 @@ export function {{ENTITY_NAME}}ListPage({
     } finally {
       setLoading(false);
     }
-  }, [paginationModel.page, paginationModel.pageSize, searchTerm]);
+  }, [pagination.pageIndex, pagination.pageSize, searchTerm]);
 
   useEffect(() => {
-    loadData();
+    void loadData();
   }, [loadData]);
 
   const handleSearch = useCallback(() => {
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, []);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+    setSearchTerm(searchInput.trim());
+  }, [searchInput]);
 
   const handleKeyPress = useCallback(
     (event: React.KeyboardEvent) => {
@@ -95,22 +132,109 @@ export function {{ENTITY_NAME}}ListPage({
     [handleSearch]
   );
 
+  const table = useMaterialReactTable({
+    columns,
+    data,
+    getRowId: (row) => String(row.id),
+    enableStickyHeader: true,
+    enableDensityToggle: true,
+    enableColumnOrdering: true,
+    enableColumnFilters: false,
+    enableGlobalFilter: false,
+    enableFullScreenToggle: false,
+    enableRowActions: true,
+    manualPagination: true,
+    rowCount: totalCount,
+    onPaginationChange: setPagination,
+    positionActionsColumn: 'last',
+    renderRowActions: ({ row }) => (
+      <Stack direction="row" spacing={0.5}>
+        <IconButton
+          aria-label={`Edit ${row.original.name}`}
+          size="small"
+          color="primary"
+        >
+          <EditOutlined fontSize="small" />
+        </IconButton>
+        <IconButton
+          aria-label={`More actions for ${row.original.name}`}
+          size="small"
+          color="inherit"
+        >
+          <MoreHoriz fontSize="small" />
+        </IconButton>
+      </Stack>
+    ),
+    renderTopToolbarCustomActions: () => (
+      <Typography variant="body2" color="text.secondary">
+        {totalCount} records
+      </Typography>
+    ),
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: {
+        borderRadius: 4,
+        border: (theme) => `1px solid ${theme.palette.divider}`,
+        overflow: 'hidden',
+      },
+    },
+    muiTopToolbarProps: {
+      sx: {
+        px: { xs: 2, md: 3 },
+        py: 1.5,
+      },
+    },
+    muiBottomToolbarProps: {
+      sx: {
+        px: { xs: 2, md: 3 },
+      },
+    },
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: 640,
+      },
+    },
+    state: {
+      isLoading: loading,
+      pagination,
+      showProgressBars: loading && data.length > 0,
+    },
+  });
+
   return (
     <Box
       sx={{
-        px: { xs: 2, md: 3 },
-        py: { xs: 2, md: 3 },
+        width: '100%',
+        px: { xs: 2, md: 4 },
+        py: { xs: 2, md: 4 },
         display: 'grid',
         gap: 3,
       }}
     >
-      <Box>
-        <Typography variant="h4" gutterBottom>
-          {title}
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Review records, search quickly, and monitor status changes from a single surface.
-        </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: { xs: 'stretch', md: 'flex-start' },
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: 2,
+        }}
+      >
+        <Box>
+          <Typography variant="h4" gutterBottom>
+            {title}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Review records, search quickly, and monitor status changes from a single surface.
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddOutlined />}
+          sx={{ alignSelf: { xs: 'stretch', md: 'center' } }}
+        >
+          New {{ENTITY_NAME}}
+        </Button>
       </Box>
 
       {error && (
@@ -122,62 +246,42 @@ export function {{ENTITY_NAME}}ListPage({
       <Paper sx={{ p: { xs: 2, md: 2.5 } }}>
         <Box
           sx={{
-            display: 'flex',
+            display: 'grid',
             gap: 2,
-            alignItems: 'center',
-            flexWrap: 'wrap',
+            gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) auto auto' },
           }}
         >
           <TextField
             label="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
+            placeholder="Search by name or email"
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
+            onKeyDown={handleKeyPress}
             size="small"
-            sx={{ minWidth: { xs: '100%', sm: 320 }, flexGrow: 1 }}
+            fullWidth
           />
-          <Button variant="contained" onClick={handleSearch} disabled={loading}>
+          <Button
+            variant="contained"
+            startIcon={<SearchOutlined />}
+            onClick={handleSearch}
+            disabled={loading}
+          >
             Search
           </Button>
-          <Button variant="outlined" onClick={loadData} disabled={loading}>
+          <Button
+            variant="outlined"
+            startIcon={<RefreshOutlined />}
+            onClick={() => {
+              void loadData();
+            }}
+            disabled={loading}
+          >
             Refresh
           </Button>
         </Box>
       </Paper>
 
-      <Paper sx={{ height: 600, width: '100%', overflow: 'hidden' }}>
-        <DataGrid
-          rows={data}
-          columns={columns}
-          loading={loading}
-          paginationModel={paginationModel}
-          onPaginationModelChange={setPaginationModel}
-          pageSizeOptions={[10, 25, 50]}
-          rowCount={totalCount}
-          paginationMode="server"
-          disableRowSelectionOnClick
-          sx={{
-            border: 0,
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: 'rgba(15, 23, 42, 0.04)',
-            },
-          }}
-          slots={{
-            loadingOverlay: () => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <CircularProgress />
-              </Box>
-            ),
-          }}
-        />
-      </Paper>
+      <MaterialReactTable table={table} />
     </Box>
   );
 }

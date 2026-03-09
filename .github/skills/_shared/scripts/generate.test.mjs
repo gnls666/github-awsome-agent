@@ -93,14 +93,57 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   const outputDir = path.join(GENERATED_DIR, projectName);
   const detailPagePath = path.join(outputDir, 'src', 'DetailPage.tsx');
   const packageJsonPath = path.join(outputDir, 'package.json');
+  const appPath = path.join(outputDir, 'src', 'App.tsx');
+  const mainPath = path.join(outputDir, 'src', 'main.tsx');
+  const tsconfigPath = path.join(outputDir, 'tsconfig.json');
+  const testPath = path.join(outputDir, 'src', 'App.test.tsx');
 
   const detailPageContent = fs.readFileSync(detailPagePath, 'utf-8');
   assert.match(detailPageContent, /import \{ ProductForm \} from '\.\/Form';/);
   assert.doesNotMatch(detailPageContent, /from '\.\/ProductForm';/);
+  assert.equal(fs.existsSync(appPath), true);
+  assert.equal(fs.existsSync(mainPath), true);
+  assert.equal(fs.existsSync(tsconfigPath), true);
+  assert.equal(fs.existsSync(testPath), true);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['@mui/icons-material'], '^6.0.0');
+  assert.equal(packageJson.devDependencies['@testing-library/jest-dom'], '^6.9.1');
   assert.equal(packageJson.pnpm.overrides['react-is'], '18.3.0');
+});
+
+test('list-page generates Material React Table defaults instead of DataGrid', (t) => {
+  const projectName = `skillpack-list-${randomUUID().slice(0, 8)}`;
+  t.after(() => removeGeneratedProject(projectName));
+
+  runGenerator([
+    'list-page',
+    projectName,
+    '--entity',
+    'User',
+    '--title',
+    'User Directory',
+  ]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const listPagePath = path.join(outputDir, 'src', 'ListPage.tsx');
+  const packageJsonPath = path.join(outputDir, 'package.json');
+  const testPath = path.join(outputDir, 'src', 'App.test.tsx');
+  const tsconfigPath = path.join(outputDir, 'tsconfig.json');
+
+  const listPageContent = fs.readFileSync(listPagePath, 'utf-8');
+  assert.match(listPageContent, /MaterialReactTable/);
+  assert.match(listPageContent, /useMaterialReactTable/);
+  assert.doesNotMatch(listPageContent, /DataGrid/);
+  assert.equal(fs.existsSync(testPath), true);
+  assert.equal(fs.existsSync(tsconfigPath), true);
+
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+  assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');
+  assert.equal(packageJson.dependencies['@mui/x-date-pickers'], '^7.0.0');
+  assert.equal(packageJson.dependencies['@mui/icons-material'], '^6.0.0');
+  assert.equal(packageJson.devDependencies['@testing-library/jest-dom'], '^6.9.1');
+  assert.equal(packageJson.dependencies['@mui/x-data-grid'], undefined);
 });
 
 test('spec-file generation writes spec.json and spec.md into the project', (t) => {
@@ -149,6 +192,40 @@ test('spec-file generation writes spec.json and spec.md into the project', (t) =
   const routerContent = fs.readFileSync(routerPath, 'utf-8');
   assert.match(routerContent, /OverviewPage/);
   assert.match(routerContent, /AuditLogsPage/);
+});
+
+test('multi-page default operational pages use Material React Table', (t) => {
+  const projectName = `skillpack-mrt-multi-${randomUUID().slice(0, 8)}`;
+  t.after(() => removeGeneratedProject(projectName));
+
+  runGenerator([
+    'multi-page',
+    projectName,
+    '--title',
+    'Ops Workspace',
+    '--pages',
+    'Dashboard,Users,Products',
+  ]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const usersPagePath = path.join(outputDir, 'src', 'pages', 'UsersPage.tsx');
+  const productsPagePath = path.join(outputDir, 'src', 'pages', 'ProductsPage.tsx');
+  const packageJsonPath = path.join(outputDir, 'package.json');
+  const appTestPath = path.join(outputDir, 'src', 'App.test.tsx');
+
+  const usersPageContent = fs.readFileSync(usersPagePath, 'utf-8');
+  const productsPageContent = fs.readFileSync(productsPagePath, 'utf-8');
+
+  assert.match(usersPageContent, /MaterialReactTable/);
+  assert.match(productsPageContent, /MaterialReactTable/);
+  assert.doesNotMatch(usersPageContent, /<TableContainer|import\s+\{[^}]*TableContainer/);
+  assert.doesNotMatch(productsPageContent, /<TableContainer|import\s+\{[^}]*TableContainer/);
+  assert.equal(fs.existsSync(appTestPath), true);
+
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+  assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');
+  assert.equal(packageJson.dependencies['@mui/x-date-pickers'], '^7.0.0');
+  assert.equal(packageJson.dependencies['@mui/x-data-grid'], undefined);
 });
 
 test('custom output directory writes the project outside generated', (t) => {

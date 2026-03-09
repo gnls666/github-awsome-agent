@@ -38,11 +38,12 @@ Route work in this order and trigger relevant skills automatically:
 2. `build-from-spec`
 3. `post-generation`
 4. `mui-v6-design`
-5. `design-critique`
-6. `design-polish`
-7. `code-review`
-8. `quality-gate`
-9. `troubleshooting` when needed
+5. `material-react-table`
+6. `design-critique`
+7. `design-polish`
+8. `code-review`
+9. `quality-gate`
+10. `troubleshooting` when needed
 
 ### Routing Rules
 
@@ -54,6 +55,7 @@ Route work in this order and trigger relevant skills automatically:
 - Use `build-from-spec` only after `plans/<project-name>/spec.json` is coherent enough to execute.
 - Use `post-generation` only when `spec.postGeneration.tasks` is non-empty.
 - Use `mui-v6-design` for component, layout, theme, spacing, or UI polish work that needs Material UI guidance.
+- Use `material-react-table` for rich admin tables with toolbar customization, row actions, sticky headers, editable rows, or server-side filtering, sorting, and pagination.
 - Use `design-critique` for explicit design review requests or when the UI works but feels generic, flat, or overly templated.
 - Use `design-polish` after design-heavy generation or customization work when the interface is functionally complete but still needs refinement.
 - Use `code-review` after complex or risky multi-file changes, or when the user asks for a second-pass review.

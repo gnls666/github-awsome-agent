@@ -1,18 +1,19 @@
 ---
 name: component
-description: Get Material UI v6 component and layout guidance using the repository design skill
+description: Get Material UI v6 and Material React Table guidance using the repository design skills
 agent: ux-standard
-argument-hint: "button | table | form | card | dialog | navigation | layout | theme"
+argument-hint: "button | table | material-react-table | mrt | form | card | dialog | navigation | layout | theme"
 ---
 
 # Component Guidelines Query
 
-Use the `mui-v6-design` skill and provide Material UI v6 guidance based on this repository.
+Use the `mui-v6-design` skill for general UI guidance and the `material-react-table` skill for rich admin table guidance.
 
 ## Available Component Guides
 
 - [Button Guide](../skills/_shared/components/button.md) - Button variants, states, and best practices
-- [Table/DataGrid Guide](../skills/_shared/components/table.md) - Data display with MUI DataGrid
+- [Table Guide](../skills/_shared/components/table.md) - Rich admin tables with Material React Table and DataGrid fallback
+- [Material React Table Skill](../skills/material-react-table/SKILL.md) - Advanced table workflow, server-side patterns, and toolbar/row-action guidance
 - [Form Guide](../skills/_shared/components/form.md) - Form layouts, validation, and inputs
 - [Card Guide](../skills/_shared/components/card.md) - Card layouts and content patterns
 - [Dialog Guide](../skills/_shared/components/dialog.md) - Modal dialogs and confirmations
@@ -35,7 +36,8 @@ Query a specific component to get:
 ## Example Queries
 
 - `/component button` - Get Button component guidelines
-- `/component table` - Get DataGrid/Table guidelines
+- `/component table` - Get rich table guidelines
+- `/component material-react-table` - Get MRT-specific guidance
 - `/component form` - Get Form component guidelines
 - `/component navigation` - Get Sidebar/Menu guidelines
 

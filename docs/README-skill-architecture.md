@@ -70,7 +70,8 @@ Core reusable assets live under `.github/skills/_shared/`:
 1. Generator script: `.github/skills/_shared/scripts/generate.js`
 2. Templates: `.github/skills/_shared/templates/`
 3. Material UI v6 component guidance: `.github/skills/_shared/components/`
-4. Troubleshooting notes: `.github/skills/_shared/TROUBLESHOOTING.md`
+4. Material React Table guidance: `.github/skills/material-react-table/`
+5. Troubleshooting notes: `.github/skills/_shared/TROUBLESHOOTING.md`
 
 ## Generator
 
@@ -82,6 +83,7 @@ Legacy positional CLI generation is still supported:
 
 ```bash
 node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
+node .github/skills/_shared/scripts/generate.js list-page user-admin --output standalone/user-admin
 ```
 
 ## Validation
@@ -92,6 +94,8 @@ node --test .github/skills/_shared/scripts/generate.test.mjs
 
 Current regression scope:
 
-1. dynamic multi-page route, nav, and page generation
-2. detail-page form import and icons dependency integrity
-3. spec-file generation and spec artifact output
+1. list-page rich admin tables default to Material React Table
+2. generated list-page, detail-page, and multi-page projects include runnable Vite and Vitest scaffolding
+3. dynamic multi-page route, nav, and page generation
+4. spec-file generation and spec artifact output
+5. custom output directory generation
