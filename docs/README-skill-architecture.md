@@ -39,6 +39,7 @@ Default routing order:
 9. `troubleshooting` on failure
 
 Inside `skillpack-agent/`, the agent should keep `plans/<project-name>/plan.md` as the durable human-readable plan, `plans/<project-name>/spec.json` as the machine contract, and `plans/<project-name>/spec.md` as the readable spec summary.
+These `plans/` artifacts are local workspace state and are gitignored by default unless a user explicitly wants to preserve them as repository documentation.
 For in-scope work, the agent is expected to use this workflow rather than fall back to plain freeform behavior.
 
 ## Canonical Assets

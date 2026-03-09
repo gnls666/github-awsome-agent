@@ -13,6 +13,10 @@ build/
 **/generated/*
 !**/generated/.gitkeep
 
+# Agent work plans/specs (keep folder, ignore contents)
+**/plans/*
+!**/plans/.gitkeep
+
 # IDE
 .idea/
 *.swp

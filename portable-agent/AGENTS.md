@@ -14,6 +14,7 @@ This portable bundle provides `ux-standard` for existing repositories and keeps 
 - Preserve local conventions unless the user explicitly asks to migrate toward the recommended stack.
 - Prefer gradual convergence over hard rewrites.
 - Use `plans/` for durable plans when work is large, risky, or multi-step.
+- Treat `plans/` as local workspace state for the agent. It is gitignored by default and should only be committed when the user explicitly wants to preserve a plan as project documentation.
 - Use `design-critique` when visual quality or generic-looking UI is the main concern.
 - Use `design-polish` after UI work is functional but still needs refinement.
 - Respond in the same language as the user.

@@ -31,6 +31,7 @@ This directory is the authoring skillpack for generating and customizing React +
 - Default generation flow is plan-and-spec driven: create or update `plans/<project-name>/plan.md` and `plans/<project-name>/spec.json`, then build from that spec.
 - Keep `plan.md` as the durable human-readable memory of the work.
 - Keep `spec.json` as the machine source of truth and `spec.md` as the readable summary.
+- Treat `plans/` as local workspace state for the agent. It is gitignored by default and should only be committed when the user explicitly wants to preserve a plan as project documentation.
 - Run `post-generation` only when the spec explicitly declares follow-up tasks.
 - Use `design-critique` when visual quality, hierarchy, or anti-patterns are the main concern.
 - Use `design-polish` after UI work is functional but still needs refinement.
