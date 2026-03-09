@@ -13,6 +13,8 @@ Apply these rules whenever the request affects page structure, layout, spacing, 
 ## Page Shell
 
 - Prefer a restrained content frame over edge-to-edge layouts on desktop.
+- Do not squeeze the main work area into a narrow centered column when the shell already has a sidebar or persistent navigation.
+- For list, dashboard, and admin pages, let the content area expand to use the available width; reserve narrow reading widths for forms, settings prose, or detail sections that truly benefit from it.
 - Use a page header with title, short supporting copy, and a right-aligned action area.
 - Keep filters and search inside a dedicated surface instead of mixing them into the page title row.
 - For dashboards, separate hero metrics, supporting charts/tables, and recent activity into distinct sections.
