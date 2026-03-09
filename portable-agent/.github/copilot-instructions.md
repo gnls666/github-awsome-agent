@@ -1,6 +1,6 @@
 # UX Standard Portable Bundle
 
-Use this bundle inside repositories that already contain application code.
+Use this bundle inside repositories that already contain application code and need Material UI v6-compatible changes or generated modules.
 
 ## Core Rules
 

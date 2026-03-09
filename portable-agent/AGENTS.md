@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This portable bundle provides `ux-standard` for existing repositories.
+This portable bundle provides `ux-standard` for existing repositories and keeps new UI work on Material UI v6 patterns.
 
 ## Purpose
 
@@ -14,6 +14,8 @@ This portable bundle provides `ux-standard` for existing repositories.
 - Preserve local conventions unless the user explicitly asks to migrate toward the recommended stack.
 - Prefer gradual convergence over hard rewrites.
 - Use `plans/` for durable plans when work is large, risky, or multi-step.
+- Use `design-critique` when visual quality or generic-looking UI is the main concern.
+- Use `design-polish` after UI work is functional but still needs refinement.
 - Respond in the same language as the user.
 
 ## Generation

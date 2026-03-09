@@ -9,7 +9,7 @@ Cards contain content and actions about a single subject. Use cards to group rel
 ```tsx
 import { Card, CardContent, Typography } from '@mui/material';
 
-<Card>
+<Card sx={{ height: '100%', border: '1px solid', borderColor: 'divider', boxShadow: 'none' }}>
   <CardContent>
     <Typography variant="h5" component="div">
       Card Title
@@ -100,8 +100,15 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon, color }: StatCardProps) {
   return (
-    <Card>
-      <CardContent>
+    <Card
+      sx={{
+        height: '100%',
+        border: '1px solid',
+        borderColor: 'divider',
+        boxShadow: 'none',
+      }}
+    >
+      <CardContent sx={{ p: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box
             sx={{
@@ -132,10 +139,12 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
 ## Card Grid Layout
 
 ```tsx
+import Grid from '@mui/material/Grid2';
+
 <Grid container spacing={3}>
   {items.map((item) => (
     <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item.id}>
-      <Card>
+      <Card sx={{ height: '100%' }}>
         <CardContent>
           <Typography variant="h6">{item.title}</Typography>
           <Typography variant="body2">{item.description}</Typography>
@@ -150,8 +159,8 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
 
 1. **Consistent card heights** - Use `sx={{ height: '100%' }}` in grids
 2. **Action alignment** - Align actions to the bottom with flexbox
-3. **Proper spacing** - Use CardContent padding, not custom margins
-4. **Elevation** - Use default elevation (1) for subtle depth
+3. **Proper spacing** - Prefer `CardContent sx={{ p: 3 }}` for standard surfaces
+4. **Surface consistency** - Reuse the same border, radius, and shadow treatment across cards
 5. **Click interaction** - Use CardActionArea for clickable cards
 
 ## Accessibility

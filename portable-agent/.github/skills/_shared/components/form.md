@@ -7,7 +7,8 @@ Build accessible, validated forms using MUI form components with proper layout a
 ## Basic Form Structure
 
 ```tsx
-import { Box, TextField, Button, Grid } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
 interface FormData {
   name: string;
@@ -25,7 +26,7 @@ function BasicForm() {
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
-      <Grid container spacing={3}>
+      <Grid container spacing={2.5}>
         <Grid size={{ xs: 12 }}>
           <TextField
             fullWidth
@@ -50,7 +51,7 @@ function BasicForm() {
           />
         </Grid>
         <Grid size={{ xs: 12 }}>
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" disableElevation>
             Submit
           </Button>
         </Grid>
@@ -168,27 +169,30 @@ function validate(data: FormData): FormErrors {
 ## Form Layout with Grid
 
 ```tsx
-<Grid container spacing={3}>
+import Grid from '@mui/material/Grid2';
+
+<Grid container spacing={2.5}>
   <Grid size={{ xs: 12, md: 6 }}>
-    <TextField fullWidth label="First Name" />
+    <TextField fullWidth size="small" label="First Name" />
   </Grid>
   <Grid size={{ xs: 12, md: 6 }}>
-    <TextField fullWidth label="Last Name" />
+    <TextField fullWidth size="small" label="Last Name" />
   </Grid>
   <Grid size={{ xs: 12 }}>
-    <TextField fullWidth label="Email" />
+    <TextField fullWidth size="small" label="Email" />
   </Grid>
 </Grid>
 ```
 
 ## Best Practices
 
-1. **Use Grid for layout** - Responsive form layouts
+1. **Use Grid2 for layout** - Responsive form layouts with `size`
 2. **Always show validation errors** - Clear feedback for users
 3. **Use fullWidth for form fields** - Consistent appearance
 4. **Group related fields** - Logical sections with Divider
 5. **Disable during submission** - Prevent double submit
 6. **Clear errors on input** - Better UX feedback
+7. **Control density** - Prefer `size="small"` in admin forms and filter surfaces
 
 ## Accessibility
 

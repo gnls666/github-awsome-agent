@@ -64,7 +64,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 ## Loading State
 
 ```tsx
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 
 interface SubmitButtonProps {
   loading: boolean;
@@ -75,8 +75,8 @@ function SubmitButton({ loading, children }: SubmitButtonProps) {
   return (
     <Button
       variant="contained"
-      disabled={loading}
-      startIcon={loading ? <CircularProgress size={20} /> : null}
+      loading={loading}
+      disableElevation
     >
       {loading ? 'Saving...' : children}
     </Button>
@@ -101,8 +101,9 @@ import { ButtonGroup, Button } from '@mui/material';
 1. **One primary per section** - Avoid multiple contained buttons together
 2. **Clear labels** - Use action verbs (Save, Submit, Delete, Cancel)
 3. **Consistent placement** - Primary action on the right in button groups
-4. **Loading states** - Show progress during async operations
+4. **Loading states** - Prefer the built-in `loading` prop in MUI v6
 5. **Disabled state** - Disable during loading or when action is unavailable
+6. **Density** - Use `size="small"` for dense admin toolbars and filter rows
 
 ## Accessibility
 
@@ -120,7 +121,7 @@ import { ButtonGroup, Button } from '@mui/material';
   <Button variant="outlined" onClick={onCancel}>
     Cancel
   </Button>
-  <Button variant="contained" onClick={onSubmit}>
+  <Button variant="contained" disableElevation onClick={onSubmit}>
     Save Changes
   </Button>
 </Box>

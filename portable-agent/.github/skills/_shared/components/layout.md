@@ -68,7 +68,8 @@ function PageContainer({ children, maxWidth = 'lg' }) {
 ## Grid Layout
 
 ```tsx
-import { Grid, Box } from '@mui/material';
+import { Box } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
 // Responsive grid
 <Grid container spacing={3}>
@@ -217,6 +218,7 @@ const breakpoints = {
 3. **Mobile-first** - Design for mobile, enhance for desktop
 4. **Flexible containers** - Use `maxWidth` for readable content
 5. **Proper z-index** - Layer elements correctly
+6. **Use Stack for local rhythm** - Prefer `Stack` for small groups and `Grid2` for larger sections
 
 ## Accessibility
 

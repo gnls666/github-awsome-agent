@@ -31,9 +31,12 @@ Default routing order:
 1. `plan-to-spec`
 2. `build-from-spec`
 3. `post-generation` only when `spec.postGeneration.tasks` is non-empty
-4. `code-review` only for complex or risky follow-up work
-5. `quality-gate` when validation is requested
-6. `troubleshooting` on failure
+4. `mui-v6-design` for component, theme, and layout guidance
+5. `design-critique` for visual review and anti-pattern detection
+6. `design-polish` for final UI refinement
+7. `code-review` only for complex or risky follow-up work
+8. `quality-gate` when validation is requested
+9. `troubleshooting` on failure
 
 Inside `skillpack-agent/`, the agent should keep `plans/<project-name>/plan.md` as the durable human-readable plan, `plans/<project-name>/spec.json` as the machine contract, and `plans/<project-name>/spec.md` as the readable spec summary.
 For in-scope work, the agent is expected to use this workflow rather than fall back to plain freeform behavior.
@@ -44,7 +47,7 @@ Core reusable assets live under `skillpack-agent/.github/skills/_shared/`:
 
 1. Generator script: `skillpack-agent/.github/skills/_shared/scripts/generate.js`
 2. Templates: `skillpack-agent/.github/skills/_shared/templates/`
-3. Component guidance: `skillpack-agent/.github/skills/_shared/components/`
+3. Material UI v6 component guidance: `skillpack-agent/.github/skills/_shared/components/`
 4. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
 
 Portable-specific rules live directly under `portable-agent/`.

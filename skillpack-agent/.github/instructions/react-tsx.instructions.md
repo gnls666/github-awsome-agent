@@ -10,5 +10,6 @@ When editing generated React + TypeScript code or TSX templates in this reposito
 - Define component props with `interface`.
 - Add explicit return types to exported React components.
 - Keep imports grouped as React, third-party, then local modules.
-- Use MUI `sx` instead of inline styles or styled-components.
+- Use MUI v6 `sx` instead of inline styles or styled-components.
+- Prefer `@mui/material/Grid2` for new grid layouts that rely on `size`.
 - Keep async UI typed and include loading or error states when needed.

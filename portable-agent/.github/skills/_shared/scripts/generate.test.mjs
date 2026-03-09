@@ -99,7 +99,8 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   assert.doesNotMatch(detailPageContent, /from '\.\/ProductForm';/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-  assert.equal(packageJson.dependencies['@mui/icons-material'], '^7.0.0');
+  assert.equal(packageJson.dependencies['@mui/icons-material'], '^6.0.0');
+  assert.equal(packageJson.pnpm.overrides['react-is'], '18.3.0');
 });
 
 test('spec-file generation writes spec.json and spec.md into the project', (t) => {

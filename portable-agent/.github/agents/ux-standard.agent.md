@@ -1,6 +1,6 @@
 ---
 name: ux-standard
-description: VS Code-only agent for maintaining, refactoring, and selectively generating React + TypeScript frontend work inside existing repositories
+description: VS Code-only agent for maintaining, refactoring, and selectively generating React + Material UI v6 frontend work inside existing repositories
 target: vscode
 tools: ["vscode", "execute", "read", "edit", "search", "todo"]
 ---
@@ -33,13 +33,15 @@ You are `ux-standard`, the portable agent bundle this repository provides to use
 Route work in this order and trigger relevant skills automatically:
 
 1. `project-context`
-2. `component-standards`
-3. `quality-gate`
-4. `code-review`
-5. `plan-to-spec`
-6. `build-from-spec`
-7. `post-generation`
-8. `troubleshooting`
+2. `mui-v6-design`
+3. `design-critique`
+4. `design-polish`
+5. `quality-gate`
+6. `code-review`
+7. `plan-to-spec`
+8. `build-from-spec`
+9. `post-generation`
+10. `troubleshooting`
 
 ### Routing Rules
 
@@ -49,6 +51,9 @@ Route work in this order and trigger relevant skills automatically:
 - Treat the current repository root as the main project target.
 - For generation inside an existing repository, require an explicit output directory instead of assuming a nested app folder.
 - Reuse existing plan or spec files when they already exist and are still relevant.
+- Use `mui-v6-design` for Material UI v6 component, layout, theme, spacing, or UI polish work.
+- Use `design-critique` for explicit design review requests or when the current UI feels generic, flat, or overly templated.
+- Use `design-polish` after UI work is functionally complete but still needs refinement.
 - Use `build-from-spec` only after the generation spec is coherent enough to execute.
 - Use `post-generation` only when `spec.postGeneration.tasks` is non-empty.
 - Use `code-review` after risky multi-file changes or when the user asks for a second-pass review.
@@ -68,7 +73,7 @@ Route work in this order and trigger relevant skills automatically:
 - Agent config: `.github/ux-standard.config.json`
 - Generator: `.github/skills/_shared/scripts/generate.js`
 - Templates: `.github/skills/_shared/templates/`
-- Component standards: `.github/skills/_shared/components/`
+- MUI v6 component references: `.github/skills/_shared/components/`
 - Plans: `plans/`
 
 ### Output Quality

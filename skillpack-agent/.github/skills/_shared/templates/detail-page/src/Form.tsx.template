@@ -7,9 +7,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  CircularProgress,
-  Grid,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { {{ENTITY_NAME}} } from './types';
@@ -86,7 +85,7 @@ export function {{ENTITY_NAME}}Form({
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
-      <Grid container spacing={3}>
+      <Grid container spacing={2.5}>
         <Grid size={{ xs: 12 }}>
           <TextField
             fullWidth
@@ -96,6 +95,7 @@ export function {{ENTITY_NAME}}Form({
             error={!!errors.name}
             helperText={errors.name}
             disabled={saving}
+            size="small"
             required
           />
         </Grid>
@@ -110,10 +110,11 @@ export function {{ENTITY_NAME}}Form({
             disabled={saving}
             multiline
             rows={4}
+            size="small"
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <FormControl fullWidth disabled={saving}>
+          <FormControl fullWidth disabled={saving} size="small">
             <InputLabel>Status</InputLabel>
             <Select
               value={formData.status}
@@ -127,7 +128,7 @@ export function {{ENTITY_NAME}}Form({
           </FormControl>
         </Grid>
         <Grid size={{ xs: 12 }}>
-          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
             <Button
               variant="outlined"
               startIcon={<CancelIcon />}
@@ -139,10 +140,11 @@ export function {{ENTITY_NAME}}Form({
             <Button
               type="submit"
               variant="contained"
-              startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
+              startIcon={<SaveIcon />}
+              loading={saving}
               disabled={saving}
             >
-              {saving ? 'Saving...' : 'Save'}
+              Save
             </Button>
           </Box>
         </Grid>

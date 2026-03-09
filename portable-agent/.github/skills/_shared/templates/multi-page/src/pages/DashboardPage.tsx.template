@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography, Paper, Grid } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import PeopleIcon from '@mui/icons-material/People';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -14,7 +15,7 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon, color }: StatCardProps): React.ReactElement {
   return (
-    <Paper sx={{ p: 3 }}>
+    <Paper sx={{ p: 3, height: '100%' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Box
           sx={{
@@ -42,13 +43,15 @@ function StatCard({ title, value, icon, color }: StatCardProps): React.ReactElem
 
 export function DashboardPage(): React.ReactElement {
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Dashboard
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-        Welcome to the UX template dashboard. Here you can see an overview of your application.
-      </Typography>
+    <Box sx={{ display: 'grid', gap: 3 }}>
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          Dashboard
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Welcome to the UX template dashboard. Here you can see an overview of your application.
+        </Typography>
+      </Box>
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -85,7 +88,7 @@ export function DashboardPage(): React.ReactElement {
         </Grid>
       </Grid>
 
-      <Paper sx={{ mt: 4, p: 3 }}>
+      <Paper sx={{ p: 3 }}>
         <Typography variant="h6" gutterBottom>
           Getting Started
         </Typography>
@@ -95,7 +98,7 @@ export function DashboardPage(): React.ReactElement {
         <Box component="ul" sx={{ mt: 2 }}>
           <li>Responsive layout with collapsible sidebar</li>
           <li>React Router v7 for navigation</li>
-          <li>MUI 7 component library</li>
+          <li>Material UI v6 component library</li>
           <li>TypeScript strict mode</li>
           <li>Vite 5.4 for fast development</li>
         </Box>
