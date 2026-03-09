@@ -1,4 +1,4 @@
-# Cold Review Checklist
+# Code Review Checklist
 
 Review in this order:
 

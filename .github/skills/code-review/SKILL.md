@@ -1,10 +1,10 @@
 ---
-name: cold-review
-description: Perform a final cold review of generated or customized work by checking spec alignment, likely regressions, unnecessary complexity, and incomplete follow-through before handoff.
+name: code-review
+description: Perform a final code review of generated or customized work by checking spec alignment, likely regressions, unnecessary complexity, and incomplete follow-through before handoff.
 user-invokable: false
 ---
 
-# Cold Review
+# Code Review
 
 Use this skill as a fresh second pass after meaningful generation or customization work.
 

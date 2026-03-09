@@ -38,7 +38,7 @@ Route work in this order and trigger relevant skills automatically:
 2. `build-from-spec`
 3. `post-generation`
 4. `component-standards`
-5. `cold-review`
+5. `code-review`
 6. `quality-gate`
 7. `troubleshooting` when needed
 
@@ -51,7 +51,7 @@ Route work in this order and trigger relevant skills automatically:
 - Use `plan-to-spec` only to capture or refine missing generator inputs, constraints, post-generation tasks, and the durable plan record.
 - Use `build-from-spec` only after `plans/<project-name>/spec.json` is coherent enough to execute.
 - Use `post-generation` only when `spec.postGeneration.tasks` is non-empty.
-- Use `cold-review` after complex or risky multi-file changes, or when the user asks for a second-pass review.
+- Use `code-review` after complex or risky multi-file changes, or when the user asks for a second-pass review.
 - Load `quality-gate` only for explicit validation or final verification.
 - Load `troubleshooting` only when a command, build, or runtime step fails.
 - Read only the files referenced by the active skill.

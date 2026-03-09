@@ -29,7 +29,7 @@ This repository is a VS Code Copilot skillpack for autonomous, spec-driven React
     ├── plan-to-spec/
     ├── build-from-spec/
     ├── post-generation/
-    ├── cold-review/
+    ├── code-review/
     ├── component-standards/
     ├── quality-gate/
     ├── troubleshooting/
@@ -49,7 +49,7 @@ Default routing order:
 1. `plan-to-spec`
 2. `build-from-spec`
 3. `post-generation` only when `spec.postGeneration.tasks` is non-empty
-4. `cold-review` only for complex or risky follow-up work
+4. `code-review` only for complex or risky follow-up work
 5. `quality-gate` when validation is requested
 6. `troubleshooting` on failure
 
