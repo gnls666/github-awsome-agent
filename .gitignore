@@ -10,8 +10,8 @@ dist/
 build/
 
 # Generated projects (keep folder, ignore contents)
-generated/*
-!generated/.gitkeep
+**/generated/*
+!**/generated/.gitkeep
 
 # IDE
 .idea/

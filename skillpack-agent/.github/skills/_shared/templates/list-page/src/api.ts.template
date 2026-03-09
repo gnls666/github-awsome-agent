@@ -1,0 +1,88 @@
+import { {{ENTITY_NAME}}, {{ENTITY_NAME}}ListParams, {{ENTITY_NAME}}ListResponse } from './types';
+
+const API_BASE_URL = '/api';
+
+// Mock data for development
+const mock{{ENTITY_NAME}}s: {{ENTITY_NAME}}[] = Array.from({ length: 100 }, (_, i) => ({
+  id: i + 1,
+  name: `{{ENTITY_NAME}} ${i + 1}`,
+  email: `{{ENTITY_NAME_LOWER}}${i + 1}@example.com`,
+  status: (['active', 'inactive', 'pending'] as const)[i % 3],
+  createdAt: new Date(Date.now() - i * 86400000).toISOString(),
+  updatedAt: new Date().toISOString(),
+}));
+
+export async function fetch{{ENTITY_NAME}}List(
+  params: {{ENTITY_NAME}}ListParams
+): Promise<{{ENTITY_NAME}}ListResponse> {
+  // Simulate API delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // Filter by search term
+  let filtered = mock{{ENTITY_NAME}}s;
+  if (params.search) {
+    const searchLower = params.search.toLowerCase();
+    filtered = mock{{ENTITY_NAME}}s.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchLower) ||
+        item.email.toLowerCase().includes(searchLower)
+    );
+  }
+
+  // Paginate
+  const start = params.page * params.pageSize;
+  const end = start + params.pageSize;
+  const items = filtered.slice(start, end);
+
+  return {
+    items,
+    total: filtered.length,
+    page: params.page,
+    pageSize: params.pageSize,
+  };
+}
+
+export async function fetch{{ENTITY_NAME}}ById(id: number): Promise<{{ENTITY_NAME}} | null> {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  return mock{{ENTITY_NAME}}s.find((item) => item.id === id) || null;
+}
+
+export async function create{{ENTITY_NAME}}(
+  data: Omit<{{ENTITY_NAME}}, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<{{ENTITY_NAME}}> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const new{{ENTITY_NAME}}: {{ENTITY_NAME}} = {
+    ...data,
+    id: mock{{ENTITY_NAME}}s.length + 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  mock{{ENTITY_NAME}}s.push(new{{ENTITY_NAME}});
+  return new{{ENTITY_NAME}};
+}
+
+export async function update{{ENTITY_NAME}}(
+  id: number,
+  data: Partial<Omit<{{ENTITY_NAME}}, 'id' | 'createdAt' | 'updatedAt'>>
+): Promise<{{ENTITY_NAME}}> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const index = mock{{ENTITY_NAME}}s.findIndex((item) => item.id === id);
+  if (index === -1) {
+    throw new Error('{{ENTITY_NAME}} not found');
+  }
+  mock{{ENTITY_NAME}}s[index] = {
+    ...mock{{ENTITY_NAME}}s[index],
+    ...data,
+    updatedAt: new Date().toISOString(),
+  };
+  return mock{{ENTITY_NAME}}s[index];
+}
+
+export async function delete{{ENTITY_NAME}}(id: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const index = mock{{ENTITY_NAME}}s.findIndex((item) => item.id === id);
+  if (index === -1) {
+    throw new Error('{{ENTITY_NAME}} not found');
+  }
+  mock{{ENTITY_NAME}}s.splice(index, 1);
+}

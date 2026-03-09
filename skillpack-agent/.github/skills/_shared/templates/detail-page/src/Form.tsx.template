@@ -1,0 +1,152 @@
+import React, { useState, useCallback } from 'react';
+import {
+  Box,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  CircularProgress,
+  Grid,
+} from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { {{ENTITY_NAME}} } from './types';
+
+interface {{ENTITY_NAME}}FormProps {
+  data: {{ENTITY_NAME}};
+  onSave: (data: Partial<{{ENTITY_NAME}}>) => Promise<void>;
+  onCancel: () => void;
+  saving?: boolean;
+}
+
+interface FormErrors {
+  name?: string;
+  description?: string;
+}
+
+export function {{ENTITY_NAME}}Form({
+  data,
+  onSave,
+  onCancel,
+  saving = false,
+}: {{ENTITY_NAME}}FormProps): React.ReactElement {
+  const [formData, setFormData] = useState({
+    name: data.name,
+    description: data.description || '',
+    status: data.status,
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validate = useCallback((): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    } else if (formData.name.length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    }
+
+    if (formData.description && formData.description.length > 500) {
+      newErrors.description = 'Description must be less than 500 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [formData]);
+
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent) => {
+      event.preventDefault();
+      if (validate()) {
+        await onSave(formData);
+      }
+    },
+    [formData, onSave, validate]
+  );
+
+  const handleChange = useCallback(
+    (field: keyof typeof formData) =>
+      (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { value: string } }) => {
+        setFormData((prev) => ({
+          ...prev,
+          [field]: event.target.value,
+        }));
+        // Clear error when user starts typing
+        if (errors[field as keyof FormErrors]) {
+          setErrors((prev) => ({
+            ...prev,
+            [field]: undefined,
+          }));
+        }
+      },
+    [errors]
+  );
+
+  return (
+    <Box component="form" onSubmit={handleSubmit}>
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12 }}>
+          <TextField
+            fullWidth
+            label="Name"
+            value={formData.name}
+            onChange={handleChange('name')}
+            error={!!errors.name}
+            helperText={errors.name}
+            disabled={saving}
+            required
+          />
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <TextField
+            fullWidth
+            label="Description"
+            value={formData.description}
+            onChange={handleChange('description')}
+            error={!!errors.description}
+            helperText={errors.description || `${formData.description.length}/500`}
+            disabled={saving}
+            multiline
+            rows={4}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <FormControl fullWidth disabled={saving}>
+            <InputLabel>Status</InputLabel>
+            <Select
+              value={formData.status}
+              label="Status"
+              onChange={(e) => handleChange('status')({ target: { value: e.target.value } })}
+            >
+              <MenuItem value="active">Active</MenuItem>
+              <MenuItem value="inactive">Inactive</MenuItem>
+              <MenuItem value="pending">Pending</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+            <Button
+              variant="outlined"
+              startIcon={<CancelIcon />}
+              onClick={onCancel}
+              disabled={saving}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
+              disabled={saving}
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}

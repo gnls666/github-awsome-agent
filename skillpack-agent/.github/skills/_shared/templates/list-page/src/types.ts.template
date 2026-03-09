@@ -1,0 +1,23 @@
+export interface {{ENTITY_NAME}} {
+  id: number;
+  name: string;
+  email: string;
+  status: 'active' | 'inactive' | 'pending';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface {{ENTITY_NAME}}ListParams {
+  page: number;
+  pageSize: number;
+  search?: string;
+  sortBy?: keyof {{ENTITY_NAME}};
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface {{ENTITY_NAME}}ListResponse {
+  items: {{ENTITY_NAME}}[];
+  total: number;
+  page: number;
+  pageSize: number;
+}

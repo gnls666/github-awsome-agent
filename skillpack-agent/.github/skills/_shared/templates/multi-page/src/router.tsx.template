@@ -1,0 +1,22 @@
+import React from 'react';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { Layout } from './Layout';
+{{ROUTER_IMPORTS}}
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+{{ROUTES}}
+      {
+        path: '*',
+        element: <Navigate to="/" replace />,
+      },
+    ],
+  },
+]);
+
+export function Router(): React.ReactElement {
+  return <RouterProvider router={router} />;
+}

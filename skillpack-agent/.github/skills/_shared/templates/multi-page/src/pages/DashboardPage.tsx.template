@@ -1,0 +1,105 @@
+import React from 'react';
+import { Box, Typography, Paper, Grid } from '@mui/material';
+import PeopleIcon from '@mui/icons-material/People';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+  color: string;
+}
+
+function StatCard({ title, value, icon, color }: StatCardProps): React.ReactElement {
+  return (
+    <Paper sx={{ p: 3 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            p: 1.5,
+            borderRadius: 2,
+            bgcolor: `${color}.light`,
+            color: `${color}.main`,
+            display: 'flex',
+          }}
+        >
+          {icon}
+        </Box>
+        <Box>
+          <Typography variant="body2" color="text.secondary">
+            {title}
+          </Typography>
+          <Typography variant="h5" fontWeight="bold">
+            {value}
+          </Typography>
+        </Box>
+      </Box>
+    </Paper>
+  );
+}
+
+export function DashboardPage(): React.ReactElement {
+  return (
+    <Box>
+      <Typography variant="h4" gutterBottom>
+        Dashboard
+      </Typography>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+        Welcome to the UX template dashboard. Here you can see an overview of your application.
+      </Typography>
+
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <StatCard
+            title="Total Users"
+            value="1,234"
+            icon={<PeopleIcon />}
+            color="primary"
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <StatCard
+            title="Products"
+            value="567"
+            icon={<InventoryIcon />}
+            color="success"
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <StatCard
+            title="Growth"
+            value="+12.5%"
+            icon={<TrendingUpIcon />}
+            color="info"
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <StatCard
+            title="Revenue"
+            value="$45,678"
+            icon={<AttachMoneyIcon />}
+            color="warning"
+          />
+        </Grid>
+      </Grid>
+
+      <Paper sx={{ mt: 4, p: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Getting Started
+        </Typography>
+        <Typography variant="body1">
+          Use the sidebar navigation to explore different pages. This template includes:
+        </Typography>
+        <Box component="ul" sx={{ mt: 2 }}>
+          <li>Responsive layout with collapsible sidebar</li>
+          <li>React Router v7 for navigation</li>
+          <li>MUI 7 component library</li>
+          <li>TypeScript strict mode</li>
+          <li>Vite 5.4 for fast development</li>
+        </Box>
+      </Paper>
+    </Box>
+  );
+}
