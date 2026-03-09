@@ -1,6 +1,6 @@
 ---
 name: cold-review
-description: Perform a final cold review of generated or customized work by checking spec alignment, likely regressions, unnecessary complexity, and missing follow-through before handoff.
+description: Perform a final cold review of generated or customized work by checking spec alignment, likely regressions, unnecessary complexity, and incomplete follow-through before handoff.
 user-invokable: false
 ---
 
@@ -15,7 +15,7 @@ Use this skill as a fresh second pass after meaningful generation or customizati
 3. Look for mismatched naming, missing states, half-finished customizations, dead config, and likely regressions.
 4. Report concrete findings first. If there are no findings, say so and call out any residual risk or test gap.
 
-## When To Use
+## When to Use
 
 - Multi-file post-generation edits
 - Risky or broad customizations

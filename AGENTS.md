@@ -31,7 +31,7 @@ This repository is a small-context skillpack for generating and customizing Reac
 - Keep `plan.md` as the durable human-readable memory of the work.
 - Keep `spec.json` as the machine source of truth and `spec.md` as the readable summary.
 - Run `post-generation` only when the spec explicitly declares follow-up tasks.
-- Run a cold review only for complex, risky, or explicitly reviewed work.
+- Run `cold-review` only for complex, risky, or explicitly requested review work.
 
 ## Core Generator
 

@@ -13,7 +13,7 @@ Use the minimum relevant workflow for project generation:
 2. Ask at most two blocking clarification questions if the spec is missing required generator inputs.
 3. Once the spec is coherent, use `build-from-spec`.
 4. Invoke `post-generation` only if `spec.postGeneration.tasks` is non-empty.
-5. Use `cold-review` only for complex or risky post-generation work, or when the user explicitly asks for review.
+5. Use `cold-review` only for complex or risky post-generation work, or when the user explicitly asks for a review.
 6. Prefer `--dry-run` first when the request is new, risky, or likely to overwrite an existing directory.
 
 Always end with:

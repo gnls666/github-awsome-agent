@@ -8,7 +8,7 @@ Review in this order:
    - Declared `postGeneration.tasks` were actually completed
 2. Generated project integrity
    - Imports, exports, and filenames still line up
-   - Mock API/types/UI remain consistent
+   - Mock APIs, types, and UI remain consistent
    - New files are placed where the template expects them
 3. UX and behavior gaps
    - Loading, error, and empty states are present where needed
@@ -16,6 +16,6 @@ Review in this order:
    - Obvious edge cases are not ignored
 4. Complexity check
    - No unnecessary abstractions for simple template changes
-   - No dead config or duplicated logic introduced during customization
+   - No dead config or duplicate logic introduced during customization
 5. Verification gap
    - Note tests or commands that were not run

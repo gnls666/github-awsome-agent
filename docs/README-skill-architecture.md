@@ -1,4 +1,4 @@
-# Skill-First Architecture README
+# Skill-First Architecture
 
 ## Overview
 
@@ -83,7 +83,7 @@ node .github/skills/_shared/scripts/generate.js list-page user-admin --entity Us
 node --test .github/skills/_shared/scripts/generate.test.mjs
 ```
 
-Current regression scope:
+Current regression coverage:
 
 1. dynamic multi-page route, nav, and page generation
 2. detail-page form import and icons dependency integrity
