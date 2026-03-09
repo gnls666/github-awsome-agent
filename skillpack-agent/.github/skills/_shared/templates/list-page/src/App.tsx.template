@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import { {{ENTITY_NAME}}ListPage } from './{{ENTITY_NAME}}ListPage';
+import { {{ENTITY_NAME}}ListPage } from './ListPage';
 
 const theme = createTheme({
   cssVariables: true,

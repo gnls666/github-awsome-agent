@@ -34,14 +34,15 @@ Route work in this order and trigger relevant skills automatically:
 
 1. `project-context`
 2. `mui-v6-design`
-3. `design-critique`
-4. `design-polish`
-5. `quality-gate`
-6. `code-review`
-7. `plan-to-spec`
-8. `build-from-spec`
-9. `post-generation`
-10. `troubleshooting`
+3. `material-react-table`
+4. `design-critique`
+5. `design-polish`
+6. `quality-gate`
+7. `code-review`
+8. `plan-to-spec`
+9. `build-from-spec`
+10. `post-generation`
+11. `troubleshooting`
 
 ### Routing Rules
 
@@ -52,6 +53,7 @@ Route work in this order and trigger relevant skills automatically:
 - For generation inside an existing repository, require an explicit output directory instead of assuming a nested app folder.
 - Reuse existing plan or spec files when they already exist and are still relevant.
 - Use `mui-v6-design` for Material UI v6 component, layout, theme, spacing, or UI polish work.
+- Use `material-react-table` for rich admin tables with toolbar customization, row actions, sticky headers, editable rows, or server-side filtering, sorting, and pagination.
 - Use `design-critique` for explicit design review requests or when the current UI feels generic, flat, or overly templated.
 - Use `design-polish` after UI work is functionally complete but still needs refinement.
 - Use `build-from-spec` only after the generation spec is coherent enough to execute.

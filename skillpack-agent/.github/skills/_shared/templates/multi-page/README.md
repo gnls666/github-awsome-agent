@@ -1,13 +1,14 @@
 # Multi-Page Site Template
 
-A complete multi-page site template with Header, Sidebar, and React Router.
+A runnable multi-page admin shell with Header, Sidebar, React Router, and Material React Table defaults for operational list pages.
 
 ## Features
 
 - Fixed Header with "UX template" branding
 - Collapsible Sidebar (200px width) with navigation
 - React Router v7 for routing
-- Dynamic page generation based on pages parameter
+- Dynamic route and sidebar generation based on the pages parameter
+- Material React Table defaults for operational list pages such as Users and Products
 - Responsive layout (mobile-friendly)
 - TypeScript strict mode
 - Vitest for testing
@@ -48,6 +49,7 @@ A complete multi-page site template with Header, Sidebar, and React Router.
 ├── vitest.config.ts.template     # Vitest config
 ├── README.md                     # This file
 └── src/
+    ├── App.test.tsx.template     # Baseline smoke test
     ├── App.tsx.template          # Root app with theme
     ├── Header.tsx.template       # Header (UX template branding)
     ├── Layout.tsx.template       # Main layout
@@ -65,17 +67,15 @@ A complete multi-page site template with Header, Sidebar, and React Router.
 
 ## Usage
 
-1. Use the `/multi-page` prompt with parameters:
-   ```
-   /multi-page projectName=my-dashboard pages=Dashboard,Users,Products
-   ```
-2. The agent generates files in `generated/{{projectName}}/`
-3. Run the project:
-   ```bash
-   cd generated/my-dashboard
-   pnpm install
-   pnpm dev
-   ```
+Generate from the embedded generator:
+
+```bash
+node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --title "Dashboard" --pages "Dashboard,Users,Products"
+```
+
+Use `--output <dir>` when you need a non-default destination.
+
+`{{PAGES}}` drives the generated route imports, route config, and sidebar navigation entries.
 
 ## Testing
 

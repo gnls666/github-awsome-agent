@@ -48,7 +48,8 @@ Core reusable assets live under `skillpack-agent/.github/skills/_shared/`:
 1. Generator script: `skillpack-agent/.github/skills/_shared/scripts/generate.js`
 2. Templates: `skillpack-agent/.github/skills/_shared/templates/`
 3. Material UI v6 component guidance: `skillpack-agent/.github/skills/_shared/components/`
-4. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
+4. Material React Table guidance: `skillpack-agent/.github/skills/material-react-table/`
+5. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
 
 Portable-specific rules live directly under `portable-agent/`.
 
@@ -76,7 +77,8 @@ node --test .github/skills/_shared/scripts/generate.test.mjs
 
 Current regression scope:
 
-1. dynamic multi-page route, nav, and page generation
-2. detail-page form import and icons dependency integrity
-3. spec-file generation and spec artifact output
-4. custom output directory generation for portable usage
+1. list-page rich admin tables default to Material React Table
+2. generated list-page, detail-page, and multi-page projects include runnable Vite and Vitest scaffolding
+3. dynamic multi-page route, nav, and page generation
+4. spec-file generation and spec artifact output
+5. custom output directory generation for portable usage

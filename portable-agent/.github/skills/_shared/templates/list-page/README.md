@@ -1,15 +1,15 @@
 # List Page Template
 
-A data list page template using MUI DataGrid with search, filter, and pagination.
+A runnable admin list-page template built around Material React Table, with a wide content layout, explicit search controls, and a Vite/Vitest scaffold.
 
 ## Features
 
-- MUI DataGrid for data display
-- Search/filter functionality
-- Pagination with configurable page sizes
-- Loading states
-- Error handling
-- TypeScript types
+- Material React Table as the default rich admin grid
+- Dedicated search and filter surface above the table
+- Sticky header, row actions, density toggle, and server-style pagination state
+- Loading, empty, and error handling patterns
+- TypeScript strict-mode types and mock API helpers
+- Vite app scaffold with a baseline Vitest smoke test
 
 ## Template Variables
 
@@ -17,37 +17,48 @@ A data list page template using MUI DataGrid with search, filter, and pagination
 |----------|-------------|---------|
 | `{{PROJECT_NAME}}` | Project name (kebab-case) | `user-admin` |
 | `{{ENTITY_NAME}}` | Entity name (PascalCase) | `User` |
-| `{{ENTITY_NAME_LOWER}}` | Entity name (camelCase) | `user` |
+| `{{ENTITY_NAME_LOWER}}` | Entity name (lowercase) | `user` |
 | `{{TITLE}}` | Page title | `User Management` |
+
+## Parameter Contract
+
+- `{{PROJECT_NAME}}` controls package metadata and the default output directory name.
+- `{{ENTITY_NAME}}` controls exported type names, component names, and API helper names.
+- `{{ENTITY_NAME_LOWER}}` controls lowercase API/resource strings and mock email data.
+- `{{TITLE}}` controls visible page copy and the baseline smoke test assertion.
+- File names stay stable, while exported symbols and text are parameterized.
 
 ## Files
 
-- `package.json.template` - Project dependencies
-- `src/ListPage.tsx.template` - Main list page component
-- `src/types.ts.template` - TypeScript type definitions
-- `src/api.ts.template` - API service functions
-- `src/App.tsx.template` - App entry component
-- `src/main.tsx.template` - React entry point
+- `index.html.template` - HTML entry
+- `package.json.template` - Dependencies and scripts
+- `tsconfig.json.template` - TypeScript config
+- `tsconfig.node.json.template` - Node-side TypeScript config
+- `vite.config.ts.template` - Vite config
+- `vitest.config.ts.template` - Vitest config
+- `src/App.tsx.template` - App shell entry
+- `src/App.test.tsx.template` - Baseline smoke test
+- `src/ListPage.tsx.template` - Main list-page component with MRT
+- `src/api.ts.template` - Mock API functions
+- `src/main.tsx.template` - React bootstrap
+- `src/test/setup.ts.template` - Test setup
+- `src/types.ts.template` - Entity and pagination types
+- `src/vite-env.d.ts.template` - Vite type declarations
 
 ## Usage
 
-1. Copy template files to your project
-2. Replace all `{{VARIABLE}}` placeholders with actual values
-3. Run `npm install` to install dependencies
-4. Run `npm run dev` to start development server
-
-## Example
-
-For a User list page:
+Generate from the embedded generator:
 
 ```bash
-# Variables
-PROJECT_NAME=user-admin
-ENTITY_NAME=User
-TITLE=User Management
+node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
 ```
 
-This generates:
-- `UserListPage.tsx` component
-- `User` interface in types.ts
-- `fetchUserList()` API function
+Use `--output <dir>` when you need a non-default destination.
+
+## Example Output
+
+For `--entity User --title "User Management"` the template generates:
+
+- `src/ListPage.tsx` exporting `UserListPage`
+- `src/types.ts` with the `User` interfaces
+- `src/api.ts` with `fetchUserList()`, `createUser()`, and related helpers

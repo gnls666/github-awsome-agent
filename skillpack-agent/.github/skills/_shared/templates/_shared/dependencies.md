@@ -42,7 +42,9 @@
 ```json
 {
   "dependencies": {
-    "@mui/x-data-grid": "^7.0.0"
+    "@mui/icons-material": "^6.0.0",
+    "@mui/x-date-pickers": "^7.0.0",
+    "material-react-table": "^3.2.1"
   }
 }
 ```
@@ -62,11 +64,23 @@
 {
   "dependencies": {
     "@mui/icons-material": "^6.0.0",
-    "@mui/x-data-grid": "^7.0.0",
+    "@mui/x-date-pickers": "^7.0.0",
+    "material-react-table": "^3.2.1",
     "react-router-dom": "^7.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1"
+  }
+}
+```
+
+### material-react-table stack
+```json
+{
+  "dependencies": {
+    "@mui/icons-material": "^6.0.0",
+    "@mui/x-date-pickers": "^7.0.0",
+    "material-react-table": "^3.2.1"
   }
 }
 ```
@@ -100,5 +114,6 @@ pnpm build
 - Keep Grid examples on `@mui/material/Grid2`
 - Use Button `loading` instead of legacy `LoadingButton`
 - Keep `react-is` pinned through `pnpm.overrides` for React 18
+- Keep `material-react-table` aligned with MUI v6 and React 18 peer requirements
 - Check React Router APIs (v7 has breaking changes from v6)
 - Check Vite/Vitest configurations

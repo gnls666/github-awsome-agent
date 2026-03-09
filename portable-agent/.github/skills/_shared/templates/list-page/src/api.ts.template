@@ -1,7 +1,5 @@
 import { {{ENTITY_NAME}}, {{ENTITY_NAME}}ListParams, {{ENTITY_NAME}}ListResponse } from './types';
 
-const API_BASE_URL = '/api';
-
 // Mock data for development
 const mock{{ENTITY_NAME}}s: {{ENTITY_NAME}}[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
