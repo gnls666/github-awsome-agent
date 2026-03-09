@@ -8,6 +8,7 @@ Polish in this order:
 2. Spacing rhythm
    - Create clearer separation between major sections
    - Reduce mechanical repeated padding
+   - Expand overly narrow content frames when the page is primarily dashboard, list, or management UI
 3. Surface quality
    - Normalize card, paper, and toolbar treatment
    - Remove unnecessary nested containers

@@ -20,6 +20,8 @@ These patterns are adapted for Material UI-heavy product work. Avoid them when d
 ## Layout Mistakes
 
 - Do not use the same spacing everywhere. Uniform `p: 2` and `gap: 2` across the full page makes the UI feel mechanical.
+- Do not trap wide admin content in a narrow centered frame while a sidebar already consumes horizontal space.
+- Do not leave oversized empty margins on both sides of the main workspace when the primary content is a table, dashboard, or multi-filter management view.
 - Do not push filters, summary blocks, and tables into a single undifferentiated slab.
 - Do not let a table consume the page with no framing, supporting context, or empty-state guidance.
 - Do not create headers that repeat the page title and then restate the same sentence underneath.

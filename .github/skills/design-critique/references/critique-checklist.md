@@ -11,6 +11,7 @@ Review in this order:
 3. Composition and rhythm
    - Do surfaces feel intentional rather than stacked by habit?
    - Is spacing varied enough to create rhythm?
+   - Is the main content allowed to use the available workspace width, or is it being squeezed into a narrow center column?
 4. Information density
    - Is the page overloaded or under-structured?
    - Are filters, metrics, and tables grouped clearly?
