@@ -1,5 +1,7 @@
 # Skill-First Architecture README
 
+See also: `docs/skillpack-agent-vs-portable-agent.md`
+
 ## Overview
 
 This workspace contains two sibling VS Code Copilot workspaces: a skillpack-oriented authoring workspace and a portable distribution workspace.
