@@ -27,7 +27,7 @@ Use this structure for `migration.json`:
     "provider": "@platform/theme-provider",
     "iconLibrary": "@platform/icons",
     "tableLibrary": "material-react-table",
-    "typescriptMode": "incremental"
+    "typescriptMode": "unchanged"
   },
   "primaryScenario": "react-ui-library-replacement",
   "tracks": {
@@ -69,3 +69,5 @@ Use this structure for `migration.json`:
 - `scope.includePaths` defines the intended migration boundary. Do not silently expand beyond it.
 - `strategy.generatePilotSubtree` should stay `false` unless the user explicitly wants a standalone pilot.
 - `postMigration.tasks` is only for follow-up work after the main migration phases complete.
+- Default `targetProfile.typescriptMode` to `unchanged`. Only switch it to `incremental` when the user explicitly asks for JS-to-TS migration or when the existing repository already requires mixed JS/TS support in the touched scope.
+- Discover `provider`, `iconLibrary`, and other target entrypoints from the repository first. Use placeholders only in examples or before discovery is complete.

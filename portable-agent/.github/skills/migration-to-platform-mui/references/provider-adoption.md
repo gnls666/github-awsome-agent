@@ -19,6 +19,7 @@ Typical touched areas:
 
 ## Guidance
 
+- Discover the actual provider and theme entrypoints from repository imports, app bootstrap files, and shared UI packages before asking the user.
 - Prefer the repository's established provider entrypoint over ad hoc local theme creation.
 - Consolidate new palette, spacing, typography, or surface rules into the shared theme path instead of scattering `sx` overrides everywhere.
 - If the repository already has a provider layer, compose the platform provider into it instead of duplicating wrapper trees.

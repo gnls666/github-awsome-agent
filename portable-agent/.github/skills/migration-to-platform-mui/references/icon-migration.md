@@ -4,6 +4,7 @@ Use the platform icon entrypoint as part of the target stack.
 
 ## Rules
 
+- Discover the repository's intended platform icon entrypoint from existing shared packages, imports, or app-shell code before asking the user.
 - In migrated files, prefer the platform icon import path over direct imports from the old icon library.
 - Keep icon replacement within the declared migration scope unless the user explicitly asks for a broader sweep.
 - Preserve visual intent first: replace semantics before chasing one-to-one glyph perfection.
