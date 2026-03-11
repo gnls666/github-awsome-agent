@@ -1,0 +1,65 @@
+import React from 'react';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { Router } from './router';
+
+const theme = createTheme({
+  cssVariables: true,
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#0f62fe',
+        },
+        secondary: {
+          main: '#7c3aed',
+        },
+        background: {
+          default: '#f4f6fb',
+          paper: '#ffffff',
+        },
+      },
+    },
+  },
+  shape: {
+    borderRadius: 16,
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+    },
+    MuiAppBar: {
+      defaultProps: {
+        elevation: 1,
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          borderRight: '1px solid rgba(15, 23, 42, 0.08)',
+          boxShadow: '0 20px 45px rgba(15, 23, 42, 0.06)',
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          border: '1px solid rgba(15, 23, 42, 0.08)',
+          boxShadow: '0 18px 40px rgba(15, 23, 42, 0.06)',
+        },
+      },
+    },
+  },
+});
+
+function App(): React.ReactElement {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router />
+    </ThemeProvider>
+  );
+}
+
+export default App;

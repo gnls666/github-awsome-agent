@@ -1,0 +1,10 @@
+{
+  "mode": "portable",
+  "portableDefaultAction": "maintain",
+  "stackPolicy": "gradual-convergence",
+  "allowInPlaceMaintenance": true,
+  "generation": {
+    "requiresExplicitOutputDir": true,
+    "allowRepoRootOutput": false
+  }
+}

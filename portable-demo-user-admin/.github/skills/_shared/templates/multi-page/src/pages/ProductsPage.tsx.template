@@ -1,0 +1,189 @@
+import React, { useMemo, useState } from 'react';
+import {
+  Box,
+  Chip,
+  Typography,
+  Paper,
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  MenuItem,
+} from '@mui/material';
+import AddOutlined from '@mui/icons-material/AddOutlined';
+import EditOutlined from '@mui/icons-material/EditOutlined';
+import MoreHoriz from '@mui/icons-material/MoreHoriz';
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+} from 'material-react-table';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  inventoryStatus: 'Healthy' | 'Low' | 'Backorder';
+}
+
+const sampleProducts: Product[] = [
+  { id: 1, name: 'Laptop', price: 999.99, category: 'Electronics', inventoryStatus: 'Healthy' },
+  { id: 2, name: 'Book', price: 19.99, category: 'Education', inventoryStatus: 'Low' },
+  { id: 3, name: 'Chair', price: 149.99, category: 'Furniture', inventoryStatus: 'Backorder' },
+  { id: 4, name: 'Headphones', price: 249.0, category: 'Electronics', inventoryStatus: 'Healthy' },
+];
+
+export function ProductsPage(): React.ReactElement {
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('all');
+
+  const filteredProducts = useMemo(() => {
+    const keyword = search.trim().toLowerCase();
+    return sampleProducts.filter((product) => {
+      const matchesSearch =
+        keyword.length === 0 ||
+        product.name.toLowerCase().includes(keyword) ||
+        product.category.toLowerCase().includes(keyword);
+      const matchesCategory = category === 'all' || product.category === category;
+      return matchesSearch && matchesCategory;
+    });
+  }, [search, category]);
+
+  const columns = useMemo<MRT_ColumnDef<Product>[]>(
+    () => [
+      {
+        accessorKey: 'name',
+        header: 'Product',
+        size: 220,
+      },
+      {
+        accessorKey: 'category',
+        header: 'Category',
+        size: 160,
+      },
+      {
+        accessorKey: 'price',
+        header: 'Price',
+        size: 120,
+        Cell: ({ cell }) => (
+          <Typography variant="body2" fontWeight={600}>
+            ${cell.getValue<number>().toFixed(2)}
+          </Typography>
+        ),
+      },
+      {
+        accessorKey: 'inventoryStatus',
+        header: 'Inventory',
+        size: 140,
+        Cell: ({ cell }) => {
+          const value = cell.getValue<Product['inventoryStatus']>();
+          const color = value === 'Healthy' ? 'success' : value === 'Low' ? 'warning' : 'error';
+          return <Chip label={value} size="small" color={color} variant={value === 'Healthy' ? 'filled' : 'outlined'} />;
+        },
+      },
+    ],
+    []
+  );
+
+  const table = useMaterialReactTable({
+    columns,
+    data: filteredProducts,
+    getRowId: (row) => String(row.id),
+    enableStickyHeader: true,
+    enableDensityToggle: true,
+    enableColumnOrdering: true,
+    enableFullScreenToggle: false,
+    enableColumnFilters: false,
+    enableGlobalFilter: false,
+    enableRowActions: true,
+    positionActionsColumn: 'last',
+    renderRowActions: ({ row }) => (
+      <Stack direction="row" spacing={0.5}>
+        <IconButton size="small" aria-label={`Edit ${row.original.name}`}>
+          <EditOutlined fontSize="small" />
+        </IconButton>
+        <IconButton size="small" aria-label={`More actions for ${row.original.name}`}>
+          <MoreHoriz fontSize="small" />
+        </IconButton>
+      </Stack>
+    ),
+    renderTopToolbarCustomActions: () => (
+      <Typography variant="body2" color="text.secondary">
+        {filteredProducts.length} products
+      </Typography>
+    ),
+    muiTablePaperProps: {
+      elevation: 0,
+      sx: {
+        borderRadius: 4,
+        border: (theme) => `1px solid ${theme.palette.divider}`,
+        overflow: 'hidden',
+      },
+    },
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: 620,
+      },
+    },
+  });
+
+  return (
+    <Box sx={{ display: 'grid', gap: 3 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: { xs: 'stretch', md: 'center' },
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: 2,
+          mb: 4,
+        }}
+      >
+        <Box>
+          <Typography variant="h4" gutterBottom>
+            Products
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Track product readiness, inventory posture, and commercial details in one view.
+          </Typography>
+        </Box>
+        <Button variant="contained" startIcon={<AddOutlined />}>
+          Add Product
+        </Button>
+      </Box>
+
+      <Paper sx={{ p: 2.5, borderRadius: 4 }}>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={2}
+          alignItems={{ xs: 'stretch', md: 'center' }}
+        >
+          <TextField
+            label="Search products"
+            placeholder="Search product or category"
+            size="small"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            sx={{ minWidth: { xs: '100%', md: 320 } }}
+          />
+          <TextField
+            select
+            label="Category"
+            size="small"
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+            sx={{ minWidth: { xs: '100%', md: 180 } }}
+          >
+            <MenuItem value="all">All categories</MenuItem>
+            <MenuItem value="Electronics">Electronics</MenuItem>
+            <MenuItem value="Education">Education</MenuItem>
+            <MenuItem value="Furniture">Furniture</MenuItem>
+          </TextField>
+        </Stack>
+      </Paper>
+
+      <MaterialReactTable table={table} />
+    </Box>
+  );
+}

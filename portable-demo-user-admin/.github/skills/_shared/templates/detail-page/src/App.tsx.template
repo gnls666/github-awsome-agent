@@ -1,0 +1,52 @@
+import React from 'react';
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { {{ENTITY_NAME}}DetailPage } from './DetailPage';
+
+const theme = createTheme({
+  cssVariables: true,
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: '#0f62fe',
+        },
+        secondary: {
+          main: '#7c3aed',
+        },
+        background: {
+          default: '#f5f7fb',
+          paper: '#ffffff',
+        },
+      },
+    },
+  },
+  shape: {
+    borderRadius: 16,
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          border: '1px solid rgba(15, 23, 42, 0.08)',
+          boxShadow: '0 18px 40px rgba(15, 23, 42, 0.06)',
+        },
+      },
+    },
+  },
+});
+
+function App(): React.ReactElement {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <{{ENTITY_NAME}}DetailPage id={1} />
+    </ThemeProvider>
+  );
+}
+
+export default App;
