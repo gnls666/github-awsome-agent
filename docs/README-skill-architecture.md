@@ -1,6 +1,9 @@
 # Skill-First Architecture README
 
-See also: `docs/skillpack-agent-vs-portable-agent.md`
+See also:
+
+- `docs/skillpack-agent-vs-portable-agent.md`
+- `docs/skill-instruction-source-map.md`
 
 ## Overview
 
