@@ -1,6 +1,6 @@
 ---
 name: migration-to-platform-mui
-description: Plan and execute incremental migration of an existing React web app toward the platform MUI stack: React + Material UI v6 + the repository's ThemeProvider + platform icons + Material React Table. Use when requests explicitly involve replacing another UI library, standardizing an existing MUI project on the shared provider and icon entrypoints, incrementally upgrading JavaScript to TypeScript, or unifying admin tables on Material React Table. Do not use for greenfield project generation or full automatic Angular/Vue code translation.
+description: "Plan and execute incremental migration of an existing React web app toward the platform MUI stack: React + Material UI v6 + the repository's ThemeProvider + platform icons + Material React Table. Use when requests explicitly involve replacing another UI library, standardizing an existing MUI project on the shared provider and icon entrypoints, incrementally upgrading JavaScript to TypeScript, or unifying admin tables on Material React Table. Do not use for greenfield project generation or full automatic Angular/Vue code translation."
 user-invokable: true
 ---
 
