@@ -1,16 +1,17 @@
 ---
 name: component
-description: Get Material UI v6 and Material React Table guidance using the repository design skills
+description: Get component-layer, composed pattern, Material UI v6, and Material React Table guidance using the repository design skills
 agent: ux-standard
 argument-hint: "button | table | material-react-table | mrt | form | card | dialog | navigation | layout | theme"
 ---
 
 # Component Guidelines Query
 
-Use the `mui-v6-design` skill for general UI guidance and the `material-react-table` skill for rich admin table guidance.
+Start with the component guides for routine building blocks. Use `platform-patterns` when the desired result is a known multi-component composition. Use `mui-v6-design` for general UI guidance and `material-react-table` for rich admin table guidance.
 
 ## Available Component Guides
 
+- [Platform Patterns Skill](../skills/platform-patterns/SKILL.md) - Preferred composed references for page shells, async states, filter toolbars, forms, admin table compositions, and persistent operation-error panels
 - [Button Guide](../skills/_shared/components/button.md) - Button variants, states, and best practices
 - [Table Guide](../skills/_shared/components/table.md) - Rich admin tables with Material React Table and DataGrid fallback
 - [Material React Table Skill](../skills/material-react-table/SKILL.md) - Advanced table workflow, server-side patterns, and toolbar/row-action guidance
@@ -38,8 +39,9 @@ Query a specific component to get:
 - `/component button` - Get Button component guidelines
 - `/component table` - Get rich table guidelines
 - `/component material-react-table` - Get MRT-specific guidance
-- `/component form` - Get Form component guidelines
+- `/component form` - Get form building blocks first, plus composed form patterns when the target result calls for them
 - `/component navigation` - Get Sidebar/Menu guidelines
+- `/component pattern` - Get reusable page-shell, async-state, filter-toolbar, admin-table, or operation-error panel patterns
 
 ## Response Format
 

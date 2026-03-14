@@ -26,10 +26,11 @@ Use this skill for high-intent migration and refactor work inside a target proje
 7. If the migration touches theme or provider setup, read [references/provider-adoption.md](references/provider-adoption.md) and reuse `mui-v6-design`.
 8. If the migration touches icons, read [references/icon-migration.md](references/icon-migration.md).
 9. If the migration replaces admin tables, read [references/mrt-migration.md](references/mrt-migration.md) and reuse `material-react-table`.
-10. If the migration upgrades JavaScript to TypeScript, read [references/js-to-ts-incremental.md](references/js-to-ts-incremental.md).
-11. For broad migrations, create or update `targetProjectRoot/AGENTS.md` when the current project lacks one or when the migration materially changes project boundaries. Add nested `AGENTS.md` files only when a sub-app or legacy area has genuinely different rules.
-12. Execute in phases: inventory, foundation, pilot, expand, cleanup.
-13. Run `quality-gate` after meaningful migration phases and finish with `code-review` for risky or broad migrations.
+10. If the migration needs a known composed UI result such as async state, form structure, page shell, filter toolbar, standard admin table framing, or a persistent operation-error panel, read `../platform-patterns/references/pattern-catalog.md` and adopt the narrowest relevant pattern.
+11. If the migration upgrades JavaScript to TypeScript, read [references/js-to-ts-incremental.md](references/js-to-ts-incremental.md).
+12. For broad migrations, create or update `targetProjectRoot/AGENTS.md` when the current project lacks one or when the migration materially changes project boundaries. Add nested `AGENTS.md` files only when a sub-app or legacy area has genuinely different rules.
+13. Execute in phases: inventory, foundation, pilot, expand, cleanup.
+14. Run `quality-gate` after meaningful migration phases and finish with `code-review` for risky or broad migrations.
 
 ## Guardrails
 

@@ -1,5 +1,8 @@
 # Table / Material React Table Component Guide
 
+Use this file as the default building-block guidance for table work.
+When the desired result is a known composed admin table surface or error-feedback structure, also consult `.github/skills/platform-patterns/`.
+
 ## Overview
 
 Prefer `material-react-table` for rich admin tables in this repository. Use MUI DataGrid only as a fallback when an existing codebase is already committed to DataGrid or the requirement is explicitly DataGrid-specific.

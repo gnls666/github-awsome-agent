@@ -37,13 +37,14 @@ Route work in this order and trigger relevant skills automatically:
 3. `build-from-spec`
 4. `post-generation`
 5. `migration-to-platform-mui`
-6. `mui-v6-design`
-7. `material-react-table`
-8. `design-critique`
-9. `design-polish`
-10. `quality-gate`
-11. `code-review`
-12. `troubleshooting`
+6. `platform-patterns`
+7. `mui-v6-design`
+8. `material-react-table`
+9. `design-critique`
+10. `design-polish`
+11. `quality-gate`
+12. `code-review`
+13. `troubleshooting`
 
 ### Routing Rules
 
@@ -60,6 +61,7 @@ Route work in this order and trigger relevant skills automatically:
 - For empty-workspace bootstrap, allow the generated project to land at the current root.
 - Reuse existing plan or spec files when they already exist and are still relevant.
 - Use `migration-to-platform-mui` when the request explicitly involves moving a React project toward the platform MUI stack: shared provider, platform icons, Material UI v6, Material React Table, or incremental TypeScript.
+- Use `platform-patterns` when the desired result inside an existing project is a known composed structure such as a page shell, async state surface, filter toolbar, form structure, admin table composition, or persistent operation-error panel.
 - Use `mui-v6-design` for Material UI v6 component, layout, theme, spacing, or UI polish work.
 - Use `material-react-table` for rich admin tables with toolbar customization, row actions, sticky headers, editable rows, or server-side filtering, sorting, and pagination.
 - Use `design-critique` for explicit design review requests or when the current UI feels generic, flat, or overly templated.
@@ -85,6 +87,7 @@ Route work in this order and trigger relevant skills automatically:
 - Agent config: `.github/ux-standard.config.json`
 - Generator: `.github/skills/build-from-spec/scripts/generate.js`
 - Templates: `.github/skills/build-from-spec/assets/templates/`
+- Patterns: `.github/skills/platform-patterns/`
 - MUI v6 component references: `.github/skills/_shared/components/`
 - Migration skill: `.github/skills/migration-to-platform-mui/`
 - Plans: `plans/`

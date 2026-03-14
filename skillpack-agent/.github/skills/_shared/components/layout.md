@@ -1,5 +1,8 @@
 # Layout Component Guide
 
+Use this file as the default building-block guidance for layout work.
+When the desired result is a known composed page shell or working surface, also consult `.github/skills/platform-patterns/`.
+
 ## Overview
 
 Layout components structure your application's UI. Use consistent layouts for predictable user experiences.

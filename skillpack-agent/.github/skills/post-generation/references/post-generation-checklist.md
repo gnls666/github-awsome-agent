@@ -6,7 +6,8 @@ Use this skill only when `plans/<project-name>/spec.json` contains non-empty `po
 
 - Work from the spec and the generated project together.
 - Update types, mock data, routes, and UI consistently.
-- Reuse MUI patterns from `.github/skills/_shared/components/` when a design choice is needed.
+- Start from `.github/skills/_shared/components/` for routine building blocks.
+- Reuse `.github/skills/platform-patterns/` when the target result is a known composed structure.
 - Keep a short mapping from each completed task back to the originating spec item.
 
 ## Avoid

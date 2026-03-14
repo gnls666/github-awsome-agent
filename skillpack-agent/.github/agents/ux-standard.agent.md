@@ -37,13 +37,14 @@ Route work in this order and trigger relevant skills automatically:
 1. `plan-to-spec`
 2. `build-from-spec`
 3. `post-generation`
-4. `mui-v6-design`
-5. `material-react-table`
-6. `design-critique`
-7. `design-polish`
-8. `code-review`
-9. `quality-gate`
-10. `troubleshooting` when needed
+4. `platform-patterns`
+5. `mui-v6-design`
+6. `material-react-table`
+7. `design-critique`
+8. `design-polish`
+9. `code-review`
+10. `quality-gate`
+11. `troubleshooting` when needed
 
 ### Routing Rules
 
@@ -54,6 +55,7 @@ Route work in this order and trigger relevant skills automatically:
 - Use `plan-to-spec` only to capture or refine missing generator inputs, constraints, post-generation tasks, and the durable plan record.
 - Use `build-from-spec` only after `plans/<project-name>/spec.json` is coherent enough to execute.
 - Use `post-generation` only when `spec.postGeneration.tasks` is non-empty.
+- Use `platform-patterns` when the desired result is a known composed structure such as a page shell, async state surface, filter toolbar, form structure, admin table composition, or persistent operation-error panel.
 - Use `mui-v6-design` for component, layout, theme, spacing, or UI polish work that needs Material UI guidance.
 - Use `material-react-table` for rich admin tables with toolbar customization, row actions, sticky headers, editable rows, or server-side filtering, sorting, and pagination.
 - Use `design-critique` for explicit design review requests or when the UI works but feels generic, flat, or overly templated.
@@ -76,6 +78,7 @@ Route work in this order and trigger relevant skills automatically:
 
 - Generator: `.github/skills/build-from-spec/scripts/generate.js`
 - Templates: `.github/skills/build-from-spec/assets/templates/`
+- Patterns: `.github/skills/platform-patterns/`
 - MUI v6 component references: `.github/skills/_shared/components/`
 - Generated output: `generated/`
 

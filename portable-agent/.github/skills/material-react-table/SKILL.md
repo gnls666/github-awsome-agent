@@ -18,10 +18,11 @@ Use this skill when a request needs a production-grade admin table that goes bey
 
 1. Read [references/installation-and-guardrails.md](references/installation-and-guardrails.md) and [references/table-patterns.md](references/table-patterns.md).
 2. For layout, spacing, or visual polish decisions, also read `../mui-v6-design/references/visual-rules.md` and `../mui-v6-design/references/design-anti-patterns.md`.
-3. Load the shared guides in `.github/skills/_shared/components/table.md`, `.github/skills/_shared/components/layout.md`, and `.github/skills/_shared/components/form.md` when needed.
-4. Prefer `useMaterialReactTable` with stable `MRT_ColumnDef<T>[]` column definitions.
-5. Keep page-level actions, filter surfaces, toolbar behavior, and table density aligned with the repository's admin UI patterns.
-6. Use server-side table state intentionally. Do not bolt remote data onto a purely client-side table config.
+3. Load `../platform-patterns/references/mrt-admin-table.md` when the task needs a known composed admin table surface rather than raw MRT primitives.
+4. Load the shared guides in `.github/skills/_shared/components/table.md`, `.github/skills/_shared/components/layout.md`, and `.github/skills/_shared/components/form.md` when lower-level examples are needed.
+5. Prefer `useMaterialReactTable` with stable `MRT_ColumnDef<T>[]` column definitions.
+6. Keep page-level actions, filter surfaces, toolbar behavior, and table density aligned with the repository's admin UI patterns.
+7. Use server-side table state intentionally. Do not bolt remote data onto a purely client-side table config.
 
 ## Design Stance
 

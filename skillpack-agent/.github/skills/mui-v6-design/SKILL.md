@@ -19,10 +19,11 @@ Use this skill for instructional MUI v6 work and for UI polish decisions that sh
 1. Read [references/components-index.md](references/components-index.md), [references/v6-guardrails.md](references/v6-guardrails.md), and [references/design-anti-patterns.md](references/design-anti-patterns.md).
 2. For page, dashboard, or layout questions, also read [references/visual-rules.md](references/visual-rules.md).
 3. For theme, dark mode, or reusable visual system questions, also read [references/theme-v6.md](references/theme-v6.md).
-4. Load only the relevant shared component guide files from `.github/skills/_shared/components/`.
-5. Choose a clear visual direction before suggesting detailed code.
-6. Answer with concrete MUI v6 examples and concise best practices.
-7. Keep recommendations aligned with the repository's spacing, surface, page-shell rules, and anti-pattern guardrails.
+4. Load `../platform-patterns/references/pattern-catalog.md` when the request needs a known composed result such as a page shell, async state surface, filter toolbar, form structure, or admin table pattern.
+5. Load only the relevant shared component guide files from `.github/skills/_shared/components/` for lower-level API examples.
+6. Choose a clear visual direction before suggesting detailed code.
+7. Answer with concrete MUI v6 examples and concise best practices.
+8. Keep recommendations aligned with the repository's spacing, surface, page-shell rules, pattern layer, and anti-pattern guardrails.
 
 ## Design Stance
 

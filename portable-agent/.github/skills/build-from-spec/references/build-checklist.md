@@ -21,5 +21,6 @@
    - the output directory may already exist
    - the spec was just created or heavily edited
    - the request includes broad post-generation work
-9. Apply template-specific customization only when `postGeneration.tasks` is non-empty.
-10. Report the generated path, template, spec files written, and any remaining follow-up.
+9. Prefer `platform-patterns` assets when follow-up work needs a known composed result such as a shared shell, filter toolbar, form structure, async state surface, or admin table surface.
+10. Apply template-specific customization only when `postGeneration.tasks` is non-empty.
+11. Report the generated path, template, spec files written, and any remaining follow-up.

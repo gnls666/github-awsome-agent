@@ -1,5 +1,8 @@
 # Form Component Guide
 
+Use this file as the default building-block guidance for form work.
+When the desired result is a known multi-component form composition, also consult `.github/skills/platform-patterns/`.
+
 ## Overview
 
 Build accessible, validated forms using MUI form components with proper layout and error handling.

@@ -13,8 +13,9 @@ Use this skill for spec-driven follow-up changes after base generation succeeds.
 1. Read [references/post-generation-checklist.md](references/post-generation-checklist.md).
 2. Read `plans/<project-name>/spec.json` and the generated project's `spec.md`.
 3. Apply only the tasks listed in `spec.postGeneration.tasks`.
-4. Reuse existing templates, components, and generator conventions instead of inventing a parallel structure.
-5. Keep edits proportional to the request and stop when the declared tasks are complete.
+4. Reuse `platform-patterns` when the desired result is a known composed structure such as a shared shell, filter toolbar, form structure, async state surface, or admin table surface before inventing page-local structures.
+5. Reuse existing templates, components, and generator conventions instead of inventing a parallel structure.
+6. Keep edits proportional to the request and stop when the declared tasks are complete.
 
 ## Guardrails
 

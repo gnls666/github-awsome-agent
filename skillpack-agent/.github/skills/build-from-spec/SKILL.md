@@ -15,9 +15,10 @@ Use this skill once the spec is ready enough to execute.
 3. Use the bundled templates under `assets/templates/`.
 4. Use `--dry-run` first when the request is new, risky, or may overwrite an existing directory.
 5. Let the generator write `spec.json` and `spec.md` into the generated project.
-6. If `postGeneration.tasks` is empty, stop after generation.
-7. If follow-up work remains, hand off to `post-generation` and apply only the declared tasks.
-8. Summarize what was generated and what extra customization was applied.
+6. Reuse `platform-patterns` when follow-up work needs a known composed result such as a page shell, async state surface, filter toolbar, form structure, or admin table surface.
+7. If `postGeneration.tasks` is empty, stop after generation.
+8. If follow-up work remains, hand off to `post-generation` and apply only the declared tasks.
+9. Summarize what was generated and what extra customization was applied.
 
 ## Guardrails
 

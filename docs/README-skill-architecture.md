@@ -5,6 +5,7 @@ See also:
 - `docs/skillpack-agent-vs-portable-agent.md`
 - `docs/skill-instruction-source-map.md`
 - `docs/agent-change-rounds.md`
+- `docs/agent-updates-2026-03-14.zh-CN.md`
 
 ## Overview
 
@@ -54,13 +55,14 @@ Generated standalone projects should also carry a root workspace `AGENTS.md` so 
 
 ## Canonical Assets
 
-Core reusable assets now center on `build-from-spec` plus a smaller `_shared` knowledge layer:
+Core reusable assets now center on `build-from-spec`, a dedicated pattern layer, and a smaller `_shared` knowledge layer:
 
 1. Generator script: `skillpack-agent/.github/skills/build-from-spec/scripts/generate.js`
 2. Templates: `skillpack-agent/.github/skills/build-from-spec/assets/templates/`
-3. Material UI v6 component guidance: `skillpack-agent/.github/skills/_shared/components/`
-4. Material React Table guidance: `skillpack-agent/.github/skills/material-react-table/`
-5. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
+3. Reusable page and interaction patterns: `skillpack-agent/.github/skills/platform-patterns/`
+4. Material UI v6 component guidance: `skillpack-agent/.github/skills/_shared/components/`
+5. Material React Table guidance: `skillpack-agent/.github/skills/material-react-table/`
+6. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
 
 Portable-specific rules live directly under `portable-agent/`.
 Portable work should first classify the target workspace as `empty-workspace`, `single-project`, or `multi-project`, then read the nearest applicable target-project `AGENTS.md` files before proposing broad changes or migrations.
