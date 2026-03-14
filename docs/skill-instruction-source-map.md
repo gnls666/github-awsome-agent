@@ -84,6 +84,7 @@ Main impact:
 - `AGENTS.md`
 - `.github/copilot-instructions.md`
 - `.github/instructions/*.instructions.md`
+- workspace `AGENTS.md` handling guidance
 
 ### `S3` GitHub Copilot Agent Skills
 
@@ -473,7 +474,7 @@ Main sources:
 What it borrows:
 - from `S1/S3`: make repository inspection a focused skill
 - from `S2`: keep this out of large always-on instructions
-- from `UX`: inspect manifests, entrypoints, validation commands, and local conventions first
+- from `UX`: inspect manifests, entrypoints, validation commands, local conventions, and applicable workspace `AGENTS.md` boundaries first
 
 #### `migration-to-platform-mui`
 
@@ -493,7 +494,7 @@ What it borrows:
 - from `S6`: keep migration centralized, phase it, and avoid over-fragmenting the flow
 - from `S7`: MUI v6 as the target base stack
 - from `S10`: MRT as the target rich-table layer
-- from `UX`: ask less, discover more, migrate incrementally, and keep TypeScript optional by default
+- from `UX`: ask less, discover more, respect workspace `AGENTS.md`, migrate incrementally, and keep TypeScript optional by default
 
 ### Skillpack-Only Notes
 
@@ -539,7 +540,7 @@ What it borrows:
 #### `portable-agent/.github/instructions/project.instructions.md`
 
 Role:
-- defines how code should be edited inside an existing repository
+- defines how code should be edited inside a target workspace, especially when that workspace already contains code
 
 Main sources:
 - `S2`, `UX`
@@ -572,6 +573,18 @@ Main sources:
 What it borrows:
 - from `S2`: instruction targeting for file classes
 - from `UX`: the actual file contract
+
+#### `portable-agent/.github/instructions/workspace-agents.instructions.md`
+
+Role:
+- defines how project-workspace `AGENTS.md` files should be written and layered inside a target project
+
+Main sources:
+- `S2`, `UX`
+
+What it borrows:
+- from `S2`: path-scoped instruction mechanics for `AGENTS.md`
+- from `UX`: root-vs-nested workspace `AGENTS.md` rules and the rule that project `AGENTS.md` should not duplicate `.github/*`
 
 ### Skillpack Instructions
 
@@ -613,6 +626,18 @@ What it borrows:
 - from `S2`: instruction mechanics
 - from `UX`: plan/spec file contract
 
+#### `skillpack-agent/.github/instructions/workspace-agents.instructions.md`
+
+Role:
+- defines how generated or maintained project-workspace `AGENTS.md` files should be written and layered
+
+Main sources:
+- `S2`, `UX`
+
+What it borrows:
+- from `S2`: path-scoped instruction mechanics for `AGENTS.md`
+- from `UX`: root-vs-nested workspace `AGENTS.md` rules and the rule that project `AGENTS.md` should not duplicate `.github/*`
+
 ## What Clearly Belongs To UX Standards
 
 The following items are grouped under `UX Standards` even when external references exist nearby:
@@ -621,6 +646,7 @@ The following items are grouped under `UX Standards` even when external referenc
 - `plans/` being gitignored and not committed by default
 - the generation workflow: `plan-to-spec -> build-from-spec -> post-generation`
 - the portable migration workflow: `project-context -> migration-to-platform-mui -> ...`
+- root and nested workspace `AGENTS.md` layering rules for generated and maintained projects
 - "ask only a small number of blocking questions and discover repository facts first"
 - "do not squeeze the main admin content into a narrow center column"
 - "list pages, dashboards, and management views should use working width well"

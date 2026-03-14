@@ -32,6 +32,7 @@ A runnable detail-page template for read and edit flows, with Grid2-based layout
 
 - `index.html.template` - HTML entry
 - `package.json.template` - Dependencies and scripts
+- `AGENTS.md.template` - Workspace-level project guidance for the generated app
 - `tsconfig.json.template` - TypeScript config
 - `tsconfig.node.json.template` - Node-side TypeScript config
 - `vite.config.ts.template` - Vite config
@@ -60,6 +61,7 @@ Use `--output <dir>` when you need a non-default destination.
 
 For `--entity Product --title "Product Details"` the template generates:
 
+- `AGENTS.md` describing the generated workspace, local rules, and validation expectations
 - `src/DetailPage.tsx` exporting `ProductDetailPage`
 - `src/Form.tsx` exporting `ProductForm`
 - `src/api.ts` with `fetchProductById()`, `updateProduct()`, and related helpers

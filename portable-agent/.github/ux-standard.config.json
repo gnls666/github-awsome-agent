@@ -4,7 +4,7 @@
   "stackPolicy": "gradual-convergence",
   "allowInPlaceMaintenance": true,
   "generation": {
-    "requiresExplicitOutputDir": true,
-    "allowRepoRootOutput": false
+    "requiresExplicitOutputDirInExistingProjects": true,
+    "allowRepoRootOutputInEmptyWorkspace": true
   }
 }

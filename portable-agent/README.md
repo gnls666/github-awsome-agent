@@ -1,20 +1,21 @@
 # Portable Agent Workspace
 
-This directory is the portable distribution of `ux-standard` for copying into an existing repository.
+This directory is the portable distribution of `ux-standard` for copying into a target workspace.
 
 ## Default Behavior
 
-- Start by understanding the existing project.
-- Prefer in-place maintenance and gradual refactor.
-- Use generation only when the user explicitly wants a new standalone module or app.
-- Treat the current repository root as the main project target; do not assume an `app` or `apps` subdirectory exists.
-- When generation is needed inside an existing repository, require an explicit output directory instead of guessing one.
+- Start by identifying whether the target workspace is empty, a single project, or a multi-project repository.
+- Prefer in-place maintenance and gradual refactor for existing projects.
+- Use generation when the workspace is empty or when the user explicitly wants a new standalone module or app.
+- Do not assume the repository root is the project target until local project roots are checked.
+- When generation is needed inside an existing project, require an explicit output directory instead of guessing one.
+- For empty-workspace bootstrap, generation may write to the current root.
 
 ## Install Into Another Repository
 
-Copy these bundle contents into the target repository root:
+Copy this bundle's `.github/` directory into the target workspace root:
 
-- `AGENTS.md`
 - `.github/`
 
-After copying, the target repository can use `@ux-standard` as a portable agent bundle.
+After copying, the target workspace can use `@ux-standard`.
+The target project's own `AGENTS.md` should be created or updated in that target workspace during real work.

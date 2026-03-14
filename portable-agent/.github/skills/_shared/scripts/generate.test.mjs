@@ -12,9 +12,9 @@ const WORKSPACE_ROOT = process.cwd();
 const GENERATOR_PATH = path.join(__dirname, 'generate.js');
 const GENERATED_DIR = path.join(WORKSPACE_ROOT, 'generated');
 
-function runGenerator(args) {
+function runGeneratorInCwd(args, cwd = WORKSPACE_ROOT) {
   const result = spawnSync(process.execPath, [GENERATOR_PATH, ...args], {
-    cwd: WORKSPACE_ROOT,
+    cwd,
     encoding: 'utf-8',
   });
 
@@ -23,6 +23,10 @@ function runGenerator(args) {
     0,
     `generator failed with args ${args.join(' ')}\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`
   );
+}
+
+function runGenerator(args) {
+  runGeneratorInCwd(args, WORKSPACE_ROOT);
 }
 
 function removeGeneratedProject(projectName) {
@@ -97,6 +101,7 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   const mainPath = path.join(outputDir, 'src', 'main.tsx');
   const tsconfigPath = path.join(outputDir, 'tsconfig.json');
   const testPath = path.join(outputDir, 'src', 'App.test.tsx');
+  const agentsPath = path.join(outputDir, 'AGENTS.md');
 
   const detailPageContent = fs.readFileSync(detailPagePath, 'utf-8');
   assert.match(detailPageContent, /import \{ ProductForm \} from '\.\/Form';/);
@@ -105,6 +110,11 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   assert.equal(fs.existsSync(mainPath), true);
   assert.equal(fs.existsSync(tsconfigPath), true);
   assert.equal(fs.existsSync(testPath), true);
+  assert.equal(fs.existsSync(agentsPath), true);
+
+  const agentsContent = fs.readFileSync(agentsPath, 'utf-8');
+  assert.match(agentsContent, /generated React detail page/i);
+  assert.match(agentsContent, /Product/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['@mui/icons-material'], '^6.0.0');
@@ -130,6 +140,7 @@ test('list-page generates Material React Table defaults instead of DataGrid', (t
   const packageJsonPath = path.join(outputDir, 'package.json');
   const testPath = path.join(outputDir, 'src', 'App.test.tsx');
   const tsconfigPath = path.join(outputDir, 'tsconfig.json');
+  const agentsPath = path.join(outputDir, 'AGENTS.md');
 
   const listPageContent = fs.readFileSync(listPagePath, 'utf-8');
   assert.match(listPageContent, /MaterialReactTable/);
@@ -137,6 +148,11 @@ test('list-page generates Material React Table defaults instead of DataGrid', (t
   assert.doesNotMatch(listPageContent, /DataGrid/);
   assert.equal(fs.existsSync(testPath), true);
   assert.equal(fs.existsSync(tsconfigPath), true);
+  assert.equal(fs.existsSync(agentsPath), true);
+
+  const agentsContent = fs.readFileSync(agentsPath, 'utf-8');
+  assert.match(agentsContent, /generated React admin list page/i);
+  assert.match(agentsContent, /Material React Table/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');
@@ -212,6 +228,7 @@ test('multi-page default operational pages use Material React Table', (t) => {
   const productsPagePath = path.join(outputDir, 'src', 'pages', 'ProductsPage.tsx');
   const packageJsonPath = path.join(outputDir, 'package.json');
   const appTestPath = path.join(outputDir, 'src', 'App.test.tsx');
+  const agentsPath = path.join(outputDir, 'AGENTS.md');
 
   const usersPageContent = fs.readFileSync(usersPagePath, 'utf-8');
   const productsPageContent = fs.readFileSync(productsPagePath, 'utf-8');
@@ -221,6 +238,11 @@ test('multi-page default operational pages use Material React Table', (t) => {
   assert.doesNotMatch(usersPageContent, /<TableContainer|import\s+\{[^}]*TableContainer/);
   assert.doesNotMatch(productsPageContent, /<TableContainer|import\s+\{[^}]*TableContainer/);
   assert.equal(fs.existsSync(appTestPath), true);
+  assert.equal(fs.existsSync(agentsPath), true);
+
+  const agentsContent = fs.readFileSync(agentsPath, 'utf-8');
+  assert.match(agentsContent, /generated multi-page React admin application/i);
+  assert.match(agentsContent, /Dashboard,Users,Products/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');
@@ -248,4 +270,32 @@ test('custom output directory writes the project outside generated', (t) => {
   assert.equal(fs.existsSync(path.join(outputDir, 'package.json')), true);
   assert.equal(fs.existsSync(path.join(outputDir, 'src', 'ListPage.tsx')), true);
   assert.equal(fs.existsSync(path.join(GENERATED_DIR, projectName)), false);
+});
+
+test('empty-workspace bootstrap can generate directly to the current root', (t) => {
+  const tempWorkspace = path.join(WORKSPACE_ROOT, `.tmp-empty-workspace-${randomUUID().slice(0, 8)}`);
+
+  t.after(() => removeDirectory(tempWorkspace));
+
+  fs.mkdirSync(path.join(tempWorkspace, '.github'), { recursive: true });
+
+  runGeneratorInCwd(
+    [
+      'list-page',
+      'bootstrap-admin',
+      '--entity',
+      'User',
+      '--title',
+      'Bootstrap Admin',
+      '--output',
+      '.',
+    ],
+    tempWorkspace
+  );
+
+  assert.equal(fs.existsSync(path.join(tempWorkspace, 'package.json')), true);
+  assert.equal(fs.existsSync(path.join(tempWorkspace, 'src', 'ListPage.tsx')), true);
+  assert.equal(fs.existsSync(path.join(tempWorkspace, 'AGENTS.md')), true);
+  assert.equal(fs.existsSync(path.join(tempWorkspace, 'spec.json')), true);
+  assert.equal(fs.existsSync(path.join(tempWorkspace, 'generated')), false);
 });

@@ -29,7 +29,9 @@ Use this structure for `plans/<project-name>/spec.json`:
 - `projectName` should be kebab-case because it becomes the generated directory name.
 - `entityName` is usually needed for `list-page` and `detail-page`.
 - `pages` is only used for `multi-page`.
-- `outputDir` is optional. Use it only when the user explicitly wants a standalone generated subtree.
+- `outputDir` is optional.
+- Use `"."` when an empty workspace itself should become the generated project root.
+- Use an explicit relative path when generating a standalone subtree inside an existing project workspace.
 - Do not assume the repository already has an `app` or `apps` directory.
 - `constraints` captures non-functional limits that affect implementation.
 - `customizations` captures user-facing requirements beyond the base template.

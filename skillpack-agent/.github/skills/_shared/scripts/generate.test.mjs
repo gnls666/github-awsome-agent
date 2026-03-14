@@ -97,6 +97,7 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   const mainPath = path.join(outputDir, 'src', 'main.tsx');
   const tsconfigPath = path.join(outputDir, 'tsconfig.json');
   const testPath = path.join(outputDir, 'src', 'App.test.tsx');
+  const agentsPath = path.join(outputDir, 'AGENTS.md');
 
   const detailPageContent = fs.readFileSync(detailPagePath, 'utf-8');
   assert.match(detailPageContent, /import \{ ProductForm \} from '\.\/Form';/);
@@ -105,6 +106,11 @@ test('detail-page keeps Form import and icons dependency', (t) => {
   assert.equal(fs.existsSync(mainPath), true);
   assert.equal(fs.existsSync(tsconfigPath), true);
   assert.equal(fs.existsSync(testPath), true);
+  assert.equal(fs.existsSync(agentsPath), true);
+
+  const agentsContent = fs.readFileSync(agentsPath, 'utf-8');
+  assert.match(agentsContent, /generated React detail page/i);
+  assert.match(agentsContent, /Product/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['@mui/icons-material'], '^6.0.0');
@@ -130,6 +136,7 @@ test('list-page generates Material React Table defaults instead of DataGrid', (t
   const packageJsonPath = path.join(outputDir, 'package.json');
   const testPath = path.join(outputDir, 'src', 'App.test.tsx');
   const tsconfigPath = path.join(outputDir, 'tsconfig.json');
+  const agentsPath = path.join(outputDir, 'AGENTS.md');
 
   const listPageContent = fs.readFileSync(listPagePath, 'utf-8');
   assert.match(listPageContent, /MaterialReactTable/);
@@ -137,6 +144,11 @@ test('list-page generates Material React Table defaults instead of DataGrid', (t
   assert.doesNotMatch(listPageContent, /DataGrid/);
   assert.equal(fs.existsSync(testPath), true);
   assert.equal(fs.existsSync(tsconfigPath), true);
+  assert.equal(fs.existsSync(agentsPath), true);
+
+  const agentsContent = fs.readFileSync(agentsPath, 'utf-8');
+  assert.match(agentsContent, /generated React admin list page/i);
+  assert.match(agentsContent, /Material React Table/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');
@@ -212,6 +224,7 @@ test('multi-page default operational pages use Material React Table', (t) => {
   const productsPagePath = path.join(outputDir, 'src', 'pages', 'ProductsPage.tsx');
   const packageJsonPath = path.join(outputDir, 'package.json');
   const appTestPath = path.join(outputDir, 'src', 'App.test.tsx');
+  const agentsPath = path.join(outputDir, 'AGENTS.md');
 
   const usersPageContent = fs.readFileSync(usersPagePath, 'utf-8');
   const productsPageContent = fs.readFileSync(productsPagePath, 'utf-8');
@@ -221,6 +234,11 @@ test('multi-page default operational pages use Material React Table', (t) => {
   assert.doesNotMatch(usersPageContent, /<TableContainer|import\s+\{[^}]*TableContainer/);
   assert.doesNotMatch(productsPageContent, /<TableContainer|import\s+\{[^}]*TableContainer/);
   assert.equal(fs.existsSync(appTestPath), true);
+  assert.equal(fs.existsSync(agentsPath), true);
+
+  const agentsContent = fs.readFileSync(agentsPath, 'utf-8');
+  assert.match(agentsContent, /generated multi-page React admin application/i);
+  assert.match(agentsContent, /Dashboard,Users,Products/);
 
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');

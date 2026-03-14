@@ -29,6 +29,7 @@ This directory is the authoring skillpack for generating and customizing React +
 ## Autonomous Flow
 
 - Default generation flow is plan-and-spec driven: create or update `plans/<project-name>/plan.md` and `plans/<project-name>/spec.json`, then build from that spec.
+- Generated standalone projects should include their own root workspace `AGENTS.md` so the output carries local project guidance without copying `.github/*` behavior into always-on context.
 - Keep `plan.md` as the durable human-readable memory of the work.
 - Keep `spec.json` as the machine source of truth and `spec.md` as the readable summary.
 - Treat `plans/` as local workspace state for the agent. It is gitignored by default and should only be committed when the user explicitly wants to preserve a plan as project documentation.

@@ -14,6 +14,7 @@ This workspace contains two sibling VS Code Copilot workspaces: a skillpack-orie
 - Capability model: automatic skill routing with small always-on context
 - Runtime language: follow the user's language
 - Distribution model: authoring skillpack under `skillpack-agent/`, plus a portable workspace at `portable-agent/`
+- Runtime model: when the portable workspace is copied into a target project, `.github/*` provides the agent system while the target project's own `AGENTS.md` and `plans/` live beside it
 
 ## Repository Layout
 
@@ -28,6 +29,8 @@ portable-agent/
 ├── .github/
 └── AGENTS.md
 ```
+
+The `portable-agent/AGENTS.md` file documents the distribution workspace itself. It is not the same thing as the eventual target project's `AGENTS.md`.
 
 ## Autonomous Workflow
 
@@ -46,6 +49,7 @@ Default routing order:
 Inside `skillpack-agent/`, the agent should keep `plans/<project-name>/plan.md` as the durable human-readable plan, `plans/<project-name>/spec.json` as the machine contract, and `plans/<project-name>/spec.md` as the readable spec summary.
 These `plans/` artifacts are local workspace state and are gitignored by default unless a user explicitly wants to preserve them as repository documentation.
 For in-scope work, the agent is expected to use this workflow rather than fall back to plain freeform behavior.
+Generated standalone projects should also carry a root workspace `AGENTS.md` so the output project has its own local working guidance without confusing that guidance with `.github/*` agent configuration.
 
 ## Canonical Assets
 
@@ -58,6 +62,7 @@ Core reusable assets live under `skillpack-agent/.github/skills/_shared/`:
 5. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
 
 Portable-specific rules live directly under `portable-agent/`.
+Portable work should first classify the target workspace as `empty-workspace`, `single-project`, or `multi-project`, then read the nearest applicable target-project `AGENTS.md` files before proposing broad changes or migrations.
 
 ## Generator
 

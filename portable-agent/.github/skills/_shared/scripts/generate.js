@@ -423,6 +423,27 @@ function resolveOutputDir(config) {
   return path.resolve(WORKSPACE_ROOT, config.output);
 }
 
+function isAllowedBootstrapEntry(entryName) {
+  return (
+    entryName === '.git' ||
+    entryName === '.github' ||
+    entryName === 'plans' ||
+    entryName === '.gitignore' ||
+    entryName === '.DS_Store' ||
+    /^README(\..+)?$/i.test(entryName) ||
+    /^LICENSE(\..+)?$/i.test(entryName)
+  );
+}
+
+function isBootstrapRootAllowed(outputDir, config) {
+  if (config.output !== '.' || !fs.existsSync(outputDir)) {
+    return false;
+  }
+
+  const entries = fs.readdirSync(outputDir);
+  return entries.every(isAllowedBootstrapEntry);
+}
+
 function getAvailableTemplates() {
   return fs.readdirSync(path.join(SKILLPACK_ROOT, 'templates'))
     .filter((dir) => !dir.startsWith('_') && fs.statSync(path.join(SKILLPACK_ROOT, 'templates', dir)).isDirectory());
@@ -575,7 +596,7 @@ Examples:
   const outputDisplayPath = path.relative(WORKSPACE_ROOT, outputDir) || '.';
 
   // Check if output already exists
-  if (!config.dryRun && fs.existsSync(outputDir)) {
+  if (!config.dryRun && fs.existsSync(outputDir) && !isBootstrapRootAllowed(outputDir, config)) {
     console.error(`❌ Output directory already exists: ${outputDir}`);
     console.error(`   Remove it first or choose a different project name.`);
     process.exit(1);

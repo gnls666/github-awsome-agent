@@ -43,6 +43,7 @@ A runnable multi-page admin shell with Header, Sidebar, React Router, and Materi
 .github/skills/_shared/templates/multi-page/
 ├── index.html.template           # HTML entry point
 ├── package.json.template         # Dependencies and scripts
+├── AGENTS.md.template            # Workspace-level project guidance
 ├── tsconfig.json.template        # TypeScript config
 ├── tsconfig.node.json.template   # TypeScript config for Node
 ├── vite.config.ts.template       # Vite config
@@ -76,6 +77,8 @@ node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --title 
 Use `--output <dir>` when you need a non-default destination.
 
 `{{PAGES}}` drives the generated route imports, route config, and sidebar navigation entries.
+
+The generated project also includes a root `AGENTS.md` that documents the local workspace, validation expectations, and when nested `AGENTS.md` files are justified.
 
 ## Testing
 

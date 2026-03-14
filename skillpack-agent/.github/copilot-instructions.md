@@ -13,6 +13,7 @@ Use this repository to generate and customize React + Material UI v6 projects wi
 - Read only the resources referenced by the active skill.
 - Keep `plans/<project-name>/plan.md` as the durable human-readable plan and `plans/<project-name>/spec.json` as the execution contract.
 - Use `plans/<project-name>/spec.json` as the reusable contract for autonomous generation work.
+- Generated standalone projects should include a root workspace `AGENTS.md` that describes the output project itself.
 - Prefer prompt files when the user wants a deterministic fast path: `/generate`, `/plan`, `/component`, `/critique`, `/polish`.
 - Respond in the same language as the user.
 

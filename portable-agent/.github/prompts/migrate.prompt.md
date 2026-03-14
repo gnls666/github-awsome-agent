@@ -1,13 +1,13 @@
 ---
 name: migrate
-description: Migrate an existing repository or module toward the platform MUI stack with phased planning and execution
+description: Migrate an existing project or module toward the platform MUI stack with phased planning and execution
 agent: ux-standard
 argument-hint: "<target-area-and-migration-goal>"
 ---
 
 # /migrate - Platform MUI Migration
 
-Use this path for explicit migration work inside an existing repository.
+Use this path for explicit migration work inside a target project.
 
 1. Start with `project-context`.
 2. Use `migration-to-platform-mui` to classify the scenario and create `plans/<task-id>/plan.md` plus `plans/<task-id>/migration.json`.

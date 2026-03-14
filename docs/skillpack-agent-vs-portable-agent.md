@@ -25,19 +25,21 @@
 
 ### 2. `portable-agent` 是什么
 
-`portable-agent` 是给用户复制到现有仓库里直接使用的版本。
+`portable-agent` 是给用户复制到目标工作区里直接使用的版本。
 
 它更适合这些场景：
 
+- 目标工作区是空目录，准备直接起一个项目
 - 目标仓库本身已经有代码
 - 用户要维护、补功能、重构、统一风格
 - 用户只在明确需要时才生成一个新的独立页面、模块或子树
 
 它的默认思路是：
 
-- 先理解当前仓库
-- 优先做原地维护或渐进式重构
-- 只有用户明确说“需要新生成一个东西”时，才使用 generator
+- 先判断当前工作区是空目录、单项目还是多项目
+- 空目录时，可以直接走完整生成链
+- 已有项目时，优先做原地维护或渐进式重构
+- 只有在空目录或用户明确说“需要新生成一个东西”时，才使用 generator
 
 一句话说，`portable-agent` 更像“带进别人现有项目里工作的 agent”。
 
@@ -46,11 +48,11 @@
 | 维度 | `skillpack-agent` | `portable-agent` |
 | --- | --- | --- |
 | 主要用途 | 维护 skill、模板、generator，并在本仓库里生成项目 | 复制进已有仓库后做维护、重构、局部生成 |
-| 默认对象 | 新生成项目或新模板产物 | 当前仓库里已经存在的代码 |
+| 默认对象 | 新生成项目或新模板产物 | 空工作区或当前仓库里已经存在的代码 |
 | 默认工作流起点 | `plan-to-spec` | `project-context` |
 | 默认目标 | 先形成 spec，再生成 | 先理解现有项目，再改代码 |
-| 是否默认生成 | 是，生成是主路径 | 否，生成只是显式动作 |
-| 输出位置假设 | 默认使用 `generated/` | 默认原地工作，不假定 `app`/`apps` 目录 |
+| 是否默认生成 | 是，生成是主路径 | 空工作区时是主路径，已有项目时只是显式动作 |
+| 输出位置假设 | 默认使用 `generated/` | 空工作区时可落到根目录；已有项目里默认原地工作，不假定 `app`/`apps` 目录 |
 | 对本地约定的态度 | 以本仓库模板和共享资产为准 | 优先尊重现有项目约定 |
 | 技术栈收敛策略 | 直接以推荐模板和推荐栈输出 | 除非用户明确要求，否则不强推全仓迁移 |
 | 计划文件作用 | 为生成任务服务 | 为复杂维护/重构任务服务 |
@@ -124,12 +126,11 @@
 这是最推荐的方式。
 
 1. 不要复制 `skillpack-agent/` 到目标仓库。
-2. 直接复制 [portable-agent](/Users/baizijun/projects/claude-vscode/portable-agent) 里的这两部分到目标仓库根目录：
-   - `AGENTS.md`
-   - `.github/`
-3. 不要复制 `generated/`。
-4. 不要复制 `plans/` 作为仓库正式内容；需要时让 agent 自己在本地生成。
-5. 复制完成后，在目标仓库里直接使用 `@ux-standard`。
+2. 直接复制 [portable-agent](/Users/baizijun/projects/claude-vscode/portable-agent) 里的 `.github/` 到目标仓库根目录。
+3. 不要求事先复制 portable 目录自己的 `AGENTS.md`。目标项目自己的 `AGENTS.md` 应该在目标工作区内由 `project-context` 创建或更新。
+4. 不要复制 `generated/`。
+5. 不要复制 `plans/` 作为仓库正式内容；需要时让 agent 自己在本地生成。
+6. 复制完成后，在目标仓库里直接使用 `@ux-standard`。
 
 这样做的好处是：
 
@@ -141,15 +142,15 @@
 
 如果你已经把 `skillpack-agent` 风格的内容带进了别人的仓库，建议按下面的替换方式处理。
 
-1. 用 `portable-agent/AGENTS.md` 替换目标仓库里的 `AGENTS.md`。
-2. 用 `portable-agent/.github/agents/ux-standard.agent.md` 替换目标仓库里的同名 agent 文件。
-3. 把 `portable-agent/.github/skills/project-context/` 一并带进去。
+1. 用 `portable-agent/.github/agents/ux-standard.agent.md` 替换目标仓库里的同名 agent 文件。
+2. 把 `portable-agent/.github/skills/project-context/` 一并带进去。
    - 这是 portable 默认工作流和 skillpack 最大的区别之一。
-4. 用 `portable-agent/.github/copilot-instructions.md` 和相关 prompts / skills 覆盖目标仓库里对应文件。
-5. 保留共享模板和 generator，但调整使用预期：
+3. 用 `portable-agent/.github/copilot-instructions.md` 和相关 prompts / skills 覆盖目标仓库里对应文件。
+4. 保留共享模板和 generator，但调整使用预期：
    - 生成不再是默认动作
    - 生成时才显式指定输出目录
-6. 确认目标仓库的 `.gitignore` 忽略了 `plans/`。
+5. 确认目标仓库的 `.gitignore` 忽略了 `plans/`。
+6. 让 `project-context` 在目标工作区内创建或更新真正的 `AGENTS.md`。
 7. 不要要求仓库里长期保留 `generated/`；只有确实要用 skillpack 的演示式生成时才需要。
 
 ## 六、切换时最容易出错的地方
@@ -158,7 +159,7 @@
 
 这是最常见的问题。
 
-如果你在已有仓库里还沿用 `skillpack-agent` 的思维，agent 会过早进入 `plan-to-spec -> build-from-spec`，而不是先理解现有代码。
+如果你在已有仓库里还沿用 `skillpack-agent` 的思维，agent 会过早进入 `plan-to-spec -> build-from-spec`，而不是先判断工作区模式并理解现有代码。
 
 ### 2. 默认假设输出目录是 `generated/`
 
