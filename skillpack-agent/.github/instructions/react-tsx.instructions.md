@@ -1,5 +1,5 @@
 ---
-applyTo: "generated/**/*.ts,generated/**/*.tsx,.github/skills/_shared/templates/**/*.ts.template,.github/skills/_shared/templates/**/*.tsx.template"
+applyTo: "generated/**/*.ts,generated/**/*.tsx,.github/skills/build-from-spec/assets/templates/**/*.ts.template,.github/skills/build-from-spec/assets/templates/**/*.tsx.template"
 ---
 
 # React + TypeScript Code Standards

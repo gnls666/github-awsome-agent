@@ -4,6 +4,7 @@ See also:
 
 - `docs/skillpack-agent-vs-portable-agent.md`
 - `docs/skill-instruction-source-map.md`
+- `docs/agent-change-rounds.md`
 
 ## Overview
 
@@ -53,10 +54,10 @@ Generated standalone projects should also carry a root workspace `AGENTS.md` so 
 
 ## Canonical Assets
 
-Core reusable assets live under `skillpack-agent/.github/skills/_shared/`:
+Core reusable assets now center on `build-from-spec` plus a smaller `_shared` knowledge layer:
 
-1. Generator script: `skillpack-agent/.github/skills/_shared/scripts/generate.js`
-2. Templates: `skillpack-agent/.github/skills/_shared/templates/`
+1. Generator script: `skillpack-agent/.github/skills/build-from-spec/scripts/generate.js`
+2. Templates: `skillpack-agent/.github/skills/build-from-spec/assets/templates/`
 3. Material UI v6 component guidance: `skillpack-agent/.github/skills/_shared/components/`
 4. Material React Table guidance: `skillpack-agent/.github/skills/material-react-table/`
 5. Troubleshooting notes: `skillpack-agent/.github/skills/_shared/TROUBLESHOOTING.md`
@@ -68,22 +69,22 @@ Portable work should first classify the target workspace as `empty-workspace`, `
 
 ```bash
 cd skillpack-agent
-node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json
+node .github/skills/build-from-spec/scripts/generate.js --spec-file plans/<project-name>/spec.json
 ```
 
 Legacy positional CLI generation is still supported:
 
 ```bash
 cd skillpack-agent
-node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
-node .github/skills/_shared/scripts/generate.js list-page user-admin --output standalone/user-admin
+node .github/skills/build-from-spec/scripts/generate.js list-page user-admin --entity User --title "用户管理"
+node .github/skills/build-from-spec/scripts/generate.js list-page user-admin --output standalone/user-admin
 ```
 
 ## Validation
 
 ```bash
 cd skillpack-agent
-node --test .github/skills/_shared/scripts/generate.test.mjs
+node --test .github/skills/build-from-spec/scripts/generate.test.mjs
 ```
 
 Current regression scope:

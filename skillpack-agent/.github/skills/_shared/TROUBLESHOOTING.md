@@ -85,7 +85,7 @@ If connecting to a real API:
 ```bash
 # Start fresh - remove and regenerate
 rm -rf generated/<project-name>
-node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
+node .github/skills/build-from-spec/scripts/generate.js <template> <project-name> [options]
 
 # Fix dependencies
 cd generated/<project-name>

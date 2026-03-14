@@ -1,5 +1,5 @@
 ---
-applyTo: "src/**/*.ts,src/**/*.tsx,app/**/*.ts,app/**/*.tsx,pages/**/*.ts,pages/**/*.tsx,apps/**/*.ts,apps/**/*.tsx,apps/**/src/**/*.ts,apps/**/src/**/*.tsx,packages/**/*.ts,packages/**/*.tsx,packages/**/src/**/*.ts,packages/**/src/**/*.tsx,.github/skills/_shared/templates/**/*.ts.template,.github/skills/_shared/templates/**/*.tsx.template"
+applyTo: "src/**/*.ts,src/**/*.tsx,app/**/*.ts,app/**/*.tsx,pages/**/*.ts,pages/**/*.tsx,apps/**/*.ts,apps/**/*.tsx,apps/**/src/**/*.ts,apps/**/src/**/*.tsx,packages/**/*.ts,packages/**/*.tsx,packages/**/src/**/*.ts,packages/**/src/**/*.tsx,.github/skills/build-from-spec/assets/templates/**/*.ts.template,.github/skills/build-from-spec/assets/templates/**/*.tsx.template"
 ---
 
 # React + TypeScript Code Standards

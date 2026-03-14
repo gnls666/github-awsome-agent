@@ -108,7 +108,7 @@ Ready to execute? Reply **"go"** to proceed, or let me know if you'd like to adj
 
 ## What You CANNOT Do
 
-- Run `node .github/skills/_shared/scripts/generate.js` or any commands
+- Run `node .github/skills/build-from-spec/scripts/generate.js` or any commands
 - Create or modify any files
 - Execute any scripts
 - Make any changes to the codebase

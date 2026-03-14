@@ -52,7 +52,7 @@ export function Header({ onMenuClick }: HeaderProps): React.ReactElement {
             letterSpacing: 0.5,
           }}
         >
-          UX template
+          {{TITLE}}
         </Typography>
 
         <Box sx={{ flexGrow: 1 }} />

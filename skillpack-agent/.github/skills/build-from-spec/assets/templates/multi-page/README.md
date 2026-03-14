@@ -40,7 +40,7 @@ A runnable multi-page admin shell with Header, Sidebar, React Router, and Materi
 ## Files
 
 ```
-.github/skills/_shared/templates/multi-page/
+.github/skills/build-from-spec/assets/templates/multi-page/
 ├── index.html.template           # HTML entry point
 ├── package.json.template         # Dependencies and scripts
 ├── AGENTS.md.template            # Workspace-level project guidance
@@ -71,7 +71,7 @@ A runnable multi-page admin shell with Header, Sidebar, React Router, and Materi
 Generate from the embedded generator:
 
 ```bash
-node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --title "Dashboard" --pages "Dashboard,Users,Products"
+node .github/skills/build-from-spec/scripts/generate.js multi-page my-dashboard --title "Dashboard" --pages "Dashboard,Users,Products"
 ```
 
 Use `--output <dir>` when you need a non-default destination.

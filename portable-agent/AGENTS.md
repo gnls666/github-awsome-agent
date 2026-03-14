@@ -25,7 +25,7 @@ This directory is the portable distribution workspace for `ux-standard`. It carr
 
 ## Generation
 
-- Generation is available through `.github/skills/_shared/scripts/generate.js`.
+- Generation is available through `.github/skills/build-from-spec/scripts/generate.js`.
 - In an empty target workspace, bootstrap generation may write directly to the current root.
 - In an existing project workspace, only set `outputDir` when the user explicitly wants a new standalone generated subtree.
 - Keep `spec.json` as the machine contract for generation requests and `plan.md` as the human-readable record.

@@ -4,7 +4,7 @@ applyTo: "generated/**"
 
 # Generated Projects Instructions
 
-These are generated React + Material UI v6 projects created by `.github/skills/_shared/scripts/generate.js`.
+These are generated React + Material UI v6 projects created by `.github/skills/build-from-spec/scripts/generate.js`.
 
 ## Rules
 

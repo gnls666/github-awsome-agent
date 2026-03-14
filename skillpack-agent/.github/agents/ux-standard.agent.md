@@ -74,8 +74,8 @@ Route work in this order and trigger relevant skills automatically:
 
 ### Canonical Paths
 
-- Generator: `.github/skills/_shared/scripts/generate.js`
-- Templates: `.github/skills/_shared/templates/`
+- Generator: `.github/skills/build-from-spec/scripts/generate.js`
+- Templates: `.github/skills/build-from-spec/assets/templates/`
 - MUI v6 component references: `.github/skills/_shared/components/`
 - Generated output: `generated/`
 

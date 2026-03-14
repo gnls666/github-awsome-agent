@@ -4,14 +4,14 @@
  * Template Generator Script
  *
  * Usage:
- *   node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
- *   node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json [options]
+ *   node .github/skills/build-from-spec/scripts/generate.js <template> <project-name> [options]
+ *   node .github/skills/build-from-spec/scripts/generate.js --spec-file plans/<project-name>/spec.json [options]
  *
  * Examples:
- *   node .github/skills/_shared/scripts/generate.js list-page my-users --entity User --title "User Management"
- *   node .github/skills/_shared/scripts/generate.js detail-page my-product --entity Product --title "Product Details"
- *   node .github/skills/_shared/scripts/generate.js multi-page my-admin --title "Admin Panel" --pages "Dashboard,Users,Products"
- *   node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json --dry-run
+ *   node .github/skills/build-from-spec/scripts/generate.js list-page my-users --entity User --title "User Management"
+ *   node .github/skills/build-from-spec/scripts/generate.js detail-page my-product --entity Product --title "Product Details"
+ *   node .github/skills/build-from-spec/scripts/generate.js multi-page my-admin --title "Admin Panel" --pages "Dashboard,Users,Products"
+ *   node .github/skills/build-from-spec/scripts/generate.js --spec-file plans/<project-name>/spec.json --dry-run
  *
  * Options:
  *   --entity <name>   Entity name in PascalCase (e.g., User, Product)
@@ -28,7 +28,8 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const SKILLPACK_ROOT = path.resolve(__dirname, '..');
+const BUILD_FROM_SPEC_ROOT = path.resolve(__dirname, '..');
+const TEMPLATE_ROOT = path.join(BUILD_FROM_SPEC_ROOT, 'assets', 'templates');
 const WORKSPACE_ROOT = process.cwd();
 const DEFAULT_MULTI_PAGES = ['Dashboard', 'Users', 'Products'];
 
@@ -445,8 +446,8 @@ function isBootstrapRootAllowed(outputDir, config) {
 }
 
 function getAvailableTemplates() {
-  return fs.readdirSync(path.join(SKILLPACK_ROOT, 'templates'))
-    .filter((dir) => !dir.startsWith('_') && fs.statSync(path.join(SKILLPACK_ROOT, 'templates', dir)).isDirectory());
+  return fs.readdirSync(TEMPLATE_ROOT)
+    .filter((dir) => !dir.startsWith('_') && fs.statSync(path.join(TEMPLATE_ROOT, dir)).isDirectory());
 }
 
 // Replace all variables in content
@@ -526,7 +527,7 @@ function generateMultiPageFiles(outputDir, pages, variables, dryRun) {
 
   for (const pageName of pages) {
     const destPath = path.join(pagesDir, `${pageName}Page.tsx`);
-    const templatePath = path.join(SKILLPACK_ROOT, 'templates', 'multi-page', 'src', 'pages', `${pageName}Page.tsx.template`);
+    const templatePath = path.join(TEMPLATE_ROOT, 'multi-page', 'src', 'pages', `${pageName}Page.tsx.template`);
 
     let content;
     if (fs.existsSync(templatePath)) {
@@ -554,8 +555,8 @@ function main() {
 
   if (!config.template || !config.projectName) {
     console.log(`
-Usage: node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
-   or: node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json [options]
+Usage: node .github/skills/build-from-spec/scripts/generate.js <template> <project-name> [options]
+   or: node .github/skills/build-from-spec/scripts/generate.js --spec-file plans/<project-name>/spec.json [options]
 
 Templates:
   list-page    - Data list page with search and pagination
@@ -571,10 +572,10 @@ Options:
   --dry-run         Preview without creating files
 
 Examples:
-  node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
-  node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --pages "Dashboard,Users,Settings"
-  node .github/skills/_shared/scripts/generate.js list-page user-admin --output apps/user-admin
-  node .github/skills/_shared/scripts/generate.js --spec-file plans/<project-name>/spec.json
+  node .github/skills/build-from-spec/scripts/generate.js list-page user-admin --entity User --title "用户管理"
+  node .github/skills/build-from-spec/scripts/generate.js multi-page my-dashboard --pages "Dashboard,Users,Settings"
+  node .github/skills/build-from-spec/scripts/generate.js list-page user-admin --output apps/user-admin
+  node .github/skills/build-from-spec/scripts/generate.js --spec-file plans/<project-name>/spec.json
 `);
     process.exit(1);
   }
@@ -583,7 +584,7 @@ Examples:
   const projectSpec = buildProjectSpec(config, pages);
 
   // Validate template exists
-  const templateDir = path.join(SKILLPACK_ROOT, 'templates', config.template);
+  const templateDir = path.join(TEMPLATE_ROOT, config.template);
   if (!fs.existsSync(templateDir)) {
     const available = getAvailableTemplates();
     console.error(`❌ Template "${config.template}" not found.`);

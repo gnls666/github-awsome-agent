@@ -41,15 +41,15 @@ This directory is the authoring skillpack for generating and customizing React +
 ## Core Generator
 
 ```bash
-node .github/skills/_shared/scripts/generate.js <template> <project-name> [options]
+node .github/skills/build-from-spec/scripts/generate.js <template> <project-name> [options]
 ```
 
 Examples:
 
 ```bash
-node .github/skills/_shared/scripts/generate.js list-page user-admin --entity User --title "用户管理"
-node .github/skills/_shared/scripts/generate.js multi-page my-dashboard --title "Dashboard" --pages "Dashboard,Users,Settings"
-node .github/skills/_shared/scripts/generate.js list-page user-admin --output standalone/user-admin
+node .github/skills/build-from-spec/scripts/generate.js list-page user-admin --entity User --title "用户管理"
+node .github/skills/build-from-spec/scripts/generate.js multi-page my-dashboard --title "Dashboard" --pages "Dashboard,Users,Settings"
+node .github/skills/build-from-spec/scripts/generate.js list-page user-admin --output standalone/user-admin
 ```
 
 ## Portable Bundle
