@@ -163,6 +163,86 @@
 
 这一步很重要，因为如果只新增 skill，而不统一这些入口文案，Copilot 还是会在运行时形成错误心智。
 
+### 2.6 本次提交涉及的文件名单
+
+这次提交对应的提交号是：
+
+- `c95a383`
+
+为了方便其他项目对照 adopt，这里按分组列出相关文件。
+
+#### 文档
+
+- `docs/README-skill-architecture.md`
+- `docs/agent-updates-2026-03-14.zh-CN.md`
+
+#### portable-agent：入口与基础 guidance
+
+- `portable-agent/.github/agents/ux-standard.agent.md`
+- `portable-agent/.github/prompts/component.prompt.md`
+- `portable-agent/.github/skills/_shared/components/form.md`
+- `portable-agent/.github/skills/_shared/components/layout.md`
+- `portable-agent/.github/skills/_shared/components/table.md`
+- `portable-agent/.github/skills/build-from-spec/SKILL.md`
+- `portable-agent/.github/skills/build-from-spec/references/build-checklist.md`
+- `portable-agent/.github/skills/material-react-table/SKILL.md`
+- `portable-agent/.github/skills/migration-to-platform-mui/SKILL.md`
+- `portable-agent/.github/skills/mui-v6-design/SKILL.md`
+- `portable-agent/.github/skills/post-generation/SKILL.md`
+- `portable-agent/.github/skills/post-generation/references/post-generation-checklist.md`
+
+#### portable-agent：新增 `platform-patterns`
+
+- `portable-agent/.github/skills/platform-patterns/SKILL.md`
+- `portable-agent/.github/skills/platform-patterns/references/pattern-catalog.md`
+- `portable-agent/.github/skills/platform-patterns/references/adoption-rules.md`
+- `portable-agent/.github/skills/platform-patterns/references/async-state.md`
+- `portable-agent/.github/skills/platform-patterns/references/page-shell.md`
+- `portable-agent/.github/skills/platform-patterns/references/filter-toolbar.md`
+- `portable-agent/.github/skills/platform-patterns/references/form-patterns.md`
+- `portable-agent/.github/skills/platform-patterns/references/mrt-admin-table.md`
+- `portable-agent/.github/skills/platform-patterns/references/table-operation-errors.md`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/AsyncStatePanel.tsx`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/PageShell.tsx`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/FilterToolbar.tsx`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/SectionForm.tsx`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/MrtAdminTable.tsx`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/TableOperationErrorsPanel.tsx`
+- `portable-agent/.github/skills/platform-patterns/assets/patterns/UserManagementOperationErrorsExample.tsx`
+
+#### skillpack-agent：入口与基础 guidance
+
+- `skillpack-agent/.github/agents/ux-standard.agent.md`
+- `skillpack-agent/.github/prompts/component.prompt.md`
+- `skillpack-agent/.github/skills/_shared/components/form.md`
+- `skillpack-agent/.github/skills/_shared/components/layout.md`
+- `skillpack-agent/.github/skills/_shared/components/table.md`
+- `skillpack-agent/.github/skills/build-from-spec/SKILL.md`
+- `skillpack-agent/.github/skills/build-from-spec/references/build-checklist.md`
+- `skillpack-agent/.github/skills/material-react-table/SKILL.md`
+- `skillpack-agent/.github/skills/mui-v6-design/SKILL.md`
+- `skillpack-agent/.github/skills/post-generation/SKILL.md`
+- `skillpack-agent/.github/skills/post-generation/references/post-generation-checklist.md`
+
+#### skillpack-agent：新增 `platform-patterns`
+
+- `skillpack-agent/.github/skills/platform-patterns/SKILL.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/pattern-catalog.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/adoption-rules.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/async-state.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/page-shell.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/filter-toolbar.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/form-patterns.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/mrt-admin-table.md`
+- `skillpack-agent/.github/skills/platform-patterns/references/table-operation-errors.md`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/AsyncStatePanel.tsx`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/PageShell.tsx`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/FilterToolbar.tsx`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/SectionForm.tsx`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/MrtAdminTable.tsx`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/TableOperationErrorsPanel.tsx`
+- `skillpack-agent/.github/skills/platform-patterns/assets/patterns/UserManagementOperationErrorsExample.tsx`
+
 ## 3. Essential Rules
 
 这是今天真正沉淀下来的核心规则。
