@@ -1,6 +1,12 @@
-# Portable Agent Workspace
+# UX Standard Portable Agent
 
-This directory is the portable distribution of `ux-standard` for copying into a target workspace.
+This repository is the portable distribution of `ux-standard` for copying into a target workspace.
+
+## Repository Layout
+
+- `.github/` contains the portable agent, prompts, instructions, skills, and bundle config.
+- `AGENTS.md` describes how to work on this bundle repository itself.
+- `plans/` and `generated/` are local working directories for agent state and generated output when needed.
 
 ## Default Behavior
 
@@ -19,3 +25,11 @@ Copy this bundle's `.github/` directory into the target workspace root:
 
 After copying, the target workspace can use `@ux-standard`.
 The target project's own `AGENTS.md` should be created or updated in that target workspace during real work.
+
+## Working On This Repository
+
+If you are evolving the portable bundle itself, work at the repository root:
+
+- update `.github/` directly
+- keep `AGENTS.md` focused on the bundle repository
+- keep target-project guidance inside the target repository where the bundle is installed
