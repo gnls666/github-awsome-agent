@@ -19,7 +19,9 @@ Use this skill once the generation spec is ready enough to execute.
 7. Reuse `platform-patterns` when follow-up work needs a known composed result such as a page shell, async state surface, filter toolbar, form structure, or admin table surface.
 8. If `postGeneration.tasks` is empty, stop after generation.
 9. If follow-up work remains, hand off to `post-generation` and apply only the declared tasks.
-10. Summarize what was generated and what extra customization was applied.
+10. Run `quality-gate` after generation or post-generation. Use `spec.verification` when present. For empty-workspace bootstrap, default to `typecheck`, `test`, and `build` if verification is missing.
+11. If verification fails, use `troubleshooting`, fix the blocking issues, and rerun the gate before reporting completion.
+12. Summarize what was generated, what extra customization was applied, and what verification passed.
 
 ## Guardrails
 
@@ -27,4 +29,6 @@ Use this skill once the generation spec is ready enough to execute.
 - For generation inside an existing project workspace, do not rely on the generator's default output path. The spec should resolve an explicit `outputDir`.
 - Keep the spec as the execution contract and `plan.md` as the readable memory.
 - Do not bypass the bundled templates with ad-hoc scaffolding when an existing template fits the request.
+- Do not invent broad follow-up work outside the spec. If the request still needs major custom app logic, refine the spec first.
+- Do not leave a broken generated workspace behind. Generation is incomplete until the requested verification set passes or a concrete blocker is reported.
 - If generation fails, hand off to `troubleshooting`.

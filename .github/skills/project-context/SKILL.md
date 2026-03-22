@@ -14,10 +14,10 @@ Use this skill before changing or generating code in a target workspace.
 2. Read [references/workspace-modes.md](references/workspace-modes.md) and [references/workspace-agents.md](references/workspace-agents.md).
 3. Identify `repositoryRoot`, then classify the workspace as `empty-workspace`, `single-project`, or `multi-project`.
 4. Determine `targetProjectRoot`. Use the current root only when it is clearly the app root or when an empty workspace is being used to bootstrap a new project.
-5. Read the root `AGENTS.md` that applies to the target project and any narrower nested `AGENTS.md` files that actually apply to the requested area.
-6. Identify the package manager, framework, source roots, routing entrypoints, and primary validation commands for the target project.
-7. Inspect the local files around the requested change before proposing abstractions, generation, or migrations.
-8. If the target project lacks a usable root `AGENTS.md`, create a concise baseline version. If it exists but is materially stale, update it.
+5. Identify the package manager, framework, source roots, routing entrypoints, and primary validation commands for the target project.
+6. If the target project lacks a usable root `AGENTS.md`, create a concise baseline version as soon as `targetProjectRoot` and the core project facts are confirmed. Use [references/target-agents-baseline.md](references/target-agents-baseline.md). If a root `AGENTS.md` already exists but is materially stale, update it.
+7. Read the root `AGENTS.md` that applies to the target project and any narrower nested `AGENTS.md` files that actually apply to the requested area.
+8. Inspect the local files around the requested change before proposing abstractions, generation, or migrations.
 9. Summarize `repositoryRoot`, `workspaceMode`, `targetProjectRoot`, applicable `AGENTS.md` files, and the project facts that materially shape the work.
 10. For complex or risky work, write or update a concise plan under `plans/`.
 
@@ -26,6 +26,7 @@ Use this skill before changing or generating code in a target workspace.
 - Prefer facts discovered from the repository over assumptions.
 - Treat workspace `AGENTS.md` files as local project context for the target project, not as a substitute for `.github/agents`, `.github/skills`, or `.github/prompts`.
 - Do not assume the current repository root is the target project root until the workspace mode and candidate project roots have been checked.
+- Create a missing root `AGENTS.md` for the target project as soon as the target root and core facts are known; do not wait until after broad edits have started.
 - In an empty workspace, root-level generation is valid when the user wants a full project bootstrap.
 - Do not assume the existing project already matches the recommended stack.
 - Preserve local conventions unless the user explicitly asks to converge toward the bundle's recommended stack.

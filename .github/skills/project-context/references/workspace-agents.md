@@ -28,10 +28,11 @@ Use project-workspace `AGENTS.md` files to understand the target project, not to
 ## How To Use It During Target-Project Work
 
 1. Identify `targetProjectRoot` first.
-2. Read the root `AGENTS.md` that applies to that target project if it exists.
-3. If the requested change is inside a scoped area with its own `AGENTS.md`, apply the nearest one as a narrower local boundary.
-4. When local `AGENTS.md` and repository facts disagree, prefer verified repository facts and flag the mismatch.
-5. For broad maintenance or migration work, update `AGENTS.md` only when the local project boundary or workflow has actually changed.
+2. If the target project lacks a usable root `AGENTS.md`, create a concise baseline one as soon as the target root and core project facts are confirmed.
+3. Read the root `AGENTS.md` that applies to that target project if it exists.
+4. If the requested change is inside a scoped area with its own `AGENTS.md`, apply the nearest one as a narrower local boundary.
+5. When local `AGENTS.md` and repository facts disagree, prefer verified repository facts and flag the mismatch.
+6. For broad maintenance or migration work, update `AGENTS.md` only when the local project boundary or workflow has actually changed.
 
 ## Important Boundary
 

@@ -210,6 +210,50 @@ test('spec-file generation writes spec.json and spec.md into the project', (t) =
   assert.match(routerContent, /AuditLogsPage/);
 });
 
+test('spec-file generation accepts page objects and derives a readable title fallback', (t) => {
+  const projectName = `rich-spec-admin-${randomUUID().slice(0, 8)}`;
+  const specPath = path.join(WORKSPACE_ROOT, `.tmp-rich-spec-${randomUUID().slice(0, 8)}.json`);
+
+  t.after(() => removeGeneratedProject(projectName));
+  t.after(() => removeFile(specPath));
+
+  fs.writeFileSync(
+    specPath,
+    JSON.stringify({
+      projectName,
+      template: 'multi-page',
+      pages: [
+        { name: 'Dashboard', path: '/' },
+        { name: 'Users Management', path: '/users' },
+        { name: 'Settings', path: '/settings' },
+      ],
+      postGeneration: {
+        tasks: [],
+      },
+      verification: {
+        typecheck: true,
+        test: true,
+        build: true,
+      },
+    }),
+    'utf-8'
+  );
+
+  runGenerator(['--spec-file', specPath]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const pagesDir = path.join(outputDir, 'src', 'pages');
+  const specMarkdownPath = path.join(outputDir, 'spec.md');
+  const specMarkdown = fs.readFileSync(specMarkdownPath, 'utf-8');
+
+  assert.deepEqual(
+    fs.readdirSync(pagesDir).sort(),
+    ['DashboardPage.tsx', 'SettingsPage.tsx', 'UsersManagementPage.tsx']
+  );
+  assert.match(specMarkdown, /- Title: Rich Spec Admin [A-Fa-f0-9]{8}/);
+  assert.match(specMarkdown, /- Pages: Dashboard, UsersManagement, Settings/);
+});
+
 test('multi-page default operational pages use Material React Table', (t) => {
   const projectName = `skillpack-mrt-multi-${randomUUID().slice(0, 8)}`;
   t.after(() => removeGeneratedProject(projectName));
@@ -248,6 +292,49 @@ test('multi-page default operational pages use Material React Table', (t) => {
   assert.equal(packageJson.dependencies['material-react-table'], '^3.2.1');
   assert.equal(packageJson.dependencies['@mui/x-date-pickers'], '^7.0.0');
   assert.equal(packageJson.dependencies['@mui/x-data-grid'], undefined);
+});
+
+test('multi-page dashboard page avoids unused imports in generated output', (t) => {
+  const projectName = `skillpack-dashboard-${randomUUID().slice(0, 8)}`;
+  t.after(() => removeGeneratedProject(projectName));
+
+  runGenerator([
+    'multi-page',
+    projectName,
+    '--title',
+    'Admin Dashboard',
+    '--pages',
+    'Dashboard,Users,Settings',
+  ]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const dashboardPagePath = path.join(outputDir, 'src', 'pages', 'DashboardPage.tsx');
+  const dashboardPageContent = fs.readFileSync(dashboardPagePath, 'utf-8');
+
+  assert.doesNotMatch(
+    dashboardPageContent,
+    /import \{[^}]*Avatar[^}]*\} from '@mui\/material';/
+  );
+});
+
+test('generated vitest config excludes bundle files under .github', (t) => {
+  const projectName = `skillpack-vitest-${randomUUID().slice(0, 8)}`;
+  t.after(() => removeGeneratedProject(projectName));
+
+  runGenerator([
+    'multi-page',
+    projectName,
+    '--title',
+    'Vitest Scoped Admin',
+    '--pages',
+    'Dashboard,Users,Settings',
+  ]);
+
+  const outputDir = path.join(GENERATED_DIR, projectName);
+  const vitestConfigPath = path.join(outputDir, 'vitest.config.ts');
+  const vitestConfig = fs.readFileSync(vitestConfigPath, 'utf-8');
+
+  assert.match(vitestConfig, /exclude:\s*\[[^\]]*["']\.github\/\*\*["']/);
 });
 
 test('custom output directory writes the project outside generated', (t) => {

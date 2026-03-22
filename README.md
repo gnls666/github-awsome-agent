@@ -24,7 +24,7 @@ Copy this bundle's `.github/` directory into the target workspace root:
 - `.github/`
 
 After copying, the target workspace can use `@ux-standard`.
-The target project's own `AGENTS.md` should be created or updated in that target workspace during real work.
+The target project's own `AGENTS.md` should be created or updated in that target workspace at runtime by `project-context`.
 
 ## Working On This Repository
 

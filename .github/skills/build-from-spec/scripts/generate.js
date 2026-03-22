@@ -33,6 +33,28 @@ const TEMPLATE_ROOT = path.join(BUILD_FROM_SPEC_ROOT, 'assets', 'templates');
 const WORKSPACE_ROOT = process.cwd();
 const DEFAULT_MULTI_PAGES = ['Dashboard', 'Users', 'Products'];
 
+function humanizeProjectName(value) {
+  return String(value || '')
+    .trim()
+    .split(/[^a-zA-Z0-9]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+}
+
+function extractPageInput(page) {
+  if (page && typeof page === 'object' && !Array.isArray(page)) {
+    if (typeof page.name === 'string') {
+      return page.name;
+    }
+    if (typeof page.title === 'string') {
+      return page.title;
+    }
+  }
+
+  return String(page);
+}
+
 function toPascalCase(value) {
   return value
     .trim()
@@ -46,7 +68,7 @@ function toPascalCase(value) {
 function parsePages(pagesArg) {
   if (Array.isArray(pagesArg)) {
     const pages = pagesArg
-      .map((page) => toPascalCase(String(page)))
+      .map((page) => toPascalCase(extractPageInput(page)))
       .filter(Boolean);
 
     return pages.length > 0 ? Array.from(new Set(pages)) : DEFAULT_MULTI_PAGES;
@@ -280,9 +302,10 @@ function mergeConfigWithSpec(config) {
 
 // Derive variables from user input
 function deriveVariables(config, pages = []) {
+  const fallbackTitle = humanizeProjectName(config.projectName) || 'Page Title';
   const vars = {
     '{{PROJECT_NAME}}': config.projectName || 'my-project',
-    '{{TITLE}}': config.title || 'Page Title',
+    '{{TITLE}}': config.title || fallbackTitle,
     '{{ENTITY_NAME}}': config.entity || 'Item',
     '{{ENTITY_NAME_LOWER}}': (config.entity || 'Item').toLowerCase(),
   };
@@ -312,7 +335,7 @@ function buildProjectSpec(config, pages = []) {
     ...baseSpec,
     projectName: config.projectName,
     template: config.template,
-    title: config.title || baseSpec.title || 'Page Title',
+    title: config.title || baseSpec.title || humanizeProjectName(config.projectName) || 'Page Title',
     constraints: normalizeStringArray(baseSpec.constraints),
     customizations: normalizeStringArray(baseSpec.customizations),
     postGeneration: {
@@ -358,21 +381,26 @@ function formatVerificationSummary(verification) {
 }
 
 function formatSpecMarkdown(projectSpec, specSourcePath = '') {
+  const pageNames = Array.isArray(projectSpec.pages)
+    ? projectSpec.pages
+        .map((page) => (typeof page === 'string' ? page : toPascalCase(extractPageInput(page))))
+        .filter(Boolean)
+    : [];
   const lines = [
     '# Project Spec',
     '',
     '## Summary',
     `- Project: ${projectSpec.projectName}`,
     `- Template: ${projectSpec.template}`,
-    `- Title: ${projectSpec.title}`,
+    `- Title: ${projectSpec.title || humanizeProjectName(projectSpec.projectName) || 'Page Title'}`,
   ];
 
   if (projectSpec.entityName) {
     lines.push(`- Entity: ${projectSpec.entityName}`);
   }
 
-  if (Array.isArray(projectSpec.pages) && projectSpec.pages.length > 0) {
-    lines.push(`- Pages: ${projectSpec.pages.join(', ')}`);
+  if (pageNames.length > 0) {
+    lines.push(`- Pages: ${pageNames.join(', ')}`);
   }
 
   if (specSourcePath) {

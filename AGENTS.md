@@ -7,6 +7,7 @@ This repository is the portable distribution workspace for `ux-standard`. It car
 - Use this distribution when you want the agent system inside a target workspace.
 - The target workspace may be empty or may already contain code.
 - The target project's own `AGENTS.md` belongs in that target workspace, not in this distribution repository.
+- The target project's root `AGENTS.md` should be created by `project-context` at runtime when the target root is confirmed and the file is missing.
 - Treat this file as bundle-repository guidance, not as the manual for the eventual target project.
 
 ## Core Behavior
@@ -14,6 +15,7 @@ This repository is the portable distribution workspace for `ux-standard`. It car
 - When copied into a target workspace, start by identifying whether that workspace is empty, a single project, or a multi-project repository.
 - For maintenance or refactor work, inspect the target project before proposing broad changes.
 - Treat the nearest workspace `AGENTS.md` files inside the target project as local project context. They describe the target project, not this distribution directory.
+- If the target project lacks a usable root `AGENTS.md`, create one at runtime through `project-context` before broad edits.
 - Preserve local conventions unless the user explicitly asks to migrate toward the recommended stack.
 - Prefer gradual convergence over hard rewrites.
 - Use `plans/` inside the target workspace for durable plans when work is large, risky, or multi-step.
@@ -30,7 +32,7 @@ This repository is the portable distribution workspace for `ux-standard`. It car
 - In an empty target workspace, bootstrap generation may write directly to the current root.
 - In an existing project workspace, only set `outputDir` when the user explicitly wants a new standalone generated subtree.
 - Keep `spec.json` as the machine contract for generation requests and `plan.md` as the human-readable record.
-- A generated project should carry its own root `AGENTS.md` after generation.
+- A generated project should carry its own root `AGENTS.md` after generation, created or updated at runtime by `project-context`.
 
 ## Migration
 

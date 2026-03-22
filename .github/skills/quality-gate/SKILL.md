@@ -16,8 +16,11 @@ Use this skill to run verification checks for generated projects.
 
 1. Read [references/verification-checklist.md](references/verification-checklist.md).
 2. Ensure dependencies are installed when needed.
-3. Run checks in this order: `typecheck`, `test`, `build`.
-4. Report failures with exact command and likely fix path.
+3. Read `spec.json` when present and honor its `verification` contract.
+4. For empty-workspace bootstrap or full generated apps, default to `typecheck`, `test`, and `build` when verification is missing.
+5. Run checks in this order: `typecheck`, `test`, `build`.
+6. Report failures with exact command and likely fix path.
+7. Do not report generation complete until the requested checks pass or an explicit blocker is recorded.
 
 ## Reporting
 
