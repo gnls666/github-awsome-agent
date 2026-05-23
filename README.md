@@ -6,6 +6,7 @@ This repository is the portable distribution of `ux-standard` for copying into a
 
 - `.github/` contains the portable agent, prompts, instructions, skills, and bundle config.
 - `AGENTS.md` describes how to work on this bundle repository itself.
+- `docs/engineering-agent-builder.zh-CN.md` describes the Engineering Agent Builder design, generated bundle shape, and benchmark scoring/report mechanism.
 - `plans/` and `generated/` are local working directories for agent state and generated output when needed.
 
 ## Default Behavior
@@ -24,6 +25,7 @@ Copy this bundle's `.github/` directory into the target workspace root:
 - `.github/`
 
 After copying, the target workspace can use `@ux-standard`.
+It can also use `@engineering-agent-builder` or the `/build-engineering-agent` prompt to create a complete benchmarked custom engineering-agent bundle in one pass.
 The target project's own `AGENTS.md` should be created or updated in that target workspace at runtime by `project-context`.
 
 ## Working On This Repository

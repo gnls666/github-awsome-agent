@@ -17,6 +17,10 @@ build/
 **/plans/*
 !**/plans/.gitkeep
 
+# Benchmark run evidence (keep folder, ignore contents)
+**/benchmarks/**/runs/*
+!**/benchmarks/**/runs/.gitkeep
+
 # IDE
 .idea/
 *.swp
