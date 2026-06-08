@@ -1,0 +1,13 @@
+{
+  "name": "ux-standard-portable-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "agentpkg": "./bin/agentpkg.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/contracts/*.test.mjs",
+    "test:agentpkg": "node --test tests/contracts/agentpkg-cli.test.mjs"
+  }
+}
